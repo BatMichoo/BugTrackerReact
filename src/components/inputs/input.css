@@ -1,0 +1,33 @@
+.input {
+  margin: 0.2em;
+  display: flex;
+  flex-direction: column;
+  max-width: fit-content;
+}
+
+.input label {
+  text-align: start;
+  margin-left: 0.5em;
+  color: #e2e3e4d0
+}
+
+.input input,
+.input select {
+  padding: 0.25em 0.5em;
+  /* border-radius: 0.5em; */
+}
+
+.input select {
+  min-width: 10em;
+  text-align: center;
+}
+
+input[type="number"] {
+  max-width: 6em;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
