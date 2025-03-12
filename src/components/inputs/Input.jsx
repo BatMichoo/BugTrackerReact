@@ -1,10 +1,11 @@
 import "./input.css";
 
-const Input = ({ defaultValue, labelTitle, labelText, name, type }) => {
+const Input = ({ labelTitle, labelText, children, ...props }) => {
   return (
     <div className="input">
       <label title={labelTitle}>{labelText}</label>
-      <input type={type} name={name} defaultValue={defaultValue} min={1} />
+      <input min={1} {...props} />
+      {children}
     </div>
   );
 };

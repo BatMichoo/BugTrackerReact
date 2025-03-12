@@ -34,7 +34,7 @@
 
 #content-root {
   padding: 2em 0;
-  min-width: 90%;
+  width: 90%;
 }
 
 .work-container {
@@ -46,14 +46,22 @@
 
 .search-container h2 {
   margin-bottom: 1em;
+  color: black;
+}
+
+.search-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .item-table {
-  background-color: #363636d8;
+  background-color: #555555d8;
   border-radius: 1em;
   padding: 1em;
-  border: 0.1em solid #61dafb41;
-  box-shadow: 0.05em 0.05em 0.1em rgba(17, 168, 214, 0.548);
+  /* border: 0.35em solid #615c57; */
+  border: 0.35em solid #f8f8f8;
+  box-shadow: 0em 0em 2em #615c57;
   border-spacing: 0.5em;
   border-collapse: separate;
 }
@@ -67,10 +75,10 @@
 }
 
 .item-table thead tr {
-  color: #61dafbbd;
+  color: black;
+  font-size: 1.25rem;
 }
 
 .item-table td {
   padding: 0.25em;
-  
 }

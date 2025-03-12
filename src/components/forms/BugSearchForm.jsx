@@ -18,51 +18,52 @@ const BugSearchForm = () => {
         <AssignedToInput selectedValue="" availableValues={[]} />
         <TitleInput />
         <div className="search-input">
-          <CreatedOnInput />
-          <fieldset>
-            <legend>Date filter options:</legend>
-            <div className="radio-btn-container">
-              <label htmlFor="filterChoice1">Before</label>
-              <input
-                type="radio"
-                id="filterChoice1"
-                name="DateFilterOption"
-                value="<"
-              />
+          <CreatedOnInput>
+            <fieldset>
+              <legend>Date filter options:</legend>
+              <div className="radio-btn-container">
+                <label htmlFor="filterChoice1">Before</label>
+                <input
+                  type="radio"
+                  id="filterChoice1"
+                  name="DateFilterOption"
+                  value="<"
+                />
 
-              <label htmlFor="filterChoice1">Before Incl</label>
-              <input
-                type="radio"
-                id="filterChoice2"
-                name="DateFilterOption"
-                value="<="
-              />
+                <label htmlFor="filterChoice1">Before Incl</label>
+                <input
+                  type="radio"
+                  id="filterChoice2"
+                  name="DateFilterOption"
+                  value="<="
+                />
 
-              <label htmlFor="filterChoice1">On</label>
-              <input
-                type="radio"
-                id="filterChoice3"
-                name="DateFilterOption"
-                value="="
-              />
+                <label htmlFor="filterChoice1">On</label>
+                <input
+                  type="radio"
+                  id="filterChoice3"
+                  name="DateFilterOption"
+                  value="="
+                />
 
-              <label htmlFor="filterChoice1">After Incl</label>
-              <input
-                type="radio"
-                id="filterChoice4"
-                name="DateFilterOption"
-                value=">="
-              />
+                <label htmlFor="filterChoice1">After Incl</label>
+                <input
+                  type="radio"
+                  id="filterChoice4"
+                  name="DateFilterOption"
+                  value=">="
+                />
 
-              <label htmlFor="filterChoice1">After</label>
-              <input
-                type="radio"
-                id="filterChoice5"
-                name="DateFilterOption"
-                value=">"
-              />
-            </div>
-          </fieldset>
+                <label htmlFor="filterChoice1">After</label>
+                <input
+                  type="radio"
+                  id="filterChoice5"
+                  name="DateFilterOption"
+                  value=">"
+                />
+              </div>
+            </fieldset>
+          </CreatedOnInput>
         </div>
       </ul>
       <div className="btn-container">

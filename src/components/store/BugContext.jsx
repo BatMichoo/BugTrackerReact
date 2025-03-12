@@ -1,8 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, use } from "react";
+import { AuthContext } from "./AuthContext";
 
 const serverEndpoint = "https://localhost:7272/bugs";
-const authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MDYyZjFlYy01NjU5LTRkOGYtYWJlNy0yMTUyMWIwZGUyYTUiLCJzdWIiOiJmOWY2YzNkOC1lOWNhLTQ1ZjEtYmQ5OS04NGYyODNmMDIyODUiLCJ1bmlxdWVfbmFtZSI6InVzZXIxMjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQXogVGkiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiTWFuYWdlciIsIlVzZXIiXSwiZXhwIjoxNzQxNjg5OTc3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjcyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA5NCJ9.WjD3bGYdfZjuJltmqR2ISFgS9iRe9bLtR3Hp1tj8cK4";
+// const authToken =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MDYyZjFlYy01NjU5LTRkOGYtYWJlNy0yMTUyMWIwZGUyYTUiLCJzdWIiOiJmOWY2YzNkOC1lOWNhLTQ1ZjEtYmQ5OS04NGYyODNmMDIyODUiLCJ1bmlxdWVfbmFtZSI6InVzZXIxMjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQXogVGkiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiTWFuYWdlciIsIlVzZXIiXSwiZXhwIjoxNzQxNjg5OTc3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjcyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA5NCJ9.WjD3bGYdfZjuJltmqR2ISFgS9iRe9bLtR3Hp1tj8cK4";
 
 export const BugContext = createContext({
   bugs: {
@@ -22,6 +23,7 @@ export const BugContext = createContext({
 });
 
 export const BugContextProvider = ({ children }) => {
+  const { authToken } = use(AuthContext);
   const [bugs, setBugs] = useState({});
 
   useEffect(() => {
@@ -46,7 +48,5 @@ export const BugContextProvider = ({ children }) => {
     getBugs: () => {},
   };
 
-  return (
-    <BugContext.Provider value={contextValue}>{children}</BugContext.Provider>
-  );
+  return <BugContext value={contextValue}>{children}</BugContext>;
 };

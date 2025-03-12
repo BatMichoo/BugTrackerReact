@@ -7,8 +7,8 @@ const props = {
   labelText: "Created On",
 };
 
-const CreatedOnInput = () => {
-  return <Input {...props} />;
+const CreatedOnInput = ({ children }) => {
+  return <Input {...props}>{children}</Input>;
 };
 
 export default CreatedOnInput;
