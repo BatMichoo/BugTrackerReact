@@ -1,10 +1,6 @@
-import { use } from "react";
 import { Link } from "react-router";
-import { BugContext } from "../store/BugContext";
 
-const BugResultTable = () => {
-  const { bugs } = use(BugContext);
-
+const BugResultTable = ({ resultData }) => {
   return (
     <table className="item-table">
       <thead className="item-table-head">
@@ -19,8 +15,9 @@ const BugResultTable = () => {
         </tr>
       </thead>
       <tbody>
-        {bugs.items &&
-          bugs.items.map((b) => {
+        {resultData &&
+          resultData.items &&
+          resultData.items.map((b) => {
             return (
               <tr key={b.id} className="item-row">
                 <td>{b.id}</td>
@@ -46,9 +43,12 @@ const BugResultTable = () => {
           <td></td>
           <td>
             {1 +
-              (bugs.pageInfo?.currentPage - 1) * bugs.pageInfo?.elementsPerPage}
+              (resultData && resultData.pageInfo?.currentPage - 1) *
+                resultData && resultData.pageInfo?.elementsPerPage}
             {" - "}
-            {bugs.pageInfo?.currentPage * bugs.pageInfo?.elementsPerPage}
+            {resultData &&
+              resultData.pageInfo?.currentPage *
+                resultData.pageInfo?.elementsPerPage}
           </td>
           <td></td>
           <td></td>

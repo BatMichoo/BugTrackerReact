@@ -1,16 +1,17 @@
-import { AuthContextProvider } from "./components/store/AuthContext.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import RootLayout from "./components/RootLayout.jsx";
 import HomePage from "./pages/Home.jsx";
-import LoginPage from "./pages/Login.jsx";
-import WorkflowPage from "./pages/Workflow.jsx";
+import LoginPage, { action as loginAction } from "./pages/Login.jsx";
+import WorkflowPage, { loader as workflowLoader } from "./pages/Workflow.jsx";
 import BugDetailsPage from "./pages/BugDetails.jsx";
 import CreateBugPage from "./pages/CreateBug.jsx";
+import ErrorPage from "./pages/Error.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
+        action: loginAction,
       },
       {
         path: "workflow",
@@ -26,6 +28,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <WorkflowPage />,
+            loader: workflowLoader,
           },
           {
             path: "bugs/:bugId",
@@ -44,9 +47,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <AuthContextProvider>
-        <RouterProvider router={router} />
-      </AuthContextProvider>
+      <RouterProvider router={router} />
     </>
   );
 }

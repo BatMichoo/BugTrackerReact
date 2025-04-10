@@ -3,10 +3,19 @@ import AssignedToInput from "../inputs/AssignedToInput.jsx";
 import CreatedOnInput from "../inputs/CreatedOnInput.jsx";
 import PrioritySeachInput from "../inputs/PriorityInput.jsx";
 import SearchBugIdInput from "../inputs/SearchBugIdInput.jsx";
+import SelectableInput from "../inputs/SelectableInput.jsx";
 import StatusInput from "../inputs/StatusInput.jsx";
 import TitleInput from "../inputs/TitleInput.jsx";
 
 import "./bugSearchForm.css";
+
+const DATE_AVAILABLE_FILTERS = [
+  "Before",
+  "Before Incl",
+  "On",
+  "After",
+  "After Incl",
+];
 
 const BugSearchForm = () => {
   return (
@@ -19,50 +28,13 @@ const BugSearchForm = () => {
         <TitleInput />
         <div className="search-input">
           <CreatedOnInput>
-            <fieldset>
-              <legend>Date filter options:</legend>
-              <div className="radio-btn-container">
-                <label htmlFor="filterChoice1">Before</label>
-                <input
-                  type="radio"
-                  id="filterChoice1"
-                  name="DateFilterOption"
-                  value="<"
-                />
-
-                <label htmlFor="filterChoice1">Before Incl</label>
-                <input
-                  type="radio"
-                  id="filterChoice2"
-                  name="DateFilterOption"
-                  value="<="
-                />
-
-                <label htmlFor="filterChoice1">On</label>
-                <input
-                  type="radio"
-                  id="filterChoice3"
-                  name="DateFilterOption"
-                  value="="
-                />
-
-                <label htmlFor="filterChoice1">After Incl</label>
-                <input
-                  type="radio"
-                  id="filterChoice4"
-                  name="DateFilterOption"
-                  value=">="
-                />
-
-                <label htmlFor="filterChoice1">After</label>
-                <input
-                  type="radio"
-                  id="filterChoice5"
-                  name="DateFilterOption"
-                  value=">"
-                />
-              </div>
-            </fieldset>
+            <SelectableInput
+              labelText="Date filters"
+              labelTitle="Date Filters"
+              name="date-filters"
+              selectedValue="On"
+              availableValues={DATE_AVAILABLE_FILTERS}
+            />
           </CreatedOnInput>
         </div>
       </ul>

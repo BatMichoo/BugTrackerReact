@@ -1,22 +1,15 @@
 import logo from "../assets/react.svg";
 import classes from "./Header.module.css";
 
-import { use, useState } from "react";
-import { AuthContext } from "./store/AuthContext";
-import LoginForm from "./forms/LoginForm";
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
+import NavBar from "./NavBar";
 
 const Header = () => {
-  const { isLoggedIn, login } = use(AuthContext);
-  const [isInLogin, setIsInLogin] = useState(false);
-
-  function handleOnLogin() {}
-
   return (
-    <header id="header">
-      <div>
+    <header className={classes.header}>
+      <div className={classes.logo}>
         <Link to="/">
-          <img src={logo} className={classes.logo} />
+          <img src={logo} />
         </Link>
       </div>
       <div className={classes.title}>
@@ -24,35 +17,7 @@ const Header = () => {
           <h3>Bug Tracker</h3>
         </Link>
       </div>
-      <div className={classes.navBar}>
-        <ul id="nav-list">
-          {isLoggedIn ? (
-            <li className={classes.navItem}>
-              <NavLink
-                to="/workflow"
-                end
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Workflow
-              </NavLink>
-            </li>
-          ) : (
-            <li className={classes.navItem}>
-              <NavLink
-                to="/login"
-                end
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Log in
-              </NavLink>
-            </li>
-          )}
-        </ul>
-      </div>
+      <NavBar />
     </header>
   );
 };

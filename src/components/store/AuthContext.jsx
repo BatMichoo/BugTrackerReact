@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const BASE_ENDPOINT = "https://localhost:7272/users";
 
@@ -11,6 +12,10 @@ const ENDPOINTS = {
 export const AuthContext = createContext({
   authToken: "",
   isLoggedIn: false,
+  profile: {
+    name: "",
+    id: "",
+  },
   register: async () => {},
   login: async (email, password) => {},
   signOut: async () => {},
@@ -18,6 +23,7 @@ export const AuthContext = createContext({
 
 export const AuthContextProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState("");
+  const [profile, setProfile] = useState({});
 
   async function login(email, password) {
     const response = await fetch(ENDPOINTS.login, {
@@ -38,12 +44,20 @@ export const AuthContextProvider = ({ children }) => {
 
     setAuthToken(token);
 
+    const decodedToken = jwtDecode(token);
+
+    setProfile({
+      name: decodedToken["unique_name"],
+      id: decodedToken.sub,
+    });
+
     return { error: null };
   }
 
   const ctxValue = {
     authToken: authToken,
     isLoggedIn: authToken !== "",
+    profile: profile,
     register: () => {},
     login: login,
     signOut: () => {},

@@ -1,22 +1,46 @@
-#header {
+.header {
   min-width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.25em 1em;
+  padding: 0.35em 1em;
   background-color: #353434;
+}
+
+.logo {
+  padding: 0.1em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo {
+    animation: logo-spin infinite 15s linear;
+  }
+}
+
+.logo a {
+  min-height: 100%;
+}
+
+.logo img {
+  height: auto;
+  width: 100%;
+  display: block;
 }
 
 .title {
   flex: 1;
   text-align: center;
   margin-left: 4.5em;
-}
-
-#nav-list {
-  list-style: none;
-}
-
-a.active {
-  text-decoration: underline;
 }

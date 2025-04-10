@@ -2,6 +2,7 @@ import { useRef, useState, use } from "react";
 import { AuthContext } from "../store/AuthContext";
 import Input from "../inputs/Input.jsx";
 import Button from "../buttons/Button.jsx";
+import { Form } from "react-router";
 
 const minPasswordLength = 6;
 
@@ -59,9 +60,11 @@ const LoginForm = ({}) => {
   }
 
   return (
-    <form>
+    <Form method="POST">
       <div>
         <Input
+          labelTitle="Email address."
+          labelText="Email"
           required={true}
           ref={emailRef}
           name="email"
@@ -69,6 +72,8 @@ const LoginForm = ({}) => {
           onChange={emailHandleOnChange}
         />
         <Input
+          labelTitle="Password."
+          labelText="Password"
           required={true}
           ref={passwordRef}
           name="password"
@@ -85,10 +90,8 @@ const LoginForm = ({}) => {
           </ul>
         </div>
       )}
-      <Button type="button" onClick={handleLogin}>
-        Login
-      </Button>
-    </form>
+      <button>Login</button>
+    </Form>
   );
 };
 export default LoginForm;

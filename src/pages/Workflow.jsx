@@ -1,9 +1,10 @@
 import BugSearchForm from "../components/forms/BugSearchForm.jsx";
-import { BugContextProvider } from "../components/store/BugContext.jsx";
-import { Link } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import BugResultTable from "../components/tables/BugResultTable.jsx";
+import { getBugs } from "../utils/backendAPI.js";
 
 const WorkflowPage = () => {
+  const bugResult = useLoaderData();
   return (
     <div className="work-container">
       <div className="search-container">
@@ -16,12 +17,16 @@ const WorkflowPage = () => {
         </Link>
       </div>
       <div className="item-container">
-        <BugContextProvider>
-          <BugResultTable />
-        </BugContextProvider>
+        <BugResultTable resultData={bugResult} />
       </div>
     </div>
   );
 };
 
 export default WorkflowPage;
+
+export const loader = async () => {
+  const bugResponse = await getBugs();
+
+  return bugResponse;
+};
