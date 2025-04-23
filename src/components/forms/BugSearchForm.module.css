@@ -1,0 +1,33 @@
+.search-input-container {
+  list-style: none;
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  color: black;
+  margin: 0.2em;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  padding: 0.1em 0.25em;
+}
+
+.input label {
+  text-align: start;
+  margin-left: 0.5em;
+  color: #000000d0
+}
+
+.input input, select {
+  padding: 0.4em 0.25em;
+}
+
+.btn-container {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}

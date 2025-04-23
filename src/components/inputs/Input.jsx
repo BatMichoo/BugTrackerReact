@@ -1,13 +1,10 @@
-import "./input.css";
-
-const Input = ({ labelTitle, labelText, children, ...props }) => {
+const Input = ({ className, labelTitle, labelText, children, ...props }) => {
   return (
-    <div className="input">
+    <div className={className}>
       <label title={labelTitle}>{labelText}</label>
-      <input min={1} {...props} />
+      <input {...props} />
       {children}
     </div>
   );
 };
-
 export default Input;

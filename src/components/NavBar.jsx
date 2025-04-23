@@ -1,15 +1,14 @@
-import { getProfileName } from "../utils/auth";
 import classes from "./NavBar.module.css";
 
-import { NavLink } from "react-router";
+import { NavLink, useLoaderData } from "react-router";
 
 const NavBar = () => {
-  const name = getProfileName() ?? undefined;
+  const { profileName } = useLoaderData();
 
   return (
     <div className={classes.navBar}>
       <ul className={classes["nav-list"]}>
-        {name ? (
+        {profileName ? (
           <>
             <li className={classes["nav-item"]}>
               <NavLink
@@ -28,7 +27,17 @@ const NavBar = () => {
                   isActive ? classes.active : undefined
                 }
               >
-                {name}
+                {profileName}
+              </NavLink>
+            </li>
+            <li className={classes["nav-item"]}>
+              <NavLink
+                to="/logout"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Log out
               </NavLink>
             </li>
           </>

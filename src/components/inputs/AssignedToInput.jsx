@@ -1,18 +1,27 @@
-import SelectableInput from "./SelectableInput";
+import classes from "../forms/BugSearchForm.module.css";
 
-const props = {
+const PROPERTIES = {
   labelTitle: "An user assigned to a bug.",
   labelText: "Assigned To",
   name: "AssignedTo",
+  className: classes.input,
 };
 
 const AssignedToInput = ({ selectedValue, availableValues }) => {
   return (
-    <SelectableInput
-      {...props}
-      selectedValue={selectedValue}
-      availableValues={availableValues}
-    />
+    <div className={PROPERTIES.className}>
+      <label title={PROPERTIES.labelTitle}>{PROPERTIES.labelText}</label>
+      <select name={PROPERTIES.name} defaultValue={selectedValue ?? ""}>
+        <option value=""></option>
+        {availableValues?.map((user) => {
+          return (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          );
+        })}
+      </select>
+    </div>
   );
 };
 

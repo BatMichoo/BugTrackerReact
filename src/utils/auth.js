@@ -30,13 +30,17 @@ export const clearToken = () => {
 };
 
 const saveExpiration = (expiration) => {
-  sessionStorage.setItem(AUTH_EXPIRATION_KEY, expiration);
+  const expDate = new Date(expiration * 1000); //convert to milliseconds from seconds in JWT
+
+  sessionStorage.setItem(AUTH_EXPIRATION_KEY, expDate.toISOString());
 };
 
 const retrieveExpiration = () => {
   const expiration = sessionStorage.getItem(AUTH_EXPIRATION_KEY);
 
-  return expiration;
+  const expDate = new Date(expiration);
+
+  return expDate;
 };
 
 export const getExpiration = () => {

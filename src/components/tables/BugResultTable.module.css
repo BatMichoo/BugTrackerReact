@@ -1,0 +1,32 @@
+.item-table {
+  width: 90%;
+  background-color: #555555d8;
+  border-radius: 1em;
+  margin: 1em auto;
+  padding: 1em;
+  /* border: 0.35em solid #615c57; */
+  border: 0.35em solid #f8f8f8;
+  box-shadow: 0em 0em 1.5em #615c572f;
+  border-spacing: 0.5em;
+  border-collapse: separate;
+}
+
+.item-table th {
+  border-bottom: 0.1em solid white;
+  color: black;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.item-table td {
+  padding: 0.25em;
+}
+
+.actions-container {
+  display: flex;
+  gap: 0.5em;
+}
+
+.delete-btn {
+  color: rgba(255, 0, 0, 0.712);
+}

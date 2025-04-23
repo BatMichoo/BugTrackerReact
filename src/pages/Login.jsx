@@ -20,11 +20,18 @@ export const action = async ({ request }) => {
     password: formData.get("password"),
   };
 
-  const success = await login(loginInfo);
+  try {
+    const success = await login(loginInfo);
 
-  if (success) {
-    return redirect("/");
+    if (success) {
+      return redirect("/");
+    }
+
+    return { error: "Invalid credentials." };
+  } catch (error) {
+    console.log(error);
+    throw new Response(JSON.stringify({ message: "Authentication failed." }), {
+      status: 422,
+    });
   }
-
-  return { message: "Authentication failed.", status: 422 };
 };

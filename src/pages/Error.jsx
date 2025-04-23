@@ -1,15 +1,30 @@
 import { useRouteError } from "react-router";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Error from "../components/Error";
 
 const ErrorPage = () => {
-  const error = useRouteError();
+  const routeError = useRouteError();
 
-  const errorData = JSON.parse(error.data);
+  let error;
+  if (typeof routeError.data === "object") {
+    const errorData = JSON.parse(routeError.data);
+    error = {
+      message: errorData.message,
+      status: routeError.status,
+    };
+  } else {
+    error = {
+      message: routeError.data,
+      status: routeError.status,
+    };
+  }
 
   return (
     <>
-      <h1>Something went wrong!</h1>
-      <h3>{errorData.status}</h3>
-      <p>{errorData.message}</p>
+      <Header />
+      <Error error={error} />
+      <Footer />
     </>
   );
 };

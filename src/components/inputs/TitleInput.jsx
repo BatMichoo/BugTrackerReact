@@ -1,14 +1,16 @@
 import Input from "./Input";
+import classes from "../forms/BugSearchForm.module.css";
 
-const props = {
+const PROPERTIES = {
   type: "text",
   name: "Title",
   labelTitle: "A title of a bug.",
   labelText: "Title",
+  className: classes.input,
 };
 
 const TitleInput = () => {
-  return <Input {...props} />;
+  return <Input {...PROPERTIES} />;
 };
 
 export default TitleInput;

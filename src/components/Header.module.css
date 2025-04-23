@@ -44,3 +44,10 @@
   text-align: center;
   margin-left: 4.5em;
 }
+
+.title a {
+  position: absolute;
+  left: 50%;
+  top: 1%;
+  transform: translateX(-50%);
+}

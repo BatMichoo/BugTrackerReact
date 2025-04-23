@@ -1,14 +1,16 @@
 import Input from "./Input";
+import classes from "../forms/BugSearchForm.module.css";
 
-const info = {
+const PROPERTIES = {
   type: "number",
   name: "Id",
   labelTitle: "An Id of a bug.",
   labelText: "Id",
+  className: classes.input,
 };
 
 const SearchBugIdInput = () => {
-  return <Input {...info} />;
+  return <Input {...PROPERTIES} />;
 };
 
 export default SearchBugIdInput;

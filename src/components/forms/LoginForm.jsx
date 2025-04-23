@@ -1,97 +1,79 @@
-import { useRef, useState, use } from "react";
-import { AuthContext } from "../store/AuthContext";
-import Input from "../inputs/Input.jsx";
-import Button from "../buttons/Button.jsx";
-import { Form } from "react-router";
+import { useState } from "react";
+import { Form, useActionData } from "react-router";
+import classes from "./LoginForm.module.css";
+import EmailLoginInput from "../inputs/EmailLoginInput.jsx";
+import PasswordLoginInput from "../inputs/PasswordLoginInput.jsx";
 
-const minPasswordLength = 6;
+const MIN_PASSWORD_LENGTH = 6;
 
-function validateInputs(email, password) {
-  const errors = [];
-
-  if (email === null || !email.includes("@")) {
-    errors.push("Invalid email.");
+function validateEmail(email) {
+  if (email !== "" && (email === null || !email.includes("@"))) {
+    return "Invalid email.";
   }
 
-  if (password === null || password.length < minPasswordLength) {
-    errors.push(
-      "Password must be at least " + minPasswordLength + " characters."
-    );
+  return undefined;
+}
+
+function validatePassword(password) {
+  if (
+    password !== "" &&
+    (password === null || password.length < MIN_PASSWORD_LENGTH)
+  ) {
+    return "Password must be at least " + MIN_PASSWORD_LENGTH + " characters.";
   }
 
-  return errors;
+  return undefined;
 }
 
 const LoginForm = ({}) => {
-  const [loginInfo, setLoginInfo] = useState({});
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [validationErrors, setValidationErrors] = useState({
+    email: " ",
+    password: " ",
+  });
 
-  const { login } = use(AuthContext);
+  const actionData = useActionData();
 
-  async function handleLogin() {
-    const errors = validateInputs(loginInfo.email, loginInfo.password);
+  function emailHandleOnChange(event) {
+    const error = validateEmail(event.target.value);
 
-    if (errors.length === 0) {
-      const response = await login(loginInfo.email, loginInfo.password);
-
-      if (response.errors) {
-        setLoginInfo((prevState) => {
-          return { ...prevState, errors: response.errors };
-        });
-      }
-    } else {
-      setLoginInfo((prevState) => {
-        return { ...prevState, errors: errors };
-      });
-    }
-  }
-
-  function emailHandleOnChange() {
-    setLoginInfo((prevState) => {
-      return { ...prevState, email: emailRef.current.value };
+    setValidationErrors((prevState) => {
+      return { ...prevState, email: error };
     });
   }
 
-  function passwordHandleOnChange() {
-    setLoginInfo((prevState) => {
-      return { ...prevState, password: passwordRef.current.value };
+  function passwordHandleOnChange(event) {
+    const error = validatePassword(event.target.value);
+
+    setValidationErrors((prevState) => {
+      return { ...prevState, password: error };
     });
   }
 
   return (
-    <Form method="POST">
-      <div>
-        <Input
-          labelTitle="Email address."
-          labelText="Email"
-          required={true}
-          ref={emailRef}
-          name="email"
-          type="email"
-          onChange={emailHandleOnChange}
-        />
-        <Input
-          labelTitle="Password."
-          labelText="Password"
-          required={true}
-          ref={passwordRef}
-          name="password"
-          type="password"
-          onChange={passwordHandleOnChange}
-        />
-      </div>
-      {loginInfo.errors && (
+    <Form method="POST" className={classes["login-form"]}>
+      <EmailLoginInput
+        onChange={emailHandleOnChange}
+        validationError={validationErrors.email}
+      />
+      <PasswordLoginInput
+        onChange={passwordHandleOnChange}
+        validationError={validationErrors.password}
+      />
+      {validationErrors.errors && (
         <div>
           <ul className="errors">
-            {loginInfo.errors.map((err) => (
+            {validationErrors.errors.map((err) => (
               <li key={err}>{err}</li>
             ))}
           </ul>
         </div>
       )}
-      <button>Login</button>
+      {actionData?.error && <div>{actionData.error}</div>}
+      <button disabled={validationErrors.email || validationErrors.password}>
+        Login
+      </button>
     </Form>
   );
 };
+
 export default LoginForm;

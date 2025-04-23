@@ -1,50 +1,40 @@
-import Button from "../buttons/Button.jsx";
 import AssignedToInput from "../inputs/AssignedToInput.jsx";
 import CreatedOnInput from "../inputs/CreatedOnInput.jsx";
 import PrioritySeachInput from "../inputs/PriorityInput.jsx";
 import SearchBugIdInput from "../inputs/SearchBugIdInput.jsx";
-import SelectableInput from "../inputs/SelectableInput.jsx";
 import StatusInput from "../inputs/StatusInput.jsx";
 import TitleInput from "../inputs/TitleInput.jsx";
+import DateFilterInput from "../inputs/DateFilterInput.jsx";
+import classes from "../forms/BugSearchForm.module.css";
+import { Form, useSubmit } from "react-router";
 
-import "./bugSearchForm.css";
+const BugSearchForm = ({ users }) => {
+  const submit = useSubmit();
 
-const DATE_AVAILABLE_FILTERS = [
-  "Before",
-  "Before Incl",
-  "On",
-  "After",
-  "After Incl",
-];
+  function handleReset() {
+    const emptyFormData = new FormData();
 
-const BugSearchForm = () => {
+    submit(emptyFormData);
+  }
+
   return (
-    <form method="post">
-      <ul className="search-input-container">
+    <Form method="post">
+      <ul className={classes["search-input-container"]}>
         <SearchBugIdInput />
         <PrioritySeachInput selectedValue="" />
         <StatusInput selectedValue="" />
-        <AssignedToInput selectedValue="" availableValues={[]} />
+        <AssignedToInput availableValues={users} />
         <TitleInput />
-        <div className="search-input">
-          <CreatedOnInput>
-            <SelectableInput
-              labelText="Date filters"
-              labelTitle="Date Filters"
-              name="date-filters"
-              selectedValue="On"
-              availableValues={DATE_AVAILABLE_FILTERS}
-            />
-          </CreatedOnInput>
-        </div>
+        <CreatedOnInput />
+        <DateFilterInput />
       </ul>
       <div className="btn-container">
-        <Button type="button" className="submit-btn">
-          Search
-        </Button>
-        <Button className="submit-btn">Reset</Button>
+        <button className="submit-btn">Search</button>
+        <button type="reset" className="submit-btn" onClick={handleReset}>
+          Reset
+        </button>
       </div>
-    </form>
+    </Form>
   );
 };
 

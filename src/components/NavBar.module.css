@@ -9,16 +9,14 @@
   padding: 0.25em 0.5em 0.1em;
   border: 0.05em solid grey;
   border-radius: 0.5em;
+  color: lightblue;
 }
 
 .nav-item:hover {
-  border-color: lightblue;
-}
-
-.nav-item a {
-  color: lightblue;
+  border-color: rgb(128, 204, 229);
 }
 
 a.active {
   text-decoration: underline;
+  color: rgb(128, 204, 229);
 }

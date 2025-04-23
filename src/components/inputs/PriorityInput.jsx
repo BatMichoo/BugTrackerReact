@@ -1,14 +1,16 @@
 import SelectableInput from "./SelectableInput";
+import classes from "../forms/BugSearchForm.module.css";
 
-const props = {
+const PROPERTIES = {
   labelTitle: "Priority of a bug.",
   labelText: "Priority",
   name: "Priority",
   availableValues: ["", "Low", "Normal", "High", "Critical"],
+  className: classes.input,
 };
 
 const PrioritySeachInput = ({ selectedValue }) => {
-  return <SelectableInput {...props} selectedValue={selectedValue} />;
+  return <SelectableInput {...PROPERTIES} selectedValue={selectedValue} />;
 };
 
 export default PrioritySeachInput;
