@@ -6,6 +6,30 @@ const FILTER_SEPARATORS = {
   filter: ";",
 };
 
+export const createBug = async (newBug) => {
+  const authToken = getToken();
+
+  const response = await fetch(bugsEndpoint, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + authToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newBug),
+  });
+
+  if (!response.ok) {
+    return new Response(
+      { message: "Could not create bug." },
+      { status: response.status }
+    );
+  }
+
+  const bug = await response.json();
+
+  return bug;
+};
+
 export const getBugs = async (filters) => {
   const authToken = getToken();
 
@@ -64,4 +88,24 @@ export const createFilters = (filterQuery) => {
   }
 
   return filter;
+};
+
+export const deleteBug = async (bugId) => {
+  const authToken = getToken();
+
+  const response = await fetch(bugsEndpoint + `/${bugId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + authToken,
+    },
+  });
+
+  if (!response.ok) {
+    return new Response(
+      { message: "Could not delete bug." },
+      { status: response.status }
+    );
+  }
+
+  return true;
 };

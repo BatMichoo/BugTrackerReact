@@ -1,4 +1,4 @@
-button, #work-container > a, .item-container a, a.submit-btn {
+button, #work-container a, .item-container a, a.submit-btn {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -11,11 +11,20 @@ button, #work-container > a, .item-container a, a.submit-btn {
   transition: border-color 0.25s;
 }
 
-button:hover, .item-container a:hover {
+button:hover, a:hover {
   border-color: #646cff;
 }
 
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.create-bug {
+  color: greenyellow;
+}
+
+.create-bug:hover {
+  color: rgb(205, 253, 133);
+  border-color: rgb(205, 253, 133);
 }

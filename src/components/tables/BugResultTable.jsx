@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import classes from "./BugResultTable.module.css";
 import "../buttons/button.css";
+import { deleteBug } from "../../utils/bugAPI";
 
 function getStartingItemCount(pageInfo) {
   if (!pageInfo) {
@@ -27,9 +28,24 @@ function getItemsOnPageCount(pageInfo) {
   return lastItemNumber;
 }
 
+async function deleteOnClick(bugId) {
+  const confirm = window.confirm("Are you sure you want to delete?");
+
+  if (confirm) {
+    const success = await deleteBug(bugId);
+
+    if (success) {
+      window.alert("Successfully delted!");
+    }
+  }
+
+  window.location.reload();
+}
+
 const BugResultTable = ({ resultData }) => {
   const startingItemCount = getStartingItemCount(resultData?.pageInfo);
   const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
+
   return (
     <table className={classes["item-table"]}>
       <thead className={classes["item-table-head"]}>
@@ -57,7 +73,18 @@ const BugResultTable = ({ resultData }) => {
                 <td>{b.assignedTo?.name}</td>
                 <td className={classes["actions-container"]}>
                   <Link to={"bugs/" + b.id}>Open</Link>
-                  <button className={classes["delete-btn"]}>Delete</button>
+                  <Link
+                    to={"bugs/" + b.id + "/edit"}
+                    className={classes["edit-btn"]}
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    className={classes["delete-btn"]}
+                    onClick={async () => await deleteOnClick(b.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             );

@@ -23,10 +23,26 @@
 }
 
 .actions-container {
+  vertical-align: middle;
   display: flex;
   gap: 0.5em;
+  justify-content: center;
+}
+
+.edit-btn {
+  color: yellow;
+}
+
+.edit-btn:hover {
+  color: lightyellow;
+  border-color: lightyellow;
 }
 
 .delete-btn {
   color: rgba(255, 0, 0, 0.712);
+}
+
+.delete-btn:hover {
+  color: rgb(255, 74, 74);
+  border-color: rgb(255, 74, 74);
 }

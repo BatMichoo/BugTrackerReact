@@ -18,7 +18,7 @@ const BugSearchForm = ({ users }) => {
   }
 
   return (
-    <Form method="post">
+    <Form method="POST">
       <ul className={classes["search-input-container"]}>
         <SearchBugIdInput />
         <PrioritySeachInput selectedValue="" />

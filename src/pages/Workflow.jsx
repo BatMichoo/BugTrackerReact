@@ -62,15 +62,7 @@ export const action = async ({ request }) => {
     createdOn: formData.get("CreatedOn") + ";" + formData.get("date-filters"),
   };
 
-  console.log(seachQuery);
-
   const filters = createFilters(seachQuery);
 
-  console.log(filters);
-
   return redirect(`?filter=${filters}`);
-
-  const bugs = await getBugs(filters);
-
-  console.log(bugs);
 };

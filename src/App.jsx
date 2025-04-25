@@ -8,8 +8,11 @@ import WorkflowPage, {
   loader as workflowLoader,
   action as workflowAction,
 } from "./pages/Workflow.jsx";
-import BugDetailsPage from "./pages/BugDetails.jsx";
-import CreateBugPage from "./pages/CreateBug.jsx";
+import BugDetailsPage, { loader as bugLoader } from "./pages/BugDetails.jsx";
+import CreateBugPage, {
+  action as createBugAction,
+  loader as usersLoader,
+} from "./pages/CreateBug.jsx";
 import ErrorPage from "./pages/Error.jsx";
 import LogoutPage from "./pages/Logout.jsx";
 
@@ -43,12 +46,20 @@ const router = createBrowserRouter([
             action: workflowAction,
           },
           {
-            path: "bugs/:bugId",
-            element: <BugDetailsPage />,
-          },
-          {
-            path: "bugs/new",
-            element: <CreateBugPage />,
+            path: "bugs",
+            children: [
+              {
+                path: ":bugId",
+                element: <BugDetailsPage />,
+                loader: bugLoader,
+              },
+              {
+                path: "new",
+                element: <CreateBugPage />,
+                action: createBugAction,
+                loader: usersLoader,
+              },
+            ],
           },
         ],
       },
