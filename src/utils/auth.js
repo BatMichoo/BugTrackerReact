@@ -35,6 +35,10 @@ const saveExpiration = (expiration) => {
   sessionStorage.setItem(AUTH_EXPIRATION_KEY, expDate.toISOString());
 };
 
+const clearExpiration = () => {
+  sessionStorage.removeItem(AUTH_EXPIRATION_KEY);
+};
+
 const retrieveExpiration = () => {
   const expiration = sessionStorage.getItem(AUTH_EXPIRATION_KEY);
 
@@ -63,16 +67,17 @@ export const getProfileName = () => {
   return name;
 };
 
-export const login = async (loginInfo) => {
-  const email = loginInfo.email;
-  const password = loginInfo.password;
+const clearProfileName = () => {
+  sessionStorage.removeItem(PROFILE_NAME_KEY);
+};
 
+export const login = async (loginInfo) => {
   const response = await fetch(ENDPOINTS.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(loginInfo),
   });
 
   if (!response.ok) {
@@ -101,5 +106,25 @@ export const logout = async () => {
     return false;
   }
 
+  clearToken();
+  clearExpiration();
+  clearProfileName();
+
   return true;
+};
+
+export const register = async (registerInfo) => {
+  const response = await fetch(ENDPOINTS.register, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(registerInfo),
+  });
+
+  if (!response.ok) {
+    return { error: await response.json() };
+  }
+
+  return await response.json();
 };

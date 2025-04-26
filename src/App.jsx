@@ -13,8 +13,10 @@ import CreateBugPage, {
   action as createBugAction,
   loader as usersLoader,
 } from "./pages/CreateBug.jsx";
+import BugEditPage from "./pages/BugEdit.jsx";
 import ErrorPage from "./pages/Error.jsx";
-import LogoutPage from "./pages/Logout.jsx";
+import LogoutPage, { action as logoutAction } from "./pages/Logout.jsx";
+import RegisterPage, { action as registerAction } from "./pages/Register.jsx";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +35,14 @@ const router = createBrowserRouter([
         action: loginAction,
       },
       {
+        path: "register",
+        element: <RegisterPage />,
+        action: registerAction,
+      },
+      {
         path: "logout",
         element: <LogoutPage />,
+        action: logoutAction,
       },
       {
         path: "workflow",
@@ -52,6 +60,13 @@ const router = createBrowserRouter([
                 path: ":bugId",
                 element: <BugDetailsPage />,
                 loader: bugLoader,
+                children: [
+                  {
+                    path: "edit",
+                    element: <BugEditPage />,
+                    loader: bugLoader,
+                  },
+                ],
               },
               {
                 path: "new",

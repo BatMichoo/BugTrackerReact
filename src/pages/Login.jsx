@@ -2,10 +2,12 @@ import { login } from "../utils/auth";
 import { redirect } from "react-router";
 import LoginForm from "../components/forms/LoginForm";
 
+const BUTTON_TEXT = "Login";
+
 const LoginPage = () => {
   return (
     <div>
-      <LoginForm />
+      <LoginForm buttonText={BUTTON_TEXT} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import classes from "./BugResultTable.module.css";
 import "../buttons/button.css";
 import { deleteBug } from "../../utils/bugAPI";
@@ -46,9 +46,21 @@ const BugResultTable = ({ resultData }) => {
   const startingItemCount = getStartingItemCount(resultData?.pageInfo);
   const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  function changePageOnClick(pageNumber) {
+    setSearchParams((prevState) => {
+      const newParams = new URLSearchParams(prevState);
+
+      newParams.set("pageInput", pageNumber);
+
+      return newParams;
+    });
+  }
+
   return (
     <table className={classes["item-table"]}>
-      <thead className={classes["item-table-head"]}>
+      <thead>
         <tr>
           <th>ID</th>
           <th>Priority</th>
@@ -90,14 +102,44 @@ const BugResultTable = ({ resultData }) => {
             );
           })}
       </tbody>
-      <tfoot className="item-table-foot">
+      <tfoot>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{startingItemCount + " - " + itemsOnPage}</td>
-          <td></td>
-          <td></td>
+          <td colSpan={7}>
+            <div className={classes["footer-content"]}>
+              <span>
+                {startingItemCount + " - " + itemsOnPage} /{" "}
+                {resultData.pageInfo.totalElementCount}
+              </span>
+              <span>Per page: {resultData.pageInfo.elementsPerPage}</span>
+              <span>
+                <span
+                  className={classes["page-control"]}
+                  onClick={
+                    resultData?.pageInfo?.hasPrevious
+                      ? () =>
+                          changePageOnClick(resultData.pageInfo.currentPage - 1)
+                      : undefined
+                  }
+                >
+                  {" < "}
+                </span>
+                <span>{resultData.pageInfo.currentPage}</span>
+                {" / "}
+                <span>{resultData.pageInfo.pageCount}</span>
+                <span
+                  className={classes["page-control"]}
+                  onClick={
+                    resultData?.pageInfo?.hasNext
+                      ? () =>
+                          changePageOnClick(resultData.pageInfo.currentPage + 1)
+                      : undefined
+                  }
+                >
+                  {" > "}
+                </span>
+              </span>
+            </div>
+          </td>
         </tr>
       </tfoot>
     </table>

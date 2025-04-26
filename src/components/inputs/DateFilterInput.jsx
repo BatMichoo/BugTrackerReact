@@ -1,12 +1,27 @@
 import SelectableInput from "./SelectableInput.jsx";
 import classes from "../forms/BugSearchForm.module.css";
 
-const DATE_AVAILABLE_FILTERS = [
-  "Before",
-  "Before Incl",
-  "On",
-  "After",
-  "After Incl",
+const VALUES = [
+  {
+    name: "Before Inclusive",
+    value: "<=",
+  },
+  {
+    name: "Before",
+    value: "<",
+  },
+  {
+    name: "On",
+    value: "=",
+  },
+  {
+    name: "After",
+    value: ">",
+  },
+  {
+    name: "After Inclusive",
+    value: ">=",
+  },
 ];
 
 const PROPERTIES = {
@@ -15,8 +30,8 @@ const PROPERTIES = {
   name: "date-filters",
   type: "date",
   className: classes.input,
-  selectedValue: "On",
-  availableValues: DATE_AVAILABLE_FILTERS,
+  selectedValue: "=",
+  availableValues: VALUES,
 };
 
 const DateFilterInput = () => {

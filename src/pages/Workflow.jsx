@@ -1,8 +1,9 @@
 import BugSearchForm from "../components/forms/BugSearchForm.jsx";
 import { Link, redirect, useLoaderData } from "react-router";
 import BugResultTable from "../components/tables/BugResultTable.jsx";
-import { createFilters, getBugs } from "../utils/bugAPI.js";
+import { getBugs } from "../utils/bugAPI.js";
 import { getUsers } from "../utils/userAPI.js";
+import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
 
 import "../components/buttons/button.css";
 
@@ -31,14 +32,23 @@ export default WorkflowPage;
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const filter = url.searchParams.get("filter");
+  const pageInput = url.searchParams.get("pageInput");
 
-  let bugResponse;
+  console.log(pageInput);
+
+  let queryString = "";
 
   if (filter) {
-    bugResponse = await getBugs(filter);
-  } else {
-    bugResponse = await getBugs();
+    queryString += `?filter=${filter}`;
   }
+
+  if (!filter && pageInput) {
+    queryString += `?pageInput=${pageInput}`;
+  } else if (pageInput) {
+    queryString += `&pageInput=${pageInput}`;
+  }
+
+  const bugResponse = await getBugs(queryString);
 
   const userResponse = await getUsers();
 
@@ -53,13 +63,19 @@ export const loader = async ({ request }) => {
 export const action = async ({ request }) => {
   const formData = await request.formData();
 
+  let dateInput = formData.get("CreatedOn");
+
+  if (dateInput) {
+    dateInput += FILTER_SEPARATORS.keyValue + formData.get("date-filters");
+  }
+
   const seachQuery = {
     id: formData.get("Id"),
     priority: formData.get("Priority"),
     status: formData.get("Status"),
     assignedTo: formData.get("AssignedTo"),
     title: formData.get("Title"),
-    createdOn: formData.get("CreatedOn") + ";" + formData.get("date-filters"),
+    createdOn: dateInput,
   };
 
   const filters = createFilters(seachQuery);

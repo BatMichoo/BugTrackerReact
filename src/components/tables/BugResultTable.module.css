@@ -3,7 +3,7 @@
   background-color: #555555d8;
   border-radius: 1em;
   margin: 1em auto;
-  padding: 1em;
+  padding: 0 1em;
   /* border: 0.35em solid #615c57; */
   border: 0.35em solid #f8f8f8;
   box-shadow: 0em 0em 1.5em #615c572f;
@@ -12,7 +12,7 @@
 }
 
 .item-table th {
-  border-bottom: 0.1em solid white;
+  border-bottom: 0.05em solid white;
   color: black;
   font-size: 1.25rem;
   text-transform: uppercase;
@@ -45,4 +45,36 @@
 .delete-btn:hover {
   color: rgb(255, 74, 74);
   border-color: rgb(255, 74, 74);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  border-top: 0.1em solid white;
+  padding: 0.5em 1em;
+}
+
+.page-control {
+  cursor: pointer;
+}
+
+.page-control:hover {
+  color: lightblue;
+}
+
+.footer-content button {
+  padding: 0;
+  margin: 0;
+  background-color: inherit;
+}
+
+.footer-content button:hover {
+  border: none;
+  border-radius: 0;
+}
+
+.footer-content button:focus,
+.footer-content button:focus-visible {
+  outline: none;
+  border-color: transparent;
 }

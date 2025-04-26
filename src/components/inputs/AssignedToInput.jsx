@@ -11,8 +11,8 @@ const AssignedToInput = ({ selectedValue, availableValues }) => {
   return (
     <div className={PROPERTIES.className}>
       <label title={PROPERTIES.labelTitle}>{PROPERTIES.labelText}</label>
-      <select name={PROPERTIES.name} defaultValue={selectedValue ?? ""}>
-        <option value=""></option>
+      <select name={PROPERTIES.name} defaultValue={selectedValue}>
+        <option value="">N/A</option>
         {availableValues?.map((user) => {
           return (
             <option key={user.id} value={user.id}>

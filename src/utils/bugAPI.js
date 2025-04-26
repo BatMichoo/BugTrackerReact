@@ -1,11 +1,6 @@
 import { getToken } from "./auth";
 import { bugsEndpoint } from "./backendEndpoints";
 
-const FILTER_SEPARATORS = {
-  keyValue: "_",
-  filter: ";",
-};
-
 export const createBug = async (newBug) => {
   const authToken = getToken();
 
@@ -30,16 +25,10 @@ export const createBug = async (newBug) => {
   return bug;
 };
 
-export const getBugs = async (filters) => {
+export const getBugs = async (queryString) => {
   const authToken = getToken();
 
-  let filter = "";
-
-  if (filters !== undefined) {
-    filter = `?filter=${filters}`;
-  }
-
-  const response = await fetch(bugsEndpoint + filter, {
+  const response = await fetch(bugsEndpoint + queryString, {
     headers: {
       Authorization: "Bearer " + authToken,
     },
@@ -76,18 +65,6 @@ export const getBug = async (bugId) => {
   const bug = await response.json();
 
   return bug;
-};
-
-export const createFilters = (filterQuery) => {
-  let filter = "";
-
-  for (const [key, value] of Object.entries(filterQuery)) {
-    if (value) {
-      filter += `${key}${FILTER_SEPARATORS.keyValue}${value}${FILTER_SEPARATORS.filter}`;
-    }
-  }
-
-  return filter;
 };
 
 export const deleteBug = async (bugId) => {

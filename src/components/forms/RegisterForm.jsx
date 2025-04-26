@@ -3,6 +3,10 @@ import { Form, useActionData } from "react-router";
 import classes from "./LoginForm.module.css";
 import EmailLoginInput from "../inputs/EmailLoginInput.jsx";
 import PasswordLoginInput from "../inputs/PasswordLoginInput.jsx";
+import FirstNameInput from "../inputs/FirstNameInput.jsx";
+import LastNameInput from "../inputs/LastNameInput.jsx";
+import UsernameInput from "../inputs/UserNameInput.jsx";
+import AgeInput from "../inputs/AgeInput.jsx";
 
 const MIN_PASSWORD_LENGTH = 6;
 
@@ -25,7 +29,7 @@ function validatePassword(password) {
   return undefined;
 }
 
-const LoginForm = ({ buttonText }) => {
+const RegisterForm = () => {
   const [validationErrors, setValidationErrors] = useState({
     email: " ",
     password: " ",
@@ -51,6 +55,9 @@ const LoginForm = ({ buttonText }) => {
 
   return (
     <Form method="POST" className={classes["login-form"]}>
+      <FirstNameInput />
+      <LastNameInput />
+      <UsernameInput />
       <EmailLoginInput
         onChange={emailHandleOnChange}
         validationError={validationErrors.email}
@@ -59,6 +66,7 @@ const LoginForm = ({ buttonText }) => {
         onChange={passwordHandleOnChange}
         validationError={validationErrors.password}
       />
+      <AgeInput />
       {validationErrors.errors && (
         <div>
           <ul className="errors">
@@ -70,10 +78,10 @@ const LoginForm = ({ buttonText }) => {
       )}
       {actionData?.error && <div>{actionData.error}</div>}
       <button disabled={validationErrors.email || validationErrors.password}>
-        {buttonText}
+        Register
       </button>
     </Form>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
