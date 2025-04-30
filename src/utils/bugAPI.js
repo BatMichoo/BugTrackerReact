@@ -67,6 +67,34 @@ export const getBug = async (bugId) => {
   return bug;
 };
 
+export const updateBug = async (updatedBug) => {
+  const authToken = getToken();
+
+  try {
+    const response = await fetch(bugsEndpoint, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + authToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedBug),
+    });
+
+    if (!response.ok) {
+      return new Response(
+        { message: "Could not updated bug." },
+        { status: response.status }
+      );
+    }
+
+    const bug = await response.json();
+
+    return bug;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteBug = async (bugId) => {
   const authToken = getToken();
 

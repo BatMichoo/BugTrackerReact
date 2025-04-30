@@ -7,11 +7,11 @@ const VALUES = [
     value: "",
   },
   {
-    name: "In Progress",
+    name: "InProgress",
     value: 0,
   },
   {
-    name: "On Hold",
+    name: "OnHold",
     value: 1,
   },
   {
@@ -29,7 +29,12 @@ const PROPERTIES = {
 };
 
 const StatusInput = ({ selectedValue }) => {
-  return <SelectableInput {...PROPERTIES} selectedValue={selectedValue} />;
+  return (
+    <SelectableInput
+      {...PROPERTIES}
+      selectedValue={VALUES.find((v) => v.name == selectedValue).value}
+    />
+  );
 };
 
 export default StatusInput;

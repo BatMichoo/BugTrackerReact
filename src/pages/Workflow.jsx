@@ -4,6 +4,7 @@ import BugResultTable from "../components/tables/BugResultTable.jsx";
 import { getBugs } from "../utils/bugAPI.js";
 import { getUsers } from "../utils/userAPI.js";
 import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
+import { PRIORITY_COLORS, STATUS_COLORS } from "../utils/colors.js";
 
 import "../components/buttons/button.css";
 
@@ -33,12 +34,11 @@ export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const filter = url.searchParams.get("filter");
   const pageInput = url.searchParams.get("pageInput");
-
-  console.log(pageInput);
+  const pageSizeInput = url.searchParams.get("pageSizeInput");
 
   let queryString = "";
 
-  if (filter) {
+  if (filter && filter !== "") {
     queryString += `?filter=${filter}`;
   }
 
@@ -46,6 +46,12 @@ export const loader = async ({ request }) => {
     queryString += `?pageInput=${pageInput}`;
   } else if (pageInput) {
     queryString += `&pageInput=${pageInput}`;
+  }
+
+  if (!filter && !pageInput && pageSizeInput) {
+    queryString += `?pageSizeInput=${pageSizeInput}`;
+  } else if (pageSizeInput) {
+    queryString += `&pageSizeInput=${pageSizeInput}`;
   }
 
   const bugResponse = await getBugs(queryString);

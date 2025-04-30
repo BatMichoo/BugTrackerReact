@@ -1,19 +1,22 @@
-import { useLoaderData } from "react-router";
-import { getBug } from "../utils/bugAPI";
-import BugProperty from "../components/bugs/BugProperty";
-import Comment from "../components/bugs/Comment";
-import classes from "../components/bugs/Bug.module.css";
+import BugProperty from "./BugProperty";
+import Comment from "./Comment";
+import classes from "./Bug.module.css";
+import BugButtons from "./BugButtons";
+import { useNavigate } from "react-router";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
   cols: 50,
 };
 
-const BugDetailsPage = () => {
-  const bug = useLoaderData();
+const BugDetails = ({ bug }) => {
+  const navigate = useNavigate();
+  const handleOnEdit = () => {
+    navigate("edit");
+  };
 
   return (
-    <div className={classes["bug-container"]}>
+    <>
       <h1>{bug.title}</h1>
       <div className={classes["bug-details"]}>
         <BugProperty
@@ -41,6 +44,21 @@ const BugDetailsPage = () => {
           labelText="Created On"
           content={bug.createdOn}
         />
+        <BugProperty
+          className={classes.property}
+          labelText="Assigned To"
+          content={bug.assignedTo?.name ? bug.assignedTo?.name : "N/A"}
+        />
+        <BugProperty
+          className={classes.property}
+          labelText="Last Updated By"
+          content={bug.lastUpdatedBy.name}
+        />
+        <BugProperty
+          className={classes.property}
+          labelText="Last Updated On"
+          content={bug.lastUpdatedOn}
+        />
       </div>
       <div className={classes["content-container"]}>
         <div className={classes.description}>
@@ -60,18 +78,9 @@ const BugDetailsPage = () => {
           </ul>
         </div>
       </div>
-    </div>
+      <BugButtons isEditing={false} onClick={handleOnEdit} />
+    </>
   );
 };
 
-export default BugDetailsPage;
-
-export const loader = async ({ params }) => {
-  const bugId = params.bugId;
-
-  if (bugId) {
-    const bug = await getBug(bugId);
-
-    return bug;
-  }
-};
+export default BugDetails;

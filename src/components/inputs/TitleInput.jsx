@@ -9,8 +9,8 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const TitleInput = () => {
-  return <Input {...PROPERTIES} />;
+const TitleInput = ({ title = undefined }) => {
+  return <Input {...PROPERTIES} value={title} />;
 };
 
 export default TitleInput;

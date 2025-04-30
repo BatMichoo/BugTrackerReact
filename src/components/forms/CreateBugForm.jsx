@@ -1,12 +1,10 @@
 import { Form } from "react-router";
 import PrioritySeachInput from "../inputs/PriorityInput";
 import AssignedToInput from "../inputs/AssignedToInput";
-import StatusInput from "../inputs/StatusInput";
 import TitleInput from "../inputs/TitleInput";
 
 const PRESELETED_VALUES = {
   priority: "Normal",
-  status: "InProgress",
   assignedTo: "",
 };
 
@@ -20,7 +18,6 @@ const CreateBugForm = ({ availableUsers }) => {
           availableValues={availableUsers}
           selectedValue={PRESELETED_VALUES.assignedTo}
         />
-        <StatusInput selectedValue={PRESELETED_VALUES.status} />
         <textarea name="Description" rows={10} cols={50} />
       </div>
       <button type="submit">Create</button>

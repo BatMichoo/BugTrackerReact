@@ -33,7 +33,12 @@ const PROPERTIES = {
 };
 
 const PrioritySeachInput = ({ selectedValue }) => {
-  return <SelectableInput {...PROPERTIES} selectedValue={selectedValue} />;
+  return (
+    <SelectableInput
+      {...PROPERTIES}
+      selectedValue={VALUES.find((v) => v.name == selectedValue).value}
+    />
+  );
 };
 
 export default PrioritySeachInput;

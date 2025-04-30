@@ -2,16 +2,17 @@ import "./input.css";
 
 const SelectableInput = ({
   className,
-  labelTitle,
-  labelText,
+  labelTitle = undefined,
+  labelText = undefined,
   name,
   availableValues,
   selectedValue,
+  onChange = undefined,
 }) => {
   return (
     <div className={className}>
-      <label title={labelTitle}>{labelText}</label>
-      <select name={name} defaultValue={selectedValue}>
+      {labelText && <label title={labelTitle}>{labelText}</label>}
+      <select name={name} defaultValue={selectedValue} onChange={onChange}>
         {availableValues?.map((opt) => {
           return (
             <option key={opt.value} value={opt.value}>

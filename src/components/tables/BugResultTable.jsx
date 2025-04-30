@@ -2,9 +2,11 @@ import { Link, useSearchParams } from "react-router";
 import classes from "./BugResultTable.module.css";
 import "../buttons/button.css";
 import { deleteBug } from "../../utils/bugAPI";
+import PageSizeInput from "../inputs/PageSizeInput";
+import { PRIORITY_COLORS, STATUS_COLORS } from "../../utils/colors.js";
 
 function getStartingItemCount(pageInfo) {
-  if (!pageInfo) {
+  if (pageInfo.currentPage == 0) {
     return 0;
   }
 
@@ -15,13 +17,15 @@ function getStartingItemCount(pageInfo) {
 }
 
 function getItemsOnPageCount(pageInfo) {
-  if (!pageInfo) {
+  if (pageInfo.totalElementCount == 0) {
     return 0;
   }
 
   const lastItemNumber = pageInfo.currentPage * pageInfo.elementsPerPage;
 
   if (pageInfo.totalElementCount < pageInfo.elementsPerPage) {
+    return pageInfo.totalElementCount;
+  } else if (lastItemNumber > pageInfo.totalElementCount) {
     return pageInfo.totalElementCount;
   }
 
@@ -58,6 +62,20 @@ const BugResultTable = ({ resultData }) => {
     });
   }
 
+  function updatePageSizeOnChange(event) {
+    const pageSize = event.target.value;
+
+    if (searchParams.get("pageSizeInput") !== pageSize) {
+      setSearchParams((prevState) => {
+        const newParams = new URLSearchParams(prevState);
+
+        newParams.set("pageSizeInput", pageSize);
+
+        return newParams;
+      });
+    }
+  }
+
   return (
     <table className={classes["item-table"]}>
       <thead>
@@ -72,14 +90,33 @@ const BugResultTable = ({ resultData }) => {
         </tr>
       </thead>
       <tbody>
-        {resultData &&
+        {resultData && resultData.pageInfo.totalElementCount == 0 ? (
+          <tr>
+            <td colSpan={7}>No Results.</td>
+          </tr>
+        ) : (
+          resultData &&
           resultData.items &&
           resultData.items.map((b) => {
             return (
               <tr key={b.id} className="item-row">
                 <td>{b.id}</td>
-                <td>{b.priority}</td>
-                <td>{b.status}</td>
+                <td>
+                  <span
+                    className={classes.badge}
+                    style={{ backgroundColor: PRIORITY_COLORS[b.priority] }}
+                  >
+                    {b.priority}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    className={classes.badge}
+                    style={{ backgroundColor: STATUS_COLORS[b.status] }}
+                  >
+                    {b.status}
+                  </span>
+                </td>
                 <td>{b.title}</td>
                 <td>{b.createdBy.name}</td>
                 <td>{b.assignedTo?.name}</td>
@@ -100,7 +137,8 @@ const BugResultTable = ({ resultData }) => {
                 </td>
               </tr>
             );
-          })}
+          })
+        )}
       </tbody>
       <tfoot>
         <tr>
@@ -110,33 +148,37 @@ const BugResultTable = ({ resultData }) => {
                 {startingItemCount + " - " + itemsOnPage} /{" "}
                 {resultData.pageInfo.totalElementCount}
               </span>
-              <span>Per page: {resultData.pageInfo.elementsPerPage}</span>
               <span>
-                <span
-                  className={classes["page-control"]}
-                  onClick={
-                    resultData?.pageInfo?.hasPrevious
-                      ? () =>
-                          changePageOnClick(resultData.pageInfo.currentPage - 1)
-                      : undefined
-                  }
-                >
-                  {" < "}
-                </span>
+                Per page:{" "}
+                <PageSizeInput
+                  selectedValue={resultData.pageInfo.elementsPerPage}
+                  onChange={updatePageSizeOnChange}
+                />
+              </span>
+              <span>
+                {resultData?.pageInfo?.hasPrevious ? (
+                  <span
+                    className={classes["page-control"]}
+                    onClick={() =>
+                      changePageOnClick(resultData.pageInfo.currentPage - 1)
+                    }
+                  >
+                    {" < "}
+                  </span>
+                ) : undefined}
                 <span>{resultData.pageInfo.currentPage}</span>
                 {" / "}
                 <span>{resultData.pageInfo.pageCount}</span>
-                <span
-                  className={classes["page-control"]}
-                  onClick={
-                    resultData?.pageInfo?.hasNext
-                      ? () =>
-                          changePageOnClick(resultData.pageInfo.currentPage + 1)
-                      : undefined
-                  }
-                >
-                  {" > "}
-                </span>
+                {resultData?.pageInfo?.hasNext ? (
+                  <span
+                    className={classes["page-control"]}
+                    onClick={() =>
+                      changePageOnClick(resultData.pageInfo.currentPage + 1)
+                    }
+                  >
+                    {" > "}
+                  </span>
+                ) : undefined}
               </span>
             </div>
           </td>

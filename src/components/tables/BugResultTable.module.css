@@ -22,6 +22,11 @@
   padding: 0.25em;
 }
 
+.item-table tbody tr {
+  box-shadow: 0em 0em 1em #615c57;
+  border-radius: 1em;
+}
+
 .actions-container {
   vertical-align: middle;
   display: flex;
@@ -29,8 +34,17 @@
   justify-content: center;
 }
 
+.badge {
+  display: inline-block;
+  border-radius: 1em;
+  padding: 0.05em 1.25em;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: black;
+}
+
 .edit-btn {
-  color: yellow;
+  color: lightblue;
 }
 
 .edit-btn:hover {
@@ -52,6 +66,10 @@
   justify-content: space-between;
   border-top: 0.1em solid white;
   padding: 0.5em 1em;
+}
+
+.footer-content div {
+  display: inline-block;
 }
 
 .page-control {

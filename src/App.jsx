@@ -8,12 +8,15 @@ import WorkflowPage, {
   loader as workflowLoader,
   action as workflowAction,
 } from "./pages/Workflow.jsx";
-import BugDetailsPage, { loader as bugLoader } from "./pages/BugDetails.jsx";
+import BugDetailsPage, { loader as bugLoader } from "./pages/Bug.jsx";
 import CreateBugPage, {
   action as createBugAction,
   loader as usersLoader,
 } from "./pages/CreateBug.jsx";
-import BugEditPage from "./pages/BugEdit.jsx";
+import BugEditPage, {
+  loader as editLoader,
+  action as editAction,
+} from "./pages/BugEdit.jsx";
 import ErrorPage from "./pages/Error.jsx";
 import LogoutPage, { action as logoutAction } from "./pages/Logout.jsx";
 import RegisterPage, { action as registerAction } from "./pages/Register.jsx";
@@ -60,13 +63,12 @@ const router = createBrowserRouter([
                 path: ":bugId",
                 element: <BugDetailsPage />,
                 loader: bugLoader,
-                children: [
-                  {
-                    path: "edit",
-                    element: <BugEditPage />,
-                    loader: bugLoader,
-                  },
-                ],
+              },
+              {
+                path: ":bugId/edit",
+                element: <BugEditPage />,
+                loader: editLoader,
+                action: editAction,
               },
               {
                 path: "new",
