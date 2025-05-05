@@ -1,9 +1,10 @@
 import { jwtDecode } from "jwt-decode";
+import { usersEndpoint } from "./backendEndpoints";
 
 const TOKEN_NAME = "bt_token";
 const AUTH_EXPIRATION_KEY = "bt_expiration";
 const PROFILE_NAME_KEY = "bt_profile_name";
-const BASE_ENDPOINT = "https://localhost:7272/users";
+const BASE_ENDPOINT = usersEndpoint;
 
 const ENDPOINTS = {
   login: BASE_ENDPOINT + "/login",

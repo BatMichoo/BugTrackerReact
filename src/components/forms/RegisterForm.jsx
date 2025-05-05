@@ -5,7 +5,7 @@ import EmailLoginInput from "../inputs/EmailLoginInput.jsx";
 import PasswordLoginInput from "../inputs/PasswordLoginInput.jsx";
 import FirstNameInput from "../inputs/FirstNameInput.jsx";
 import LastNameInput from "../inputs/LastNameInput.jsx";
-import UsernameInput from "../inputs/UserNameInput.jsx";
+import UsernameInput from "../inputs/UsernameInput.jsx";
 import AgeInput from "../inputs/AgeInput.jsx";
 
 const MIN_PASSWORD_LENGTH = 6;

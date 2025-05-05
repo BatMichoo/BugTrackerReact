@@ -78,7 +78,7 @@ const BugDetails = ({ bug }) => {
           </ul>
         </div>
       </div>
-      <BugButtons isEditing={false} onClick={handleOnEdit} />
+      <BugButtons isEditing={false} onEditClick={handleOnEdit} />
     </>
   );
 };

@@ -4,7 +4,6 @@ import BugResultTable from "../components/tables/BugResultTable.jsx";
 import { getBugs } from "../utils/bugAPI.js";
 import { getUsers } from "../utils/userAPI.js";
 import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
-import { PRIORITY_COLORS, STATUS_COLORS } from "../utils/colors.js";
 
 import "../components/buttons/button.css";
 

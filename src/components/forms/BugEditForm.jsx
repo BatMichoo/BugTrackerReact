@@ -1,4 +1,4 @@
-import { Form } from "react-router";
+import { Form, useNavigate } from "react-router";
 import PrioritySeachInput from "../inputs/PriorityInput";
 import AssignedToInput from "../inputs/AssignedToInput";
 import TitleInput from "../inputs/TitleInput";
@@ -6,6 +6,11 @@ import StatusInput from "../inputs/StatusInput";
 import BugButtons from "../bugs/BugButtons";
 
 const BugEditForm = ({ bug, availableUsers }) => {
+  const navigate = useNavigate();
+
+  function handleOnCancel() {
+    navigate(`../${bug.id}`);
+  }
   return (
     <Form method="PUT">
       <div>
@@ -23,7 +28,7 @@ const BugEditForm = ({ bug, availableUsers }) => {
           defaultValue={bug.description}
         />
       </div>
-      <BugButtons isEditing={true} />
+      <BugButtons isEditing={true} onCancel={handleOnCancel} />
     </Form>
   );
 };
