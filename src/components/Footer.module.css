@@ -5,3 +5,9 @@
   align-items: center;
   padding: 0.5em;
 }
+
+.footer *:nth-child(2) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
