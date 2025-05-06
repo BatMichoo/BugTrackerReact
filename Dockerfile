@@ -2,6 +2,8 @@ FROM node:lts-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+ARG HTTP_SERVER_PORT
+ENV VITE_HttpServerPort=$HTTP_SERVER_PORT
 COPY . .
 RUN npm run build
 
