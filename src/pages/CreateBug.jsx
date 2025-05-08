@@ -19,10 +19,11 @@ export const loader = async () => {
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
+  const assignedTo = formData.get("AssignedTo");
 
   const bugToBeCreated = {
     priority: formData.get("Priority"),
-    assignedTo: formData.get("AssignedTo"),
+    assignedTo: assignedTo == "" ? null : assignedTo,
     title: formData.get("Title"),
     description: formData.get("Description"),
   };

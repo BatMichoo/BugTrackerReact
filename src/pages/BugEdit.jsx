@@ -31,12 +31,13 @@ export const loader = async ({ params }) => {
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const id = params.bugId;
+  const assigneeId = formData.get("AssignedTo");
 
   const bugToBeUpdated = {
     id,
     priority: formData.get("Priority"),
     status: formData.get("Status"),
-    assigneeId: formData.get("AssignedTo"),
+    assigneeId: assigneeId == "" ? null : assigneeId,
     title: formData.get("Title"),
     description: formData.get("Description"),
   };

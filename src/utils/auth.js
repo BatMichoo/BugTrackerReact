@@ -12,6 +12,14 @@ const ENDPOINTS = {
   signOut: BASE_ENDPOINT + "/logout",
 };
 
+export const getPermissions = () => {
+  const decodedToken = jwtDecode(getToken());
+
+  const permissions = decodedToken["Permissions"].split(", ");
+
+  return permissions;
+};
+
 export const getToken = () => {
   const token = sessionStorage.getItem(TOKEN_NAME);
 

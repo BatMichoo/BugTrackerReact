@@ -5,6 +5,7 @@ import { deleteBug } from "../../utils/bugAPI";
 import PageSizeInput from "../inputs/PageSizeInput";
 import { PRIORITY_COLORS, STATUS_COLORS } from "../../utils/colors.js";
 import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums.js";
+import { getPermissions } from "../../utils/auth.js";
 
 function getStartingItemCount(pageInfo) {
   if (pageInfo.currentPage == 0) {
@@ -52,6 +53,7 @@ const BugResultTable = ({ resultData }) => {
   const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const canDelete = getPermissions().find((p) => p == "Delete");
 
   function changePageOnClick(pageNumber) {
     setSearchParams((prevState) => {
@@ -134,12 +136,14 @@ const BugResultTable = ({ resultData }) => {
                   >
                     Edit
                   </Link>
-                  <button
-                    className={classes["delete-btn"]}
-                    onClick={async () => await deleteOnClick(b.id)}
-                  >
-                    Delete
-                  </button>
+                  {canDelete ? (
+                    <button
+                      className={classes["delete-btn"]}
+                      onClick={async () => await deleteOnClick(b.id)}
+                    >
+                      Delete
+                    </button>
+                  ) : undefined}
                 </td>
               </tr>
             );
@@ -169,7 +173,7 @@ const BugResultTable = ({ resultData }) => {
                       changePageOnClick(resultData.pageInfo.currentPage - 1)
                     }
                   >
-                    {" < "}
+                    {" << "}
                   </span>
                 ) : undefined}
                 <span>{resultData.pageInfo.currentPage}</span>
@@ -182,7 +186,7 @@ const BugResultTable = ({ resultData }) => {
                       changePageOnClick(resultData.pageInfo.currentPage + 1)
                     }
                   >
-                    {" > "}
+                    {" >> "}
                   </span>
                 ) : undefined}
               </span>
