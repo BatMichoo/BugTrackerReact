@@ -8,7 +8,7 @@ import DateFilterInput from "../inputs/DateFilterInput.jsx";
 import classes from "../forms/BugSearchForm.module.css";
 import { Form, useSubmit } from "react-router";
 
-const BugSearchForm = ({ users }) => {
+const BugSearchForm = ({ filters, users }) => {
   const submit = useSubmit();
 
   function handleReset() {
@@ -20,12 +20,15 @@ const BugSearchForm = ({ users }) => {
   return (
     <Form method="POST">
       <ul className={classes["search-input-container"]}>
-        <SearchBugIdInput />
-        <PrioritySeachInput selectedValue="" />
-        <StatusInput selectedValue="" />
-        <AssignedToInput availableValues={users} />
-        <TitleInput />
-        <CreatedOnInput />
+        <SearchBugIdInput selectedValue={filters.id ?? ""} />
+        <PrioritySeachInput selectedValue={filters.priority ?? ""} />
+        <StatusInput selectedValue={filters.status ?? ""} />
+        <AssignedToInput
+          availableValues={users}
+          selectedValue={filters.assignedTo ?? ""}
+        />
+        <TitleInput selectedValue={filters.title ?? ""} />
+        <CreatedOnInput selectedValue={filters.createdOn ?? ""} />
         <DateFilterInput />
       </ul>
       <div className="btn-container">

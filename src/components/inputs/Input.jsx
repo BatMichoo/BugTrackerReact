@@ -1,15 +1,8 @@
-const Input = ({
-  className,
-  labelTitle,
-  labelText,
-  children,
-  value,
-  ...props
-}) => {
+const Input = ({ className, labelTitle, labelText, children, ...props }) => {
   return (
     <div className={className}>
       <label title={labelTitle}>{labelText}</label>
-      <input {...props} defaultValue={value} />
+      <input {...props} />
       {children}
     </div>
   );

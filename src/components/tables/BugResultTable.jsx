@@ -4,6 +4,7 @@ import "../buttons/button.css";
 import { deleteBug } from "../../utils/bugAPI";
 import PageSizeInput from "../inputs/PageSizeInput";
 import { PRIORITY_COLORS, STATUS_COLORS } from "../../utils/colors.js";
+import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums.js";
 
 function getStartingItemCount(pageInfo) {
   if (pageInfo.currentPage == 0) {
@@ -104,17 +105,22 @@ const BugResultTable = ({ resultData }) => {
                 <td>
                   <span
                     className={classes.badge}
-                    style={{ backgroundColor: PRIORITY_COLORS[b.priority] }}
+                    style={{
+                      backgroundColor:
+                        PRIORITY_COLORS[PRIORITY_MAPPING[b.priority]],
+                    }}
                   >
-                    {b.priority}
+                    {PRIORITY_MAPPING[b.priority]}
                   </span>
                 </td>
                 <td>
                   <span
                     className={classes.badge}
-                    style={{ backgroundColor: STATUS_COLORS[b.status] }}
+                    style={{
+                      backgroundColor: STATUS_COLORS[STATUS_MAPPING[b.status]],
+                    }}
                   >
-                    {b.status}
+                    {STATUS_MAPPING[b.status]}
                   </span>
                 </td>
                 <td>{b.title}</td>

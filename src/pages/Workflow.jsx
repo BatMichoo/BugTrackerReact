@@ -13,7 +13,10 @@ const WorkflowPage = () => {
     <div className="work-container">
       <div className="search-container">
         <h2>Search bugs</h2>
-        <BugSearchForm users={loaderData.users} />
+        <BugSearchForm
+          users={loaderData.users}
+          filters={loaderData.bugs.filters}
+        />
       </div>
       <div>
         <Link to="bugs/new" className="create-bug submit-btn">
@@ -54,7 +57,6 @@ export const loader = async ({ request }) => {
   }
 
   const bugResponse = await getBugs(queryString);
-
   const userResponse = await getUsers();
 
   const pageData = {
@@ -87,3 +89,5 @@ export const action = async ({ request }) => {
 
   return redirect(`?filter=${filters}`);
 };
+
+const getFormData = (searchParams) => {};

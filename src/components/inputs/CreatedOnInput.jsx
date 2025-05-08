@@ -9,8 +9,12 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const CreatedOnInput = ({ children }) => {
-  return <Input {...PROPERTIES}>{children}</Input>;
+const CreatedOnInput = ({ selectedValue, children }) => {
+  return (
+    <Input {...PROPERTIES} defaultValue={selectedValue}>
+      {children}
+    </Input>
+  );
 };
 
 export default CreatedOnInput;

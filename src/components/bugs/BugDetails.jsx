@@ -3,6 +3,7 @@ import Comment from "./Comment";
 import classes from "./Bug.module.css";
 import BugButtons from "./BugButtons";
 import { useNavigate } from "react-router";
+import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
@@ -27,12 +28,12 @@ const BugDetails = ({ bug }) => {
         <BugProperty
           className={classes.property}
           labelText="Priority"
-          content={bug.priority}
+          content={PRIORITY_MAPPING[bug.priority]}
         />
         <BugProperty
           className={classes.property}
           labelText="Status"
-          content={bug.status}
+          content={STATUS_MAPPING[bug.status]}
         />
         <BugProperty
           className={classes.property}

@@ -14,7 +14,7 @@ export const PRIORITY_COLORS = {
 };
 
 export const STATUS_COLORS = {
-  InProgress: COLORS.blue,
-  OnHold: COLORS.yellow,
+  "In Progress": COLORS.blue,
+  "On Hold": COLORS.yellow,
   Fixed: COLORS.green,
 };

@@ -15,7 +15,7 @@ const SelectableInput = ({
       <select name={name} defaultValue={selectedValue} onChange={onChange}>
         {availableValues?.map((opt) => {
           return (
-            <option key={opt.value} value={opt.value}>
+            <option key={opt.value ?? -1} value={opt.value}>
               {opt.name}
             </option>
           );

@@ -14,7 +14,7 @@ const BugEditForm = ({ bug, availableUsers }) => {
   return (
     <Form method="PUT">
       <div>
-        <TitleInput title={bug.title} />
+        <TitleInput selectedValue={bug.title} />
         <PrioritySeachInput selectedValue={bug.priority} />
         <StatusInput selectedValue={bug.status} />
         <AssignedToInput
