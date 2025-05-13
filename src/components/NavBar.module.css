@@ -12,7 +12,42 @@
   color: lightblue;
 }
 
-.nav-item:hover {
+button.nav-item {
+  margin: 0;
+  padding: 0;
+  border: unset;
+  background-color: unset;
+  letter-spacing: unset;
+}
+
+.nav-menu {
+  position: absolute;
+  top: 105%;
+  left: -20%;
+  background-color: #353434;
+  border-bottom-left-radius: 0.55em;
+  border-bottom-right-radius: 0.55em;
+  border: inherit;
+  z-index: 1;
+}
+
+.nav-menu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.5em;
+}
+
+.nav-menu ul li {
+  text-align: center;
+  padding: 0.25em 0.5em 0.2em;
+  border: 0.05em solid grey;
+  border-radius: 0.5em;
+  color: lightblue;
+}
+
+.nav-item:hover, .nav-menu ul li:hover {
   border-color: rgb(128, 204, 229);
 }
 

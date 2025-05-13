@@ -1,3 +1,4 @@
+import AccountDropDown from "./AccountDropDown";
 import classes from "./NavBar.module.css";
 
 import { NavLink, useLoaderData } from "react-router";
@@ -21,24 +22,7 @@ const NavBar = () => {
               </NavLink>
             </li>
             <li className={classes["nav-item"]}>
-              <NavLink
-                to="/account"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                {profileName}
-              </NavLink>
-            </li>
-            <li className={classes["nav-item"]}>
-              <NavLink
-                to="/logout"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Log out
-              </NavLink>
+              <AccountDropDown />
             </li>
           </>
         ) : (
