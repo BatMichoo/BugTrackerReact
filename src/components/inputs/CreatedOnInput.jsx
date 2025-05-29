@@ -10,8 +10,20 @@ const PROPERTIES = {
 };
 
 const CreatedOnInput = ({ selectedValue, children }) => {
+  let formattedDate;
+
+  if (selectedValue) {
+    const dateObj = new Date(selectedValue);
+    const year = dateObj.getFullYear();
+    // Month is 0-indexed, so add 1
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const day = dateObj.getDate().toString().padStart(2, "0");
+
+    formattedDate = `${year}-${month}-${day}`;
+  }
+
   return (
-    <Input {...PROPERTIES} defaultValue={selectedValue}>
+    <Input {...PROPERTIES} defaultValue={formattedDate}>
       {children}
     </Input>
   );

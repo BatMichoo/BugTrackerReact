@@ -43,6 +43,10 @@
   align-items: center;
 }
 
+.work-container > div:nth-child(1) {
+    justify-self: flex-start;
+}
+
 .work-container > div:nth-child(2) {
   align-self: flex-start;
   margin-left: 6em;

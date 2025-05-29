@@ -20,6 +20,7 @@ import BugEditPage, {
 import ErrorPage from "./pages/Error.jsx";
 import LogoutPage, { action as logoutAction } from "./pages/Logout.jsx";
 import RegisterPage, { action as registerAction } from "./pages/Register.jsx";
+import AccountPage from "./pages/Account.jsx";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         path: "logout",
         element: <LogoutPage />,
         action: logoutAction,
+      },
+      {
+        path: "account",
+        element: <AccountPage />,
       },
       {
         path: "workflow",

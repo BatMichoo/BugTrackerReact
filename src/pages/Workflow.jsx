@@ -89,5 +89,3 @@ export const action = async ({ request }) => {
 
   return redirect(`?filter=${filters}`);
 };
-
-const getFormData = (searchParams) => {};

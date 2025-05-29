@@ -1,0 +1,23 @@
+.edit-form h1 {
+  margin: 1em;
+  color: black;
+}
+
+.edit-form {
+  width: 60vw;
+  box-shadow: 0em 0em 1em #615c572f;
+  border-radius: 1em;
+}
+
+.edit-form > div {
+  display: flex;
+  margin: 2em;
+  gap: 1em;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-form textarea {
+  padding: 1em;
+}

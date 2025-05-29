@@ -17,6 +17,10 @@ const BugSearchForm = ({ filters, users }) => {
     submit(emptyFormData);
   }
 
+  const dateParts = filters.createdOn?.split("_");
+  const createdOn = dateParts ? dateParts[0] : undefined;
+  const dateFilter = dateParts ? dateParts[1] : undefined;
+
   return (
     <Form method="POST">
       <ul className={classes["search-input-container"]}>
@@ -28,8 +32,8 @@ const BugSearchForm = ({ filters, users }) => {
           selectedValue={filters.assignedTo ?? ""}
         />
         <TitleInput selectedValue={filters.title ?? ""} />
-        <CreatedOnInput selectedValue={filters.createdOn ?? ""} />
-        <DateFilterInput />
+        <CreatedOnInput selectedValue={createdOn} />
+        <DateFilterInput selectedValue={dateFilter} />
       </ul>
       <div className="btn-container">
         <button className="submit-btn">Search</button>

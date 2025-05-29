@@ -4,6 +4,7 @@ import classes from "./Bug.module.css";
 import BugButtons from "./BugButtons";
 import { useNavigate } from "react-router";
 import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums";
+import { deleteBug } from "../../utils/bugAPI";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
@@ -16,8 +17,16 @@ const BugDetails = ({ bug }) => {
     navigate("edit");
   };
 
+  const handleOnDelete = async (bugId) => {
+    const response = await deleteBug(bugId);
+
+    if (response) {
+      navigate("../..");
+    }
+  };
+
   return (
-    <>
+    <div className={classes.bug}>
       <h1>{bug.title}</h1>
       <div className={classes["bug-details"]}>
         <BugProperty
@@ -79,8 +88,12 @@ const BugDetails = ({ bug }) => {
           </ul>
         </div>
       </div>
-      <BugButtons isEditing={false} onEditClick={handleOnEdit} />
-    </>
+      <BugButtons
+        isEditing={false}
+        onEditClick={handleOnEdit}
+        onDeleteClick={() => handleOnDelete(bug.id)}
+      />
+    </div>
   );
 };
 

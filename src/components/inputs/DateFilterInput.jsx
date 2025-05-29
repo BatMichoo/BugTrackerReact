@@ -30,12 +30,13 @@ const PROPERTIES = {
   name: "date-filters",
   type: "date",
   className: classes.input,
-  selectedValue: "=",
   availableValues: VALUES,
 };
 
-const DateFilterInput = () => {
-  return <SelectableInput {...PROPERTIES} />;
+const DateFilterInput = ({ selectedValue }) => {
+  return (
+    <SelectableInput {...PROPERTIES} selectedValue={selectedValue ?? "="} />
+  );
 };
 
 export default DateFilterInput;

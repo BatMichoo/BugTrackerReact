@@ -1,6 +1,6 @@
 import classes from "./Bug.module.css";
 
-const BugButtons = ({ isEditing, onEditClick, onCancel }) => {
+const BugButtons = ({ isEditing, onEditClick, onDeleteClick, onCancel }) => {
   return (
     <div className={classes["button-container"]}>
       {isEditing ? (
@@ -11,9 +11,14 @@ const BugButtons = ({ isEditing, onEditClick, onCancel }) => {
           </button>
         </>
       ) : (
-        <button type="button" onClick={onEditClick}>
-          Edit
-        </button>
+        <>
+          <button type="button" onClick={onEditClick}>
+            Edit
+          </button>
+          <button type="button" onClick={onDeleteClick}>
+            Delete
+          </button>
+        </>
       )}
     </div>
   );
