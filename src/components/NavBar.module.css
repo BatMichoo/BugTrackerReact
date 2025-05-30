@@ -47,11 +47,57 @@ button.nav-item {
   color: lightblue;
 }
 
-.nav-item:hover, .nav-menu ul li:hover {
+.nav-item:hover,
+.nav-menu ul li:hover {
   border-color: rgb(128, 204, 229);
 }
 
 a.active {
   text-decoration: underline;
   color: rgb(128, 204, 229);
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px; /* Adjust as needed to position above the icon */
+  right: -5px; /* Adjust as needed to position to the right of the icon */
+  background-color: red;
+  color: white;
+  border-radius: 50%; /* Makes it a circle */
+  padding: 2px 6px; /* Adjust padding for desired size and number centering */
+  font-size: 0.6em; /* Smaller font size relative to the icon */
+  min-width: 0.8em; /* Ensures it's always a circle even for single digit */
+  text-align: center;
+  line-height: 1; /* Helps vertically center the number */
+  box-shadow: 0 0 0 1px white; /* Optional: a white border for contrast */
+  z-index: 1; /* Ensure it appears above the icon if there are overlapping elements */
+}
+
+.ntf-menu {
+  position: absolute;
+  top: 128%;
+  left: -465%;
+  background-color: #353434;
+  border-bottom-left-radius: 0.55em;
+  border-bottom-right-radius: 0.55em;
+  z-index: 1;
+}
+
+.ntf-menu ul {
+  list-style: none;
+  padding: 0.25em;
+  width: 17em;
+}
+
+.ntf-menu li {
+  margin: 0.125em 0;
+  text-align: center;
+  padding: 0.2em 0.15em 0.2em;
+  border: 0.05em solid grey;
+  border-radius: 0.5em;
+  color: lightblue;
+}
+
+.ntf:hover {
+  border-color: rgb(128, 204, 229);
 }

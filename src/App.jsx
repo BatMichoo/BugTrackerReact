@@ -22,6 +22,11 @@ import LogoutPage, { action as logoutAction } from "./pages/Logout.jsx";
 import RegisterPage, { action as registerAction } from "./pages/Register.jsx";
 import AccountPage from "./pages/Account.jsx";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faBell);
+
 const router = createBrowserRouter([
   {
     path: "/",

@@ -2,7 +2,11 @@ import AccountDropDown from "./AccountDropDown";
 import classes from "./NavBar.module.css";
 
 import { NavLink, useLoaderData } from "react-router";
+import BugNotificationsPanel from "./notifications/BugNotification";
 
+import { SignalRProvider } from "./stores/SignalRContext";
+import { serverEndpoint } from "../utils/backendEndpoints";
+import { NotificationContextProvider } from "./stores/NotificationContext";
 const NavBar = () => {
   const { profileName } = useLoaderData();
 
@@ -20,6 +24,13 @@ const NavBar = () => {
               >
                 Workflow
               </NavLink>
+            </li>
+            <li>
+              <SignalRProvider hubUrl={serverEndpoint + "/notifications"}>
+                <NotificationContextProvider>
+                  <BugNotificationsPanel />
+                </NotificationContextProvider>
+              </SignalRProvider>
             </li>
             <li className={classes["nav-item"]}>
               <AccountDropDown />

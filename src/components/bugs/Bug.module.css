@@ -1,6 +1,6 @@
 .bug {
   box-shadow: 0em 0em 1.5em #615c572f;
-  border-radius: 0.5em;
+  border-radius: 1em;
   padding: 1.5em;
   display: flex;
   flex-direction: column;
@@ -117,4 +117,3 @@
   padding: 1em;
   gap: 1em;
 }
-
