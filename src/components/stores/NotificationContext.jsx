@@ -1,9 +1,10 @@
 import { createContext, useState, useEffect } from "react";
-import { useSignalR } from "./SignalRContext";
+import { markRead as utilsMarkRead } from "../../utils/notif";
+import { useSignalR } from "../stores/SignalRContext.jsx";
 
 export const NotificationContext = createContext({
   notifications: [],
-  markRead: (id) => {},
+  markRead: async (id) => {},
 });
 
 export function NotificationContextProvider({ children }) {
@@ -25,10 +26,14 @@ export function NotificationContextProvider({ children }) {
     };
   }, [on, off]);
 
-  function markRead(id) {
-    const notif = notifications.find((n) => n.id == id);
-
-    notif.isRead = true;
+  async function markRead(id) {
+    await utilsMarkRead(id);
+    setNotifications((prevNotifs) => {
+      const notifs = [...prevNotifs];
+      const notif = notifs.find((n) => n.id == id);
+      notif.isRead = true;
+      return notifs;
+    });
   }
 
   const ctxValue = {

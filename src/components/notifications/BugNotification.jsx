@@ -6,11 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function BugNotificationsPanel() {
   const [isOpen, setIsOpen] = useState(false);
-  const notifications = use(NotificationContext).notifications;
+  const context = use(NotificationContext);
+  const notifications = context.notifications;
 
   function handleOnClick() {
     setIsOpen((prev) => !prev);
   }
+
+  const unreadNotifs = notifications.filter((n) => !n.isRead).length;
 
   return (
     <div
@@ -19,19 +22,24 @@ function BugNotificationsPanel() {
       onClick={handleOnClick}
     >
       <FontAwesomeIcon icon="bell" aria-hidden="true" />
-      {notifications.length > 0 && (
-        <span className={classes["notification-badge"]}>
-          {notifications.length}
-        </span>
+      {unreadNotifs > 0 && (
+        <span className={classes["notification-badge"]}>{unreadNotifs}</span>
       )}
       {isOpen && (
         <div className={classes["ntf-menu"]}>
           <ul>
             {notifications.length > 0 ? (
               notifications.map((n) => {
+                let className = classes.ntf;
+                if (!n.isRead) {
+                  className += ` ${classes["ntf-unread"]}`;
+                }
                 return (
-                  <li key={n.bugId} className={classes.ntf}>
-                    <Link to={`workflow/bugs/${n.bugId}`}>
+                  <li key={n.id} className={className}>
+                    <Link
+                      to={`workflow/bugs/${n.bugId}`}
+                      onClick={async () => await context.markRead(n.id)}
+                    >
                       You've been assigned a new Bug
                     </Link>
                   </li>

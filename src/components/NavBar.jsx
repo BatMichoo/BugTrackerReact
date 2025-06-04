@@ -6,6 +6,7 @@ import BugNotificationsPanel from "./notifications/BugNotification";
 
 import { SignalRProvider } from "./stores/SignalRContext";
 import { serverEndpoint } from "../utils/backendEndpoints";
+
 import { NotificationContextProvider } from "./stores/NotificationContext";
 const NavBar = () => {
   const { profileName } = useLoaderData();
@@ -26,7 +27,7 @@ const NavBar = () => {
               </NavLink>
             </li>
             <li>
-              <SignalRProvider hubUrl={serverEndpoint + "/notifications"}>
+              <SignalRProvider hubUrl={serverEndpoint + "/notifs"}>
                 <NotificationContextProvider>
                   <BugNotificationsPanel />
                 </NotificationContextProvider>

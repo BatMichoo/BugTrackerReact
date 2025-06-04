@@ -93,11 +93,18 @@ a.active {
   margin: 0.125em 0;
   text-align: center;
   padding: 0.2em 0.15em 0.2em;
-  border: 0.05em solid grey;
   border-radius: 0.5em;
   color: lightblue;
 }
 
+.ntf {
+  border: 0.05em solid grey;
+}
+
 .ntf:hover {
   border-color: rgb(128, 204, 229);
+}
+
+.ntf-unread {
+  border-color: red;
 }
