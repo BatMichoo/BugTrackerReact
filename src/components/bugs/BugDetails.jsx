@@ -5,6 +5,9 @@ import BugButtons from "./BugButtons";
 import { useNavigate } from "react-router";
 import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums";
 import { deleteBug } from "../../utils/bugAPI";
+import { useState } from "react";
+import NewComment from "./NewComment";
+import { createComment } from "../../utils/commentAPI";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
@@ -12,7 +15,9 @@ const TEXT_AREA_GRID_SIZE = {
 };
 
 const BugDetails = ({ bug }) => {
+  const [isAddingComment, setIsAddingComment] = useState(false);
   const navigate = useNavigate();
+
   const handleOnEdit = () => {
     navigate("edit");
   };
@@ -24,6 +29,18 @@ const BugDetails = ({ bug }) => {
       navigate("../..");
     }
   };
+
+  function handleOnAddCommentClick() {
+    setIsAddingComment(true)
+  }
+
+  async function handleNewCommentSubmit(content) {
+    const comment = await createComment(content, bug.id);
+
+    bug.comments.push(comment); //  NOTE: anti pattern?
+
+    setIsAddingComment(false);
+  }
 
   return (
     <div className={classes.bug}>
@@ -83,15 +100,20 @@ const BugDetails = ({ bug }) => {
           <label>Comments</label>
           <ul className={classes["comments-list"]}>
             {bug.comments.map((c) => (
-              <Comment comment={c} />
+              <li key={c.id}><Comment comment={c} /></li>
             ))}
           </ul>
+          {isAddingComment ? (
+            <NewComment action={handleNewCommentSubmit}/>
+          ) : (
+            <button type="button" onClick={handleOnAddCommentClick}>Add new Comment</button>
+          )}
         </div>
       </div>
       <BugButtons
         isEditing={false}
         onEditClick={handleOnEdit}
-        onDeleteClick={() => handleOnDelete(bug.id)}
+        onDeleteClick={async () => await handleOnDelete(bug.id)}
       />
     </div>
   );
