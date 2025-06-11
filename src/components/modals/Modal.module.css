@@ -1,0 +1,137 @@
+@keyframes slideInFromTop {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 1000;
+  background-color: #e0d3c5;
+  color: black;
+  width: 25em;
+  border: 0.125em solid;
+  border-radius: 0.5em;
+  padding-bottom: 0.6em;
+  box-shadow: 0em 0em 1.2em black; /*#615c572f; */
+}
+
+.slide-in {
+  animation: slideInFromTop 0.3s ease-out forwards;
+}
+
+.slide-out {
+  animation: slideOutToTop 0.3s ease-out forwards;
+  animation-delay: 1.9s;
+}
+
+.modal-progress {
+  position: absolute;
+  top: 92%;
+  width: 100%;
+  border: 0em solid;
+  block-size: 0.5em;
+}
+
+.modal-progress::-webkit-progress-bar {
+  border-bottom: 0.125em solid;
+  background-color: #e0d3c5;
+  border-bottom-left-radius: 0.3em;
+  border-bottom-right-radius: 0.3em;
+}
+
+.modal-progress::-webkit-progress-value {
+  background-color: lightskyblue;
+  border-bottom-left-radius: 0.3em;
+}
+
+.modal-progress::-webkit-progress-value {
+  background-color: lightskyblue;
+  border-bottom-left-radius: 0.3em;
+}
+
+.modal-progress::-moz-progress-bar {
+  border-bottom: 0.125em solid;
+  background-color: #e0d3c5;
+  border-bottom-left-radius: 0.3em;
+  border-bottom-right-radius: 0.3em;
+}
+
+.info.modal-progress::-webkit-progress-bar {
+  border-color: lightskyblue;
+}
+
+.success.modal-progress::-webkit-progress-bar {
+  border-color: lightgreen; /* Specific border color for success state */
+}
+
+.error.modal-progress::-webkit-progress-bar {
+  border-color: lightcoral; /* Specific border color for error state */
+}
+
+.info.modal-progress::-webkit-progress-value {
+  background-color: lightskyblue;
+}
+
+.info.modal-progress::-moz-progress-bar {
+  background-color: lightskyblue;
+}
+
+.success.modal-progress::-webkit-progress-value {
+  background-color: lightgreen;
+}
+.success.modal-progress::-moz-progress-bar {
+  background-color: lightgreen;
+}
+
+.error.modal-progress::-webkit-progress-value {
+  background-color: lightcoral;
+}
+.error.modal-progress::-moz-progress-bar {
+  background-color: lightcoral;
+}
+
+.info {
+  border-color: lightskyblue;
+}
+
+.success {
+  border-color: lightgreen;
+}
+
+.error {
+  border-color: lightcoral;
+}
+
+.del-modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.del-modal-content button {
+  padding: 0.4em 0.65em;
+  margin: 0.5em;
+}

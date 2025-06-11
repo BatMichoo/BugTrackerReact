@@ -24,6 +24,8 @@
 
 .input input, select {
   padding: 0.4em 0.25em;
+  background-color: rgba(97, 97, 97, 0.719);
+  border: none;
 }
 
 .btn-container {

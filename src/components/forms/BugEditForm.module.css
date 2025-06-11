@@ -19,5 +19,9 @@
 }
 
 .edit-form textarea {
+  font-size: 18px;
+  box-shadow: 0em 0em 1.5em #615c572f;
   padding: 1em;
+  border-radius: 0.75em;
+  background-color: rgba(97, 97, 97, 0.719);
 }

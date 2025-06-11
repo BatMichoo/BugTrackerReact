@@ -74,6 +74,7 @@
 
 .page-control {
   cursor: pointer;
+  margin: 0em 0.5em;
 }
 
 .page-control:hover {

@@ -6,6 +6,9 @@ import PageSizeInput from "../inputs/PageSizeInput";
 import { PRIORITY_COLORS, STATUS_COLORS } from "../../utils/colors.js";
 import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums.js";
 import { getPermissions } from "../../utils/auth.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect, useRef } from "react";
+import DeletePane from "../modals/DeletePane.jsx";
 
 function getStartingItemCount(pageInfo) {
   if (pageInfo.currentPage == 0) {
@@ -34,26 +37,40 @@ function getItemsOnPageCount(pageInfo) {
   return lastItemNumber;
 }
 
-async function deleteOnClick(bugId) {
-  const confirm = window.confirm("Are you sure you want to delete?");
-
-  if (confirm) {
-    const success = await deleteBug(bugId);
-
-    if (success) {
-      window.alert("Successfully delted!");
-    }
-  }
-
-  window.location.reload();
-}
-
 const BugResultTable = ({ resultData }) => {
   const startingItemCount = getStartingItemCount(resultData?.pageInfo);
   const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const canDelete = getPermissions().find((p) => p == "Delete");
+
+  const modalRef = useRef();
+
+  const [bugs, setBugs] = useState(resultData?.items);
+  const [bugToDeleteId, setBugToDeleteId] = useState(null);
+
+  function removeBug(bugId) {
+    setBugs((prevB) => {
+      const newBugs = prevB.filter(b => b.id !== bugId);
+
+      return newBugs;
+    })
+  }
+  function deleteOnClick(bugId) {
+    setBugToDeleteId(bugId);
+  }
+
+  function cleanUpDelete() {
+    setBugToDeleteId(null);
+  }
+
+  useEffect(() => {
+    if (bugToDeleteId !== null) {
+      if (modalRef.current) {
+        modalRef.current.open();
+      }
+    }
+  }, [bugToDeleteId]);
 
   function changePageOnClick(pageNumber) {
     setSearchParams((prevState) => {
@@ -80,121 +97,133 @@ const BugResultTable = ({ resultData }) => {
   }
 
   return (
-    <table className={classes["item-table"]}>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Priority</th>
-          <th>Status</th>
-          <th>Title</th>
-          <th>Created By</th>
-          <th>Assigned To</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {resultData && resultData.pageInfo.totalElementCount == 0 ? (
+    <>
+      {bugToDeleteId !== null ? (
+        <DeletePane
+          ref={modalRef}
+          delFunc={async () => await deleteBug(bugToDeleteId)}
+          onSuccess={() => removeBug(bugToDeleteId)}
+          cleanUp={cleanUpDelete}
+        />
+      ) : null}
+      <table className={classes["item-table"]}>
+        <thead>
           <tr>
-            <td colSpan={7}>No Results.</td>
+            <th>ID</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Title</th>
+            <th>Created By</th>
+            <th>Assigned To</th>
+            <th>Actions</th>
           </tr>
-        ) : (
-          resultData &&
-          resultData.items &&
-          resultData.items.map((b) => {
-            return (
-              <tr key={b.id} className="item-row">
-                <td>{b.id}</td>
-                <td>
-                  <span
-                    className={classes.badge}
-                    style={{
-                      backgroundColor:
-                        PRIORITY_COLORS[PRIORITY_MAPPING[b.priority]],
-                    }}
-                  >
-                    {PRIORITY_MAPPING[b.priority]}
-                  </span>
-                </td>
-                <td>
-                  <span
-                    className={classes.badge}
-                    style={{
-                      backgroundColor: STATUS_COLORS[STATUS_MAPPING[b.status]],
-                    }}
-                  >
-                    {STATUS_MAPPING[b.status]}
-                  </span>
-                </td>
-                <td>{b.title}</td>
-                <td>{b.createdBy.name}</td>
-                <td>{b.assignedTo?.name}</td>
-                <td className={classes["actions-container"]}>
-                  <Link to={"bugs/" + b.id}>Open</Link>
-                  <Link
-                    to={"bugs/" + b.id + "/edit"}
-                    className={classes["edit-btn"]}
-                  >
-                    Edit
-                  </Link>
-                  {canDelete ? (
-                    <button
-                      className={classes["delete-btn"]}
-                      onClick={async () => await deleteOnClick(b.id)}
+        </thead>
+        <tbody>
+          {resultData && resultData.pageInfo.totalElementCount == 0 ? (
+            <tr>
+              <td colSpan={7}>No Results.</td>
+            </tr>
+          ) : (
+            resultData?.items &&
+            bugs.map((b) => {
+              return (
+                <tr key={b.id} className="item-row">
+                  <td>{b.id}</td>
+                  <td>
+                    <span
+                      className={classes.badge}
+                      style={{
+                        backgroundColor:
+                          PRIORITY_COLORS[PRIORITY_MAPPING[b.priority]],
+                      }}
                     >
-                      Delete
-                    </button>
+                      {PRIORITY_MAPPING[b.priority]}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      className={classes.badge}
+                      style={{
+                        backgroundColor:
+                          STATUS_COLORS[STATUS_MAPPING[b.status]],
+                      }}
+                    >
+                      {STATUS_MAPPING[b.status]}
+                    </span>
+                  </td>
+                  <td>{b.title}</td>
+                  <td>{b.createdBy.name}</td>
+                  <td>{b.assignedTo?.name}</td>
+                  <td className={classes["actions-container"]}>
+                    <Link to={"bugs/" + b.id}>
+                      <FontAwesomeIcon icon="magnifying-glass" />
+                    </Link>
+                    <Link
+                      to={"bugs/" + b.id + "/edit"}
+                      className={classes["edit-btn"]}
+                    >
+                      <FontAwesomeIcon icon="pen" />
+                    </Link>
+                    {canDelete ? (
+                      <button
+                        className={classes["delete-btn"]}
+                        onClick={() => deleteOnClick(b.id)}
+                      >
+                        <FontAwesomeIcon icon="trash" />
+                      </button>
+                    ) : undefined}
+                  </td>
+                </tr>
+              );
+            })
+          )}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={7}>
+              <div className={classes["footer-content"]}>
+                <span>
+                  {startingItemCount + " - " + itemsOnPage} /{" "}
+                  {resultData.pageInfo.totalElementCount}
+                </span>
+                <span>
+                  Per page:{" "}
+                  <PageSizeInput
+                    selectedValue={resultData.pageInfo.elementsPerPage}
+                    onChange={updatePageSizeOnChange}
+                  />
+                </span>
+                <span>
+                  {resultData?.pageInfo?.hasPrevious ? (
+                    <span
+                      className={classes["page-control"]}
+                      onClick={() =>
+                        changePageOnClick(resultData.pageInfo.currentPage - 1)
+                      }
+                    >
+                      <FontAwesomeIcon icon="chevron-left" size="sm" />
+                    </span>
                   ) : undefined}
-                </td>
-              </tr>
-            );
-          })
-        )}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colSpan={7}>
-            <div className={classes["footer-content"]}>
-              <span>
-                {startingItemCount + " - " + itemsOnPage} /{" "}
-                {resultData.pageInfo.totalElementCount}
-              </span>
-              <span>
-                Per page:{" "}
-                <PageSizeInput
-                  selectedValue={resultData.pageInfo.elementsPerPage}
-                  onChange={updatePageSizeOnChange}
-                />
-              </span>
-              <span>
-                {resultData?.pageInfo?.hasPrevious ? (
-                  <span
-                    className={classes["page-control"]}
-                    onClick={() =>
-                      changePageOnClick(resultData.pageInfo.currentPage - 1)
-                    }
-                  >
-                    {" << "}
-                  </span>
-                ) : undefined}
-                <span>{resultData.pageInfo.currentPage}</span>
-                {" / "}
-                <span>{resultData.pageInfo.pageCount}</span>
-                {resultData?.pageInfo?.hasNext ? (
-                  <span
-                    className={classes["page-control"]}
-                    onClick={() =>
-                      changePageOnClick(resultData.pageInfo.currentPage + 1)
-                    }
-                  >
-                    {" >> "}
-                  </span>
-                ) : undefined}
-              </span>
-            </div>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+                  <span>{resultData.pageInfo.currentPage}</span>
+                  {" / "}
+                  <span>{resultData.pageInfo.pageCount}</span>
+                  {resultData?.pageInfo?.hasNext ? (
+                    <span
+                      className={classes["page-control"]}
+                      onClick={() =>
+                        changePageOnClick(resultData.pageInfo.currentPage + 1)
+                      }
+                    >
+                      <FontAwesomeIcon icon="chevron-right" size="sm" />
+                    </span>
+                  ) : undefined}
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </>
   );
 };
 

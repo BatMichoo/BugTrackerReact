@@ -6,13 +6,14 @@ import { getUsers } from "../utils/userAPI.js";
 import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
 
 import "../components/buttons/button.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const WorkflowPage = () => {
   const loaderData = useLoaderData();
   return (
     <div className="work-container">
       <div className="search-container">
-        <h2>Search bugs</h2>
+        <h1>Search bugs</h1>
         <BugSearchForm
           users={loaderData.users}
           filters={loaderData.bugs.filters}
@@ -20,7 +21,7 @@ const WorkflowPage = () => {
       </div>
       <div>
         <Link to="bugs/new" className="create-bug submit-btn">
-          Create New
+          <FontAwesomeIcon icon="plus" /> New
         </Link>
       </div>
       <div className="item-container">

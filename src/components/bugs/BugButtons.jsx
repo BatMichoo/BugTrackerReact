@@ -1,4 +1,5 @@
 import classes from "./Bug.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const BugButtons = ({ isEditing, onEditClick, onDeleteClick, onCancel }) => {
   return (
@@ -13,10 +14,10 @@ const BugButtons = ({ isEditing, onEditClick, onDeleteClick, onCancel }) => {
       ) : (
         <>
           <button type="button" onClick={onEditClick}>
-            Edit
+              <FontAwesomeIcon icon="pen" />
           </button>
           <button type="button" onClick={onDeleteClick}>
-            Delete
+              <FontAwesomeIcon icon="trash" />
           </button>
         </>
       )}

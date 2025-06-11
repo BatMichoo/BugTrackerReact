@@ -31,7 +31,7 @@ const BugDetails = ({ bug }) => {
   };
 
   function handleOnAddCommentClick() {
-    setIsAddingComment(true)
+    setIsAddingComment(true);
   }
 
   async function handleNewCommentSubmit(content) {
@@ -91,30 +91,39 @@ const BugDetails = ({ bug }) => {
         <div className={classes.description}>
           <label>Description</label>
           <textarea
+            disabled
             rows={TEXT_AREA_GRID_SIZE.rows}
             cols={TEXT_AREA_GRID_SIZE.cols}
             defaultValue={bug.description}
           ></textarea>
         </div>
+        <BugButtons
+          isEditing={false}
+          onEditClick={handleOnEdit}
+          onDeleteClick={async () => await handleOnDelete(bug.id)}
+        />
         <div className={classes["comments-container"]}>
-          <label>Comments</label>
-          <ul className={classes["comments-list"]}>
-            {bug.comments.map((c) => (
-              <li key={c.id}><Comment comment={c} /></li>
-            ))}
-          </ul>
-          {isAddingComment ? (
-            <NewComment action={handleNewCommentSubmit}/>
+          <h4>Comments</h4>
+          {bug.comments.length > 0 ? (
+            <ul className={classes["comments-list"]}>
+              {bug.comments.map((c) => (
+                <li key={c.id}>
+                  <Comment comment={c} />
+                </li>
+              ))}
+            </ul>
           ) : (
-            <button type="button" onClick={handleOnAddCommentClick}>Add new Comment</button>
+            <p>You're the first to possibly leave a comment!</p>
+          )}
+          {isAddingComment ? (
+            <NewComment action={handleNewCommentSubmit} />
+          ) : (
+            <button type="button" onClick={handleOnAddCommentClick}>
+              Add new Comment
+            </button>
           )}
         </div>
       </div>
-      <BugButtons
-        isEditing={false}
-        onEditClick={handleOnEdit}
-        onDeleteClick={async () => await handleOnDelete(bug.id)}
-      />
     </div>
   );
 };
