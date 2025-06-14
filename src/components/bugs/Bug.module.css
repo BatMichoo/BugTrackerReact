@@ -1,5 +1,5 @@
 .bug {
-  box-shadow: 0em 0em 1.5em #615c572f;
+  /* box-shadow: 0em 0em 1.5em #615c572f; */
   border-radius: 1em;
   padding: 1.5em;
   display: flex;
@@ -7,6 +7,7 @@
   justify-content: center;
   align-items: center;
   gap: 1em;
+  width: 90vw;
 }
 
 .bug h1 {
@@ -85,7 +86,7 @@ textarea:disabled {
   width: 100%;
 }
 
-.comments-container > button {
+.comments-container>button {
   margin: 1em;
 }
 
@@ -110,7 +111,6 @@ textarea:disabled {
   border: 0.125em solid black;
 }
 
-
 .comment {
   padding: 0.5em;
   margin: 1em;
@@ -127,6 +127,7 @@ textarea:disabled {
 }
 
 .comment p {
+  margin: 0.5em;
   font-size: 0.75em;
   display: flex;
   justify-content: space-between;
@@ -134,9 +135,28 @@ textarea:disabled {
   color: rgba(97, 97, 97, 0.562);
 }
 
+.comment textarea {
+  padding: 0.25em;
+  border-radius: 0.25em;
+  font-size: 1em;
+  width: 100%;
+}
+
+.comment-edit {
+  color: lightblue;
+  cursor: pointer;
+}
+
 .button-container {
   display: flex;
   justify-content: center;
   padding: 1em;
+  gap: 1em;
+}
+
+.likes-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 1em;
 }

@@ -18,13 +18,14 @@
   text-transform: uppercase;
 }
 
-.item-table td {
+.item-row td {
   padding: 0.25em;
 }
 
-.item-table tbody tr {
+.item-row {
   box-shadow: 0em 0em 1em #615c57;
   border-radius: 1em;
+  cursor: pointer;
 }
 
 .actions-container {

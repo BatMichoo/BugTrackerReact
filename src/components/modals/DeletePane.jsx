@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import classes from "./Modal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,23 +10,8 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
   const [status, setStatus] = useState("initial");
   const [cancelDuration, setCancelDuration] = useState(CONFIRM_DURATION / 1000);
 
-  const internalModalRef = useRef();
-
   let currentModalContent = null;
   let currentModalDuration;
-
-  // Effect to manage countdown on Confirm state
-  useEffect(() => {
-    if (status === "initial") {
-      const interval = setInterval(() => {
-        setCancelDuration((prev) => prev - 1);
-      }, 1000);
-
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [status]);
 
   switch (status) {
     case "initial":
@@ -53,9 +38,6 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
       );
       currentModalDuration = CONFIRM_DURATION;
 
-      if (internalModalRef.current) {
-        internalModalRef.current.open();
-      }
       break;
     case "confirmed":
       currentModalContent = <p>Deleting...</p>;
@@ -87,6 +69,34 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
     default:
       currentModalContent = <p>Loading...</p>; // Fallback
   }
+
+  let borderColor =
+    status === "success"
+      ? ` ${classes.success}`
+      : status === "failed"
+        ? ` ${classes.error}`
+        : ` ${classes.info}`;
+
+  let animation =
+    status === "initial"
+      ? ` ${classes["slide-in"]}`
+      : status !== "canceled"
+        ? ` ${classes["slide-out"]}`
+        : undefined;
+
+  // Effect to manage countdown on Confirm state
+  useEffect(() => {
+    if (status === "initial") {
+      const interval = setInterval(() => {
+        setCancelDuration((prev) => prev - 1);
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [status]);
+
   // Effect to manage the state transitions and modal opening/closing logic
   useEffect(() => {
     if (status === "confirmed") {
@@ -105,18 +115,6 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
         }
       };
       performDeletion();
-
-      if (internalModalRef.current) {
-        internalModalRef.current.open();
-      }
-    } else if (status === "success" || status === "failed") {
-      if (internalModalRef.current) {
-        internalModalRef.current.open();
-      }
-    } else if (status === "cancelled") {
-      if (internalModalRef.current) {
-        internalModalRef.current.close();
-      }
     }
   }, [status, delFunc]);
 
@@ -131,20 +129,6 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
       clearTimeout(cleanUpTimer);
     };
   }, [currentModalDuration]);
-
-  let borderColor =
-    status === "success"
-      ? ` ${classes.success}`
-      : status === "failed"
-        ? ` ${classes.error}`
-        : ` ${classes.info}`;
-
-  let animation =
-    status === "initial"
-      ? ` ${classes["slide-in"]}`
-      : status !== "canceled"
-        ? ` ${classes["slide-out"]}`
-        : undefined;
 
   return (
     <Modal

@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import classes from "./BugResultTable.module.css";
 import "../buttons/button.css";
 import { deleteBug } from "../../utils/bugAPI";
@@ -41,6 +41,7 @@ const BugResultTable = ({ resultData }) => {
   const startingItemCount = getStartingItemCount(resultData?.pageInfo);
   const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
 
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const canDelete = getPermissions().find((p) => p == "Delete");
 
@@ -51,17 +52,10 @@ const BugResultTable = ({ resultData }) => {
 
   function removeBug(bugId) {
     setBugs((prevB) => {
-      const newBugs = prevB.filter(b => b.id !== bugId);
+      const newBugs = prevB.filter((b) => b.id !== bugId);
 
       return newBugs;
-    })
-  }
-  function deleteOnClick(bugId) {
-    setBugToDeleteId(bugId);
-  }
-
-  function cleanUpDelete() {
-    setBugToDeleteId(null);
+    });
   }
 
   useEffect(() => {
@@ -103,7 +97,7 @@ const BugResultTable = ({ resultData }) => {
           ref={modalRef}
           delFunc={async () => await deleteBug(bugToDeleteId)}
           onSuccess={() => removeBug(bugToDeleteId)}
-          cleanUp={cleanUpDelete}
+          cleanUp={() => setBugToDeleteId(null)}
         />
       ) : null}
       <table className={classes["item-table"]}>
@@ -127,7 +121,11 @@ const BugResultTable = ({ resultData }) => {
             resultData?.items &&
             bugs.map((b) => {
               return (
-                <tr key={b.id} className="item-row">
+                <tr
+                  key={b.id}
+                  className={classes["item-row"]}
+                  onDoubleClick={() => navigate(`bugs/${b.id}`)}
+                >
                   <td>{b.id}</td>
                   <td>
                     <span
@@ -167,7 +165,7 @@ const BugResultTable = ({ resultData }) => {
                     {canDelete ? (
                       <button
                         className={classes["delete-btn"]}
-                        onClick={() => deleteOnClick(b.id)}
+                        onClick={() => setBugToDeleteId(b.id)}
                       >
                         <FontAwesomeIcon icon="trash" />
                       </button>

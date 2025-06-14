@@ -7,6 +7,7 @@ import TitleInput from "../inputs/TitleInput.jsx";
 import DateFilterInput from "../inputs/DateFilterInput.jsx";
 import classes from "../forms/BugSearchForm.module.css";
 import { Form, useSubmit } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const BugSearchForm = ({ filters, users }) => {
   const submit = useSubmit();
@@ -38,7 +39,7 @@ const BugSearchForm = ({ filters, users }) => {
       <div className="btn-container">
         <button className="submit-btn">Search</button>
         <button type="reset" className="submit-btn" onClick={handleReset}>
-          Reset
+          <FontAwesomeIcon icon="arrow-right-rotate" />
         </button>
       </div>
     </Form>

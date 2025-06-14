@@ -6,18 +6,20 @@ const BugButtons = ({ isEditing, onEditClick, onDeleteClick, onCancel }) => {
     <div className={classes["button-container"]}>
       {isEditing ? (
         <>
-          <button type="submit">Save</button>
+          <button type="submit">
+            <FontAwesomeIcon icon="floppy-disk" color="lightblue" />
+          </button>
           <button onClick={onCancel} type="button">
-            Cancel
+            <FontAwesomeIcon icon="times" color="lightcoral" />
           </button>
         </>
       ) : (
         <>
           <button type="button" onClick={onEditClick}>
-              <FontAwesomeIcon icon="pen" />
+            <FontAwesomeIcon icon="pen" color="lightblue" />
           </button>
           <button type="button" onClick={onDeleteClick}>
-              <FontAwesomeIcon icon="trash" />
+            <FontAwesomeIcon icon="trash" color="lightcoral" />
           </button>
         </>
       )}

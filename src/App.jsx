@@ -23,18 +23,27 @@ import RegisterPage, { action as registerAction } from "./pages/Register.jsx";
 import AccountPage from "./pages/Account.jsx";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBell, faCheck, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { faPenSquare } from "@fortawesome/free-solid-svg-icons";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faCheck,
+  faChevronLeft,
+  faChevronRight,
+  faFloppyDisk,
+  faThumbsDown,
+  faThumbsUp,
+  faPenSquare,
+  faArrowRightRotate,
+  faTimes,
+  faPlus,
+  faTrash,
+  faPen,
+  faMagnifyingGlass,
+  faInfo,
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(faBell);
 library.add(faPenSquare);
-library.add(faCheck)
+library.add(faCheck);
 library.add(faTimes);
 library.add(faPlus);
 library.add(faTrash);
@@ -43,6 +52,10 @@ library.add(faMagnifyingGlass);
 library.add(faInfo);
 library.add(faChevronLeft);
 library.add(faChevronRight);
+library.add(faFloppyDisk);
+library.add(faThumbsUp);
+library.add(faThumbsDown);
+library.add(faArrowRightRotate);
 
 const router = createBrowserRouter([
   {

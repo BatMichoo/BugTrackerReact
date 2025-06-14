@@ -2,9 +2,15 @@ import { createPortal } from "react-dom";
 import classes from "./Modal.module.css";
 import { useEffect, useImperativeHandle, useState, useRef } from "react";
 
-const INTERVAL = 30; //ms
+const INTERVAL = 20; //ms
 
-export default function Modal({ duration, children, ref, borderColor, animation}) {
+export default function Modal({
+  duration,
+  children,
+  ref,
+  borderColor,
+  animation,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [timePassed, setTimePassed] = useState(0);
 

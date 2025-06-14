@@ -37,7 +37,7 @@ export const action = async ({ request, params }) => {
     id,
     priority: formData.get("Priority"),
     status: formData.get("Status"),
-    assigneeId: assigneeId == "" ? null : assigneeId,
+    assigneeId: assigneeId != "" ? assigneeId : null,
     title: formData.get("Title"),
     description: formData.get("Description"),
   };
@@ -46,7 +46,7 @@ export const action = async ({ request, params }) => {
     const newBug = await updateBug(bugToBeUpdated);
 
     return redirect(`../${newBug.id}`);
-  } catch (error) {
+  } catch {
     throw new Response(JSON.stringify({ message: "Could not reach server." }), {
       status: 500,
     });
