@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const INTERVAL = 20; //ms
 const CONFIRM_DURATION = 10000;
-const RESULT_DURATION = 1000;
+export const RESULT_DURATION = 1000;
 
 export default function Modal({
   ref,
@@ -114,6 +114,7 @@ export default function Modal({
     if (status !== null) {
       timerRef.current = setTimeout(() => {
         setStatus(null);
+        cleanUp();
       }, currentModalDuration);
     }
 

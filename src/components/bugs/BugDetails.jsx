@@ -9,14 +9,32 @@ import { useEffect, useRef, useState } from "react";
 import NewComment from "./NewComment";
 import { createComment, deleteComment } from "../../utils/commentAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from "../modals/Modal";
+import Modal, { RESULT_DURATION } from "../modals/Modal";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
   cols: 50,
 };
 
-const MODAL_CONTENT = {
+const BUG_MODAL_CONTENT = {
+  confirmed: <p>Deleting...</p>,
+  success: (
+    <>
+      <h3>Delete confirmed!</h3>
+      <p>
+        <FontAwesomeIcon
+          icon="info"
+          color="blue"
+          style={{ marginRight: "0.5em" }}
+        />
+        Successfully deleted bug!
+      </p>
+    </>
+  ),
+  failed: <p>Failed to delete bug!</p>,
+};
+
+const COMM_MODAL_CONTENT = {
   confirmed: <p>Deleting...</p>,
   success: (
     <>
@@ -38,6 +56,8 @@ const BugDetails = ({ bug }) => {
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [comments, setComments] = useState(bug.comments);
   const [commentToDeleteId, setCommentToDeleteId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [requiresRedirect, setRequiresRedirect] = useState(false);
   const modalRef = useRef();
   const navigate = useNavigate();
 
@@ -45,21 +65,35 @@ const BugDetails = ({ bug }) => {
     navigate("edit");
   };
 
-  const handleOnDelete = async (bugId) => {
-    const response = await deleteBug(bugId);
-
-    if (response) {
-      navigate("../..");
-    }
-  };
+  // const handleOnDelete = async (bugId) => {
+  //   const response = await deleteBug(bugId);
+  //
+  //   if (response) {
+  //     navigate("../..");
+  //   }
+  // };
 
   useEffect(() => {
-    if (commentToDeleteId !== null) {
+    if (commentToDeleteId !== null || isDeleting) {
       if (modalRef.current) {
         modalRef.current.open();
       }
     }
-  }, [commentToDeleteId]);
+  }, [commentToDeleteId, isDeleting]);
+
+  useEffect(() => {
+    let timeOut;
+    if (requiresRedirect) {
+      timeOut = setTimeout(() => {
+        setRequiresRedirect(false);
+        navigate("../..");
+      }, RESULT_DURATION);
+    }
+
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [requiresRedirect]);
 
   function handleOnDeleteComment(commentId) {
     setComments((prev) => {
@@ -77,13 +111,27 @@ const BugDetails = ({ bug }) => {
 
   return (
     <div className={classes.bug}>
-      {commentToDeleteId != null ? (
+      {commentToDeleteId != null || isDeleting ? (
         <Modal
-          action={async () => deleteComment(commentToDeleteId, bug.id)}
+          action={
+            isDeleting
+              ? async () => await deleteBug(bug.id)
+              : async () => await deleteComment(commentToDeleteId, bug.id)
+          }
           ref={modalRef}
-          onSuccess={() => handleOnDeleteComment(commentToDeleteId)}
-          cleanUp={() => setCommentToDeleteId(null)}
-          displayContent={MODAL_CONTENT}
+          onSuccess={
+            isDeleting
+              ? () => setRequiresRedirect(true)
+              : () => handleOnDeleteComment(commentToDeleteId)
+          }
+          cleanUp={
+            isDeleting
+              ? () => {
+                setIsDeleting(false);
+              }
+              : () => setCommentToDeleteId(null)
+          }
+          displayContent={isDeleting ? BUG_MODAL_CONTENT : COMM_MODAL_CONTENT}
         />
       ) : null}
       <h1>{bug.title}</h1>
@@ -142,7 +190,7 @@ const BugDetails = ({ bug }) => {
         <BugButtons
           isEditing={false}
           onEditClick={handleOnEdit}
-          onDeleteClick={async () => await handleOnDelete(bug.id)}
+          onDeleteClick={() => setIsDeleting(true)}
         />
         <div className={classes["comments-container"]}>
           <h2>Comments</h2>
