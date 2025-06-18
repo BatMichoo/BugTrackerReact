@@ -59,16 +59,9 @@ const LoginForm = ({ buttonText }) => {
         onChange={passwordHandleOnChange}
         validationError={validationErrors.password}
       />
-      {validationErrors.errors && (
-        <div>
-          <ul className="errors">
-            {validationErrors.errors.map((err) => (
-              <li key={err}>{err}</li>
-            ))}
-          </ul>
-        </div>
+      {actionData?.error && (
+        <div className={classes.error}>{actionData.error}</div>
       )}
-      {actionData?.error && <div>{actionData.error}</div>}
       <button disabled={validationErrors.email || validationErrors.password}>
         {buttonText}
       </button>

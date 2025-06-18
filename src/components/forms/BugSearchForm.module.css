@@ -1,5 +1,4 @@
 .search-input-container {
-  list-style: none;
   display: flex;
   gap: 1em;
   flex-wrap: wrap;

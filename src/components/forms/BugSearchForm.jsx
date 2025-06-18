@@ -24,7 +24,7 @@ const BugSearchForm = ({ filters, users }) => {
 
   return (
     <Form method="POST">
-      <ul className={classes["search-input-container"]}>
+      <div className={classes["search-input-container"]}>
         <SearchBugIdInput selectedValue={filters.id ?? ""} />
         <PrioritySeachInput selectedValue={filters.priority ?? ""} />
         <StatusInput selectedValue={filters.status ?? ""} />
@@ -35,7 +35,7 @@ const BugSearchForm = ({ filters, users }) => {
         <TitleInput selectedValue={filters.title ?? ""} />
         <CreatedOnInput selectedValue={createdOn} />
         <DateFilterInput selectedValue={dateFilter} />
-      </ul>
+      </div>
       <div className="btn-container">
         <button className="submit-btn">Search</button>
         <button type="reset" className="submit-btn" onClick={handleReset}>

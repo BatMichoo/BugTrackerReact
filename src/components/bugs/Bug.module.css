@@ -43,11 +43,11 @@
   padding: 0.5em;
 }
 
-.property label {
+.property span {
   color: black;
 }
 
-.property span {
+.property p {
   padding: 0.25em 1em;
   border: 0.175em solid black;
   border-radius: 0.5em;

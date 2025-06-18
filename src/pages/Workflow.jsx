@@ -57,15 +57,13 @@ export const loader = async ({ request }) => {
     queryString += `&pageSizeInput=${pageSizeInput}`;
   }
 
-  const bugResponse = await getBugs(queryString);
-  const userResponse = await getUsers();
+  const bugs = await getBugs(queryString);
+  const users = await getUsers();
 
-  const pageData = {
-    bugs: bugResponse,
-    users: userResponse,
+  return {
+    bugs,
+    users,
   };
-
-  return pageData;
 };
 
 export const action = async ({ request }) => {

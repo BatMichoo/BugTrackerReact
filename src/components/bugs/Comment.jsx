@@ -2,10 +2,12 @@ import { useRef, useState } from "react";
 import classes from "./Bug.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { updateComment, updateLikes } from "../../utils/commentAPI";
+import { getProfileName } from "../../utils/auth";
 
 const Comment = ({ comment, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [savedComment, setSavedComment] = useState(comment);
+  const userName = getProfileName();
 
   const ref = useRef();
 
@@ -29,9 +31,7 @@ const Comment = ({ comment, onDelete }) => {
 
     setSavedComment((prev) => {
       const newC = { ...prev };
-
       newC.likes = likes;
-
       return newC;
     });
   }
@@ -41,9 +41,7 @@ const Comment = ({ comment, onDelete }) => {
 
     setSavedComment((prev) => {
       const newC = { ...prev };
-
       newC.likes = likes;
-
       return newC;
     });
   }
@@ -81,20 +79,24 @@ const Comment = ({ comment, onDelete }) => {
         </div>
       </div>
       <div className={classes["comment-actions"]}>
-        <FontAwesomeIcon
-          className={classes["comment-edit"]}
-          icon={isEditing ? "floppy-disk" : "pen"}
-          size="lg"
-          aria-hidden="true"
-          onClick={isEditing ? saveComment : () => setIsEditing(true)}
-        />
-        <FontAwesomeIcon
-          icon="times"
-          size="2x"
-          aria-hidden="true"
-          style={{ color: "lightcoral", cursor: "pointer" }}
-          onClick={isEditing ? () => setIsEditing(false) : () => onDelete()}
-        />
+        {userName == savedComment.authorName ? (
+          <FontAwesomeIcon
+            className={classes["comment-edit"]}
+            icon={isEditing ? "floppy-disk" : "pen"}
+            size="lg"
+            aria-hidden="true"
+            onClick={isEditing ? saveComment : () => setIsEditing(true)}
+          />
+        ) : null}
+        {userName == savedComment.authorName ? (
+          <FontAwesomeIcon
+            icon="times"
+            size="2x"
+            aria-hidden="true"
+            style={{ color: "lightcoral", cursor: "pointer" }}
+            onClick={isEditing ? () => setIsEditing(false) : () => onDelete()}
+          />
+        ) : null}
       </div>
     </>
   );

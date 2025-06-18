@@ -1,8 +1,10 @@
 const Input = ({ className, labelTitle, labelText, children, ...props }) => {
   return (
     <div className={className}>
-      <label title={labelTitle}>{labelText}</label>
-      <input {...props} />
+      <label htmlFor={props.name} title={labelTitle}>
+        {labelText}
+      </label>
+      <input {...props} id={props.name} />
       {children}
     </div>
   );

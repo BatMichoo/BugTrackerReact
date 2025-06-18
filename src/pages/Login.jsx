@@ -5,11 +5,7 @@ import LoginForm from "../components/forms/LoginForm";
 const BUTTON_TEXT = "Login";
 
 const LoginPage = () => {
-  return (
-    <div>
-      <LoginForm buttonText={BUTTON_TEXT} />
-    </div>
-  );
+  return <LoginForm buttonText={BUTTON_TEXT} />;
 };
 
 export default LoginPage;

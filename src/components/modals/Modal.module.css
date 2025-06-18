@@ -34,7 +34,8 @@
   border: 0.125em solid;
   border-radius: 0.5em;
   padding-bottom: 0.6em;
-  box-shadow: 0em 0em 1.2em black; /*#615c572f; */
+  box-shadow: 0em 0em 1.2em black;
+  /*#615c572f; */
 }
 
 .slide-in {
@@ -83,11 +84,13 @@
 }
 
 .success.modal-progress::-webkit-progress-bar {
-  border-color: lightgreen; /* Specific border color for success state */
+  border-color: lightgreen;
+  /* Specific border color for success state */
 }
 
 .error.modal-progress::-webkit-progress-bar {
-  border-color: lightcoral; /* Specific border color for error state */
+  border-color: lightcoral;
+  /* Specific border color for error state */
 }
 
 .info.modal-progress::-webkit-progress-value {
@@ -101,6 +104,7 @@
 .success.modal-progress::-webkit-progress-value {
   background-color: lightgreen;
 }
+
 .success.modal-progress::-moz-progress-bar {
   background-color: lightgreen;
 }
@@ -108,6 +112,7 @@
 .error.modal-progress::-webkit-progress-value {
   background-color: lightcoral;
 }
+
 .error.modal-progress::-moz-progress-bar {
   background-color: lightcoral;
 }
@@ -124,14 +129,14 @@
   border-color: lightcoral;
 }
 
-.del-modal-content {
+.modal-content {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.del-modal-content button {
+.modal-content button {
   padding: 0.4em 0.65em;
   margin: 0.5em;
 }

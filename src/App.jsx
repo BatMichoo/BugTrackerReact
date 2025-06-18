@@ -18,7 +18,7 @@ import BugEditPage, {
   action as editAction,
 } from "./pages/BugEdit.jsx";
 import ErrorPage from "./pages/Error.jsx";
-import LogoutPage, { action as logoutAction } from "./pages/Logout.jsx";
+// import LogoutPage, { action as logoutAction } from "./pages/Logout.jsx";
 import RegisterPage, { action as registerAction } from "./pages/Register.jsx";
 import AccountPage from "./pages/Account.jsx";
 
@@ -39,6 +39,7 @@ import {
   faPen,
   faMagnifyingGlass,
   faInfo,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faBell);
@@ -56,6 +57,7 @@ library.add(faFloppyDisk);
 library.add(faThumbsUp);
 library.add(faThumbsDown);
 library.add(faArrowRightRotate);
+library.add(faSpinner);
 
 const router = createBrowserRouter([
   {
@@ -77,11 +79,6 @@ const router = createBrowserRouter([
         path: "register",
         element: <RegisterPage />,
         action: registerAction,
-      },
-      {
-        path: "logout",
-        element: <LogoutPage />,
-        action: logoutAction,
       },
       {
         path: "account",

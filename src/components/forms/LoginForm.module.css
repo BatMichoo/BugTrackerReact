@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 1em;
   align-items: center;
-  min-width: 15vw;
+  min-width: 18vw;
   box-shadow: 0em 0em 1em #615c572f;
 }
 
@@ -33,4 +33,5 @@
 .error {
   margin-top: 0.25em;
   color: #f44336;
+  max-width: 95%;
 }

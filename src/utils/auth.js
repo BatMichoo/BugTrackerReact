@@ -80,6 +80,13 @@ const clearProfileName = () => {
   sessionStorage.removeItem(PROFILE_NAME_KEY);
 };
 
+export function getUserId() {
+  const token = getToken();
+
+  const userId = jwtDecode(token).sub;
+
+  return userId;
+}
 export const login = async (loginInfo) => {
   const response = await fetch(ENDPOINTS.login, {
     method: "POST",

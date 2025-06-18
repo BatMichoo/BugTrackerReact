@@ -8,11 +8,30 @@ import { deleteBug } from "../../utils/bugAPI";
 import { useEffect, useRef, useState } from "react";
 import NewComment from "./NewComment";
 import { createComment, deleteComment } from "../../utils/commentAPI";
-import DeletePane from "../modals/DeletePane";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "../modals/Modal";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
   cols: 50,
+};
+
+const MODAL_CONTENT = {
+  confirmed: <p>Deleting...</p>,
+  success: (
+    <>
+      <h3>Delete confirmed!</h3>
+      <p>
+        <FontAwesomeIcon
+          icon="info"
+          color="blue"
+          style={{ marginRight: "0.5em" }}
+        />
+        Successfully deleted comment!
+      </p>
+    </>
+  ),
+  failed: <p>Failed to delete comment!</p>,
 };
 
 const BugDetails = ({ bug }) => {
@@ -59,11 +78,12 @@ const BugDetails = ({ bug }) => {
   return (
     <div className={classes.bug}>
       {commentToDeleteId != null ? (
-        <DeletePane
-          delFunc={async () => deleteComment(commentToDeleteId, bug.id)}
+        <Modal
+          action={async () => deleteComment(commentToDeleteId, bug.id)}
           ref={modalRef}
           onSuccess={() => handleOnDeleteComment(commentToDeleteId)}
           cleanUp={() => setCommentToDeleteId(null)}
+          displayContent={MODAL_CONTENT}
         />
       ) : null}
       <h1>{bug.title}</h1>
@@ -111,7 +131,7 @@ const BugDetails = ({ bug }) => {
       </div>
       <div className={classes["content-container"]}>
         <div className={classes.description}>
-          <label>Description</label>
+          <span>Description</span>
           <textarea
             disabled
             rows={TEXT_AREA_GRID_SIZE.rows}

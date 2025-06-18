@@ -1,4 +1,9 @@
-import { Link, useNavigate, useSearchParams } from "react-router";
+import {
+  Link,
+  useNavigate,
+  useNavigation,
+  useSearchParams,
+} from "react-router";
 import classes from "./BugResultTable.module.css";
 import "../buttons/button.css";
 import { deleteBug } from "../../utils/bugAPI";
@@ -8,7 +13,25 @@ import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums.js";
 import { getPermissions } from "../../utils/auth.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useRef } from "react";
-import DeletePane from "../modals/DeletePane.jsx";
+import Modal from "../modals/Modal.jsx";
+
+const MODAL_CONTENT = {
+  confirmed: <p>Deleting...</p>,
+  success: (
+    <>
+      <h3>Delete confirmed!</h3>
+      <p>
+        <FontAwesomeIcon
+          icon="info"
+          color="blue"
+          style={{ marginRight: "0.5em" }}
+        />
+        Successfully deleted bug!
+      </p>
+    </>
+  ),
+  failed: <p>Failed to delete bug!</p>,
+};
 
 function getStartingItemCount(pageInfo) {
   if (pageInfo.currentPage == 0) {
@@ -42,6 +65,7 @@ const BugResultTable = ({ resultData }) => {
   const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();
   const canDelete = getPermissions().find((p) => p == "Delete");
 
@@ -49,14 +73,6 @@ const BugResultTable = ({ resultData }) => {
 
   const [bugs, setBugs] = useState(resultData?.items);
   const [bugToDeleteId, setBugToDeleteId] = useState(null);
-
-  function removeBug(bugId) {
-    setBugs((prevB) => {
-      const newBugs = prevB.filter((b) => b.id !== bugId);
-
-      return newBugs;
-    });
-  }
 
   useEffect(() => {
     if (bugToDeleteId !== null) {
@@ -93,11 +109,17 @@ const BugResultTable = ({ resultData }) => {
   return (
     <>
       {bugToDeleteId !== null ? (
-        <DeletePane
+        <Modal
           ref={modalRef}
-          delFunc={async () => await deleteBug(bugToDeleteId)}
-          onSuccess={() => removeBug(bugToDeleteId)}
+          action={async () => await deleteBug(bugToDeleteId)}
+          onSuccess={() =>
+            setBugs((prevB) => {
+              const newBugs = prevB.filter((b) => b.id !== bugToDeleteId);
+              return newBugs;
+            })
+          }
           cleanUp={() => setBugToDeleteId(null)}
+          displayContent={MODAL_CONTENT}
         />
       ) : null}
       <table className={classes["item-table"]}>
@@ -115,7 +137,13 @@ const BugResultTable = ({ resultData }) => {
         <tbody>
           {resultData && resultData.pageInfo.totalElementCount == 0 ? (
             <tr>
-              <td colSpan={7}>No Results.</td>
+              <td colSpan={7}>
+                {navigation.state == "loading" ? (
+                  <FontAwesomeIcon icon="spinner" spinPulse />
+                ) : (
+                  "No Results."
+                )}
+              </td>
             </tr>
           ) : (
             resultData?.items &&

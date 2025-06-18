@@ -6,7 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const CONFIRM_DURATION = 10000;
 const RESULT_DURATION = 1000;
 
-export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
+export default function ActionModal({
+  action,
+  onSuccess,
+  cleanUp,
+  ref,
+  displayContent,
+}) {
   const [status, setStatus] = useState("initial");
   const [cancelDuration, setCancelDuration] = useState(CONFIRM_DURATION / 1000);
 
@@ -40,27 +46,15 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
 
       break;
     case "confirmed":
-      currentModalContent = <p>Deleting...</p>;
+      currentModalContent = displayContent.confirmed;
       currentModalDuration = 999999;
       break;
     case "success":
-      currentModalContent = (
-        <>
-          <h3>Delete confirmed!</h3>
-          <p>
-            <FontAwesomeIcon
-              icon="info"
-              color="blue"
-              style={{ marginRight: "0.5em" }}
-            />
-            Successfully deleted!
-          </p>
-        </>
-      );
+      currentModalContent = displayContent.success;
       currentModalDuration = RESULT_DURATION;
       break;
     case "failed":
-      currentModalContent = <p>Failed to delete bug!</p>;
+      currentModalContent = displayContent.failed;
       currentModalDuration = RESULT_DURATION;
       break;
     case "cancelled":
@@ -100,9 +94,9 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
   // Effect to manage the state transitions and modal opening/closing logic
   useEffect(() => {
     if (status === "confirmed") {
-      const performDeletion = async () => {
+      const performAction = async () => {
         try {
-          const success = await delFunc();
+          const success = await action();
           if (success) {
             setStatus("success");
             onSuccess();
@@ -114,21 +108,23 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
           setStatus("failed");
         }
       };
-      performDeletion();
+      performAction();
     }
-  }, [status, delFunc]);
+  }, [status, action]);
 
   // Effect to manage state reset after completition
   useEffect(() => {
-    let cleanUpTimer;
-    cleanUpTimer = setTimeout(() => {
-      cleanUp();
-    }, currentModalDuration);
+    if (status === "success") {
+      let cleanUpTimer;
+      cleanUpTimer = setTimeout(() => {
+        cleanUp();
+      }, currentModalDuration);
 
-    return () => {
-      clearTimeout(cleanUpTimer);
-    };
-  }, [currentModalDuration]);
+      return () => {
+        clearTimeout(cleanUpTimer);
+      };
+    }
+  }, [status]);
 
   return (
     <Modal
@@ -137,7 +133,7 @@ export default function DeletePane({ delFunc, onSuccess, cleanUp, ref }) {
       borderColor={borderColor}
       animation={animation}
     >
-      <div className={classes["del-modal-content"]}>{currentModalContent}</div>
+      <div className={classes["modal-content"]}>{currentModalContent}</div>
     </Modal>
   );
 }

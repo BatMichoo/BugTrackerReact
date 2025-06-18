@@ -1,9 +1,9 @@
 const BugProperty = ({ className, labelText, content }) => {
   return (
-    <p className={className}>
-      <label>{labelText}</label>
-      <span>{content}</span>
-    </p>
+    <div className={className}>
+      <span>{labelText}</span>
+      <p>{content}</p>
+    </div>
   );
 };
 
