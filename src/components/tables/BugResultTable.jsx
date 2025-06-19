@@ -71,7 +71,7 @@ const BugResultTable = ({ resultData }) => {
 
   const modalRef = useRef();
 
-  const [bugs, setBugs] = useState(resultData?.items);
+  // const [bugs, setBugs] = useState(resultData?.items);
   const [bugToDeleteId, setBugToDeleteId] = useState(null);
 
   useEffect(() => {
@@ -113,10 +113,13 @@ const BugResultTable = ({ resultData }) => {
           ref={modalRef}
           action={async () => await deleteBug(bugToDeleteId)}
           onSuccess={() =>
-            setBugs((prevB) => {
-              const newBugs = prevB.filter((b) => b.id !== bugToDeleteId);
-              return newBugs;
-            })
+            // setBugs((prevB) => {
+            //   const newBugs = prevB.filter((b) => b.id !== bugToDeleteId);
+            //   return newBugs;
+            // })
+            (resultData.items = resultData.items.filter(
+              (b) => b.id !== bugToDeleteId,
+            ))
           }
           cleanUp={() => setBugToDeleteId(null)}
           displayContent={MODAL_CONTENT}
@@ -147,7 +150,7 @@ const BugResultTable = ({ resultData }) => {
             </tr>
           ) : (
             resultData?.items &&
-            bugs.map((b) => {
+            resultData.items.map((b) => {
               return (
                 <tr
                   key={b.id}

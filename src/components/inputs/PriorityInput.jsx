@@ -10,8 +10,14 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const PrioritySeachInput = ({ selectedValue }) => {
-  return <SelectableInput {...PROPERTIES} selectedValue={selectedValue} />;
+const PrioritySeachInput = ({ selectedValue, onChange }) => {
+  return (
+    <SelectableInput
+      {...PROPERTIES}
+      selectedValue={selectedValue}
+      onChange={onChange}
+    />
+  );
 };
 
 export default PrioritySeachInput;

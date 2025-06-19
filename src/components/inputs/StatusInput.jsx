@@ -10,8 +10,14 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const StatusInput = ({ selectedValue }) => {
-  return <SelectableInput {...PROPERTIES} selectedValue={selectedValue} />;
+const StatusInput = ({ selectedValue, onChange }) => {
+  return (
+    <SelectableInput
+      {...PROPERTIES}
+      selectedValue={selectedValue}
+      onChange={onChange}
+    />
+  );
 };
 
 export default StatusInput;

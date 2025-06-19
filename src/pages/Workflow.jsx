@@ -7,6 +7,8 @@ import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
 
 import "../components/buttons/button.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SavedSearch from "../components/SavedSearch.jsx";
+import { getSearches } from "../utils/savedSearchAPI.js";
 
 const WorkflowPage = () => {
   const loaderData = useLoaderData();
@@ -18,6 +20,7 @@ const WorkflowPage = () => {
           users={loaderData.users}
           filters={loaderData.bugs.filters}
         />
+        <SavedSearch searchPromise={loaderData.search} />
       </div>
       <div>
         <Link to="bugs/new" className="create-bug submit-btn">
@@ -63,6 +66,7 @@ export const loader = async ({ request }) => {
   return {
     bugs,
     users,
+    search: getSearches(),
   };
 };
 
@@ -80,11 +84,12 @@ export const action = async ({ request }) => {
     priority: formData.get("Priority"),
     status: formData.get("Status"),
     assignedTo: formData.get("AssignedTo"),
+    createdBy: formData.get("CreatedBy"),
     title: formData.get("Title"),
     createdOn: dateInput,
   };
 
   const filters = createFilters(seachQuery);
 
-  return redirect(`?filter=${filters}`);
+  return redirect(filters != "" ? `?filter=${filters}` : "");
 };

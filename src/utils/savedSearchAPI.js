@@ -1,34 +1,34 @@
 import { getToken } from "./auth";
-import { bugsEndpoint } from "./backendEndpoints";
+import { searchesEndpoint } from "./backendEndpoints";
 
-export const createBug = async (newBug) => {
+export const createSearch = async (newSearch) => {
   const authToken = getToken();
 
-  const response = await fetch(bugsEndpoint, {
+  const response = await fetch(searchesEndpoint, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + authToken,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(newBug),
+    body: JSON.stringify(newSearch),
   });
 
   if (!response.ok) {
     return new Response(
-      { message: "Could not create bug." },
+      { message: "Could not create saved search." },
       { status: response.status },
     );
   }
 
-  const bug = await response.json();
+  const search = await response.json();
 
-  return bug;
+  return search;
 };
 
-export const getBugs = async (queryString) => {
+export const getSearches = async () => {
   const authToken = getToken();
 
-  const response = await fetch(bugsEndpoint + queryString, {
+  const response = await fetch(searchesEndpoint, {
     headers: {
       Authorization: "Bearer " + authToken,
     },
@@ -36,20 +36,20 @@ export const getBugs = async (queryString) => {
 
   if (!response.ok) {
     return new Response(
-      { message: "Could not fetch bugs." },
+      { message: "Could not fetch saved searches." },
       { status: response.status },
     );
   }
 
-  const bugs = await response.json();
+  const searches = response.json();
 
-  return bugs;
+  return searches;
 };
 
-export const getBug = async (bugId) => {
+export const getSearch = async (seachId) => {
   const authToken = getToken();
 
-  const response = await fetch(bugsEndpoint + `/${bugId}`, {
+  const response = await fetch(searchesEndpoint + `/${seachId}`, {
     headers: {
       Authorization: "Bearer " + authToken,
     },
@@ -57,48 +57,48 @@ export const getBug = async (bugId) => {
 
   if (!response.ok) {
     return new Response(
-      { message: "Could not fetch bug." },
+      { message: "Could not fetch saved search." },
       { status: response.status },
     );
   }
 
-  const bug = await response.json();
+  const search = await response.json();
 
-  return bug;
+  return search;
 };
 
-export const updateBug = async (updatedBug) => {
+export const updateBug = async (updatedSearch) => {
   const authToken = getToken();
 
   try {
-    const response = await fetch(bugsEndpoint, {
+    const response = await fetch(searchesEndpoint, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + authToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedBug),
+      body: JSON.stringify(updatedSearch),
     });
 
     if (!response.ok) {
       return new Response(
-        { message: "Could not update bug." },
+        { message: "Could not update saved search." },
         { status: response.status },
       );
     }
 
-    const bug = await response.json();
+    const search = await response.json();
 
-    return bug;
+    return search;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const deleteBug = async (bugId) => {
+export const deleteSearch = async (searchId) => {
   const authToken = getToken();
 
-  const response = await fetch(bugsEndpoint + `/${bugId}`, {
+  const response = await fetch(searchesEndpoint + `/${searchId}`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + authToken,
@@ -107,7 +107,7 @@ export const deleteBug = async (bugId) => {
 
   if (!response.ok) {
     return new Response(
-      { message: "Could not delete bug." },
+      { message: "Could not delete saved search." },
       { status: response.status },
     );
   }

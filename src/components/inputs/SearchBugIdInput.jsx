@@ -9,8 +9,8 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const SearchBugIdInput = ({ selectedValue }) => {
-  return <Input {...PROPERTIES} defaultValue={selectedValue} />;
+const SearchBugIdInput = ({ selectedValue, onChange }) => {
+  return <Input {...PROPERTIES} value={selectedValue} onChange={onChange} />;
 };
 
 export default SearchBugIdInput;

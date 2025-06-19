@@ -2,12 +2,12 @@ import classes from "../forms/BugSearchForm.module.css";
 
 const PROPERTIES = {
   labelTitle: "An user assigned to a bug.",
-  labelText: "Assigned To",
-  name: "AssignedTo",
+  labelText: "Created By",
+  name: "CreatedBy",
   className: classes.input,
 };
 
-const AssignedToInput = ({ selectedValue, availableValues, onChange }) => {
+const CreatedByInput = ({ selectedValue, availableValues, onChange }) => {
   return (
     <div className={PROPERTIES.className}>
       <label htmlFor={PROPERTIES.name} title={PROPERTIES.labelTitle}>
@@ -32,4 +32,4 @@ const AssignedToInput = ({ selectedValue, availableValues, onChange }) => {
   );
 };
 
-export default AssignedToInput;
+export default CreatedByInput;

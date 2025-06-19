@@ -9,10 +9,10 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const CreatedOnInput = ({ selectedValue, children }) => {
-  let formattedDate;
+const CreatedOnInput = ({ selectedValue, children, onChange }) => {
+  let formattedDate = "";
 
-  if (selectedValue) {
+  if (selectedValue != "" && selectedValue) {
     const dateObj = new Date(selectedValue);
     const year = dateObj.getFullYear();
     // Month is 0-indexed, so add 1
@@ -23,7 +23,7 @@ const CreatedOnInput = ({ selectedValue, children }) => {
   }
 
   return (
-    <Input {...PROPERTIES} defaultValue={formattedDate}>
+    <Input {...PROPERTIES} value={formattedDate} onChange={onChange}>
       {children}
     </Input>
   );

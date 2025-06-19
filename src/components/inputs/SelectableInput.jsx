@@ -7,7 +7,7 @@ const SelectableInput = ({
   name,
   availableValues,
   selectedValue,
-  onChange = undefined,
+  onChange,
 }) => {
   return (
     <div className={className}>
@@ -16,12 +16,7 @@ const SelectableInput = ({
           {labelText}
         </label>
       )}
-      <select
-        id={name}
-        name={name}
-        defaultValue={selectedValue}
-        onChange={onChange}
-      >
+      <select id={name} name={name} value={selectedValue} onChange={onChange}>
         {availableValues?.map((opt) => {
           return (
             <option key={opt.value ?? -1} value={opt.value}>

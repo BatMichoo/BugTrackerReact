@@ -9,8 +9,10 @@ const PROPERTIES = {
   className: classes.input,
 };
 
-const TitleInput = ({ selectedValue }) => {
-  return <Input {...PROPERTIES} defaultValue={selectedValue} />;
+const TitleInput = ({ selectedValue, onChange }) => {
+  return (
+    <Input {...PROPERTIES} defaultValue={selectedValue} onChange={onChange} />
+  );
 };
 
 export default TitleInput;

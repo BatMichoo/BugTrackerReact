@@ -6,41 +6,110 @@ import StatusInput from "../inputs/StatusInput.jsx";
 import TitleInput from "../inputs/TitleInput.jsx";
 import DateFilterInput from "../inputs/DateFilterInput.jsx";
 import classes from "../forms/BugSearchForm.module.css";
-import { Form, useSubmit } from "react-router";
+import { Form, useSearchParams } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CreatedByInput from "../inputs/CreatedByInput.jsx";
+import { useEffect, useState } from "react";
 
 const BugSearchForm = ({ filters, users }) => {
-  const submit = useSubmit();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [id, setId] = useState(filters.id ?? "");
+  const [priority, setPriority] = useState(filters.priority ?? "");
+  const [status, setStatus] = useState(filters.status ?? "");
+  const [assignedTo, setAssignedTo] = useState(filters.assignedTo ?? "");
+  const [createdBy, setCreatedBy] = useState(filters.createdBy ?? "");
+  const [title, setTitle] = useState(filters.title ?? "");
+
+  const [createdOn, setCreatedOn] = useState(() => {
+    const dateParts = filters.createdOn?.split("_") ?? [];
+    return {
+      date: dateParts[0] ?? "",
+      opts: dateParts[1] ?? "",
+    };
+  });
+
+  useEffect(() => {
+    setId(() => filters.id ?? "");
+    setPriority(filters.priority ?? "");
+    setStatus(filters.status);
+    setAssignedTo(() => filters.assignedTo);
+    setCreatedBy(filters.createdBy);
+    setTitle(filters.title);
+
+    if (filters.createdOn) {
+      const dateParts = filters.createdOn?.split("_") ?? [];
+      setCreatedOn({
+        date: dateParts[0] ?? "",
+        opts: dateParts[1] ?? "",
+      });
+    }
+  }, [filters]);
 
   function handleReset() {
-    const emptyFormData = new FormData();
-
-    submit(emptyFormData);
+    if (searchParams.size != 0) {
+      setId("");
+      setPriority("");
+      setStatus("");
+      setAssignedTo("");
+      setCreatedBy("");
+      setTitle("");
+      setCreatedOn({ date: "", opts: "" });
+      setSearchParams(new URLSearchParams());
+    }
   }
-
-  const dateParts = filters.createdOn?.split("_");
-  const createdOn = dateParts ? dateParts[0] : undefined;
-  const dateFilter = dateParts ? dateParts[1] : undefined;
 
   return (
     <Form method="POST">
       <div className={classes["search-input-container"]}>
-        <SearchBugIdInput selectedValue={filters.id ?? ""} />
-        <PrioritySeachInput selectedValue={filters.priority ?? ""} />
-        <StatusInput selectedValue={filters.status ?? ""} />
+        <SearchBugIdInput
+          selectedValue={id ?? ""}
+          onChange={(e) => setId(e.target.value)}
+        />
+        <PrioritySeachInput
+          selectedValue={priority ?? ""}
+          onChange={(e) => setPriority(e.target.value)}
+        />
+        <StatusInput
+          selectedValue={status ?? ""}
+          onChange={(e) => setStatus(e.target.value)}
+        />
         <AssignedToInput
           availableValues={users}
-          selectedValue={filters.assignedTo ?? ""}
+          selectedValue={assignedTo ?? ""}
+          onChange={(e) => setAssignedTo(e.target.value)}
         />
-        <TitleInput selectedValue={filters.title ?? ""} />
-        <CreatedOnInput selectedValue={createdOn} />
-        <DateFilterInput selectedValue={dateFilter} />
+        <CreatedByInput
+          availableValues={users}
+          selectedValue={createdBy ?? ""}
+          onChange={(e) => setCreatedBy(e.target.value)}
+        />
+        <TitleInput
+          selectedValue={title ?? ""}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <CreatedOnInput
+          selectedValue={createdOn.date}
+          onChange={(e) =>
+            setCreatedOn((prev) => {
+              return { ...prev, date: e.target.value ?? "" };
+            })
+          }
+        />
+        <DateFilterInput
+          selectedValue={createdOn.opts}
+          onChange={(e) =>
+            setCreatedOn((prev) => {
+              return { ...prev, opts: e.target.value };
+            })
+          }
+        />
       </div>
       <div className="btn-container">
         <button className="submit-btn">Search</button>
-        <button type="reset" className="submit-btn" onClick={handleReset}>
+        <button type="button" className="submit-btn" onClick={handleReset}>
           <FontAwesomeIcon icon="arrow-right-rotate" />
         </button>
+        <button type="button">Save current search</button>
       </div>
     </Form>
   );

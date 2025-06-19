@@ -1,0 +1,20 @@
+.searches-container {
+  margin: 1em;
+}
+
+.searches-container h3 {
+  color: black;
+  text-align: left;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}
+
+.search-list {
+  list-style: none;
+  display: flex;
+  gap: 1em;
+}
+
+.search-list button {
+  color: lightblue;
+}

@@ -33,9 +33,13 @@ const PROPERTIES = {
   availableValues: VALUES,
 };
 
-const DateFilterInput = ({ selectedValue }) => {
+const DateFilterInput = ({ selectedValue, onChange }) => {
   return (
-    <SelectableInput {...PROPERTIES} selectedValue={selectedValue ?? "="} />
+    <SelectableInput
+      {...PROPERTIES}
+      selectedValue={selectedValue == "" ? "=" : selectedValue}
+      onChange={onChange}
+    />
   );
 };
 
