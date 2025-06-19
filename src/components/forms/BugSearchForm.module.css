@@ -34,3 +34,11 @@ select {
   gap: 1em;
   justify-content: center;
 }
+
+.submit-btn {
+  color: lightblue;
+}
+
+.save-btn {
+  color: greenyellow;
+}

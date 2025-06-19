@@ -41,7 +41,7 @@ export const getSearches = async () => {
     );
   }
 
-  const searches = response.json();
+  const searches = await response.json();
 
   return searches;
 };
@@ -62,7 +62,7 @@ export const getSearch = async (seachId) => {
     );
   }
 
-  const search = await response.json();
+  const search = response.json();
 
   return search;
 };

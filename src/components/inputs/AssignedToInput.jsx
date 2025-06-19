@@ -20,7 +20,7 @@ const AssignedToInput = ({ selectedValue, availableValues, onChange }) => {
         onChange={onChange}
       >
         <option value="">N/A</option>
-        {availableValues?.map((user) => {
+        {availableValues.map((user) => {
           return (
             <option key={user.id} value={user.id}>
               {user.name}

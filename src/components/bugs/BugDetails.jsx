@@ -10,6 +10,7 @@ import NewComment from "./NewComment";
 import { createComment, deleteComment } from "../../utils/commentAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal, { RESULT_DURATION } from "../modals/Modal";
+import { getPermissions } from "../../utils/auth";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
@@ -60,6 +61,8 @@ const BugDetails = ({ bug }) => {
   const [requiresRedirect, setRequiresRedirect] = useState(false);
   const modalRef = useRef();
   const navigate = useNavigate();
+
+  const canDelete = getPermissions().filter((p) => p == "Delete");
 
   const handleOnEdit = () => {
     navigate("edit");
@@ -127,8 +130,8 @@ const BugDetails = ({ bug }) => {
           cleanUp={
             isDeleting
               ? () => {
-                setIsDeleting(false);
-              }
+                  setIsDeleting(false);
+                }
               : () => setCommentToDeleteId(null)
           }
           displayContent={isDeleting ? BUG_MODAL_CONTENT : COMM_MODAL_CONTENT}

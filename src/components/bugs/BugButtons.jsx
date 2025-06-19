@@ -1,7 +1,13 @@
 import classes from "./Bug.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BugButtons = ({ isEditing, onEditClick, onDeleteClick, onCancel }) => {
+const BugButtons = ({
+  isEditing,
+  onEditClick,
+  onDeleteClick,
+  onCancel,
+  canDelete,
+}) => {
   return (
     <div className={classes["button-container"]}>
       {isEditing ? (
@@ -18,9 +24,11 @@ const BugButtons = ({ isEditing, onEditClick, onDeleteClick, onCancel }) => {
           <button type="button" onClick={onEditClick}>
             <FontAwesomeIcon icon="pen" color="lightblue" />
           </button>
-          <button type="button" onClick={onDeleteClick}>
-            <FontAwesomeIcon icon="trash" color="lightcoral" />
-          </button>
+          {canDelete ? (
+            <button type="button" onClick={onDeleteClick}>
+              <FontAwesomeIcon icon="trash" color="lightcoral" />
+            </button>
+          ) : undefined}
         </>
       )}
     </div>

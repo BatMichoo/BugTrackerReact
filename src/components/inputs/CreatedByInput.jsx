@@ -20,13 +20,14 @@ const CreatedByInput = ({ selectedValue, availableValues, onChange }) => {
         onChange={onChange}
       >
         <option value="">N/A</option>
-        {availableValues?.map((user) => {
-          return (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          );
-        })}
+        {availableValues.length &&
+          availableValues?.map((user) => {
+            return (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            );
+          })}
       </select>
     </div>
   );

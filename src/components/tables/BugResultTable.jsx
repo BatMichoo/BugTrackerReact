@@ -1,9 +1,4 @@
-import {
-  Link,
-  useNavigate,
-  useNavigation,
-  useSearchParams,
-} from "react-router";
+import { Await, Link, useNavigate, useSearchParams } from "react-router";
 import classes from "./BugResultTable.module.css";
 import "../buttons/button.css";
 import { deleteBug } from "../../utils/bugAPI";
@@ -12,7 +7,7 @@ import { PRIORITY_COLORS, STATUS_COLORS } from "../../utils/colors.js";
 import { PRIORITY_MAPPING, STATUS_MAPPING } from "../../utils/bugEnums.js";
 import { getPermissions } from "../../utils/auth.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Modal from "../modals/Modal.jsx";
 
 const MODAL_CONTENT = {
@@ -61,17 +56,12 @@ function getItemsOnPageCount(pageInfo) {
 }
 
 const BugResultTable = ({ resultData }) => {
-  const startingItemCount = getStartingItemCount(resultData?.pageInfo);
-  const itemsOnPage = getItemsOnPageCount(resultData?.pageInfo);
-
   const navigate = useNavigate();
-  const navigation = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();
   const canDelete = getPermissions().find((p) => p == "Delete");
 
   const modalRef = useRef();
 
-  // const [bugs, setBugs] = useState(resultData?.items);
   const [bugToDeleteId, setBugToDeleteId] = useState(null);
 
   useEffect(() => {
@@ -113,10 +103,6 @@ const BugResultTable = ({ resultData }) => {
           ref={modalRef}
           action={async () => await deleteBug(bugToDeleteId)}
           onSuccess={() =>
-            // setBugs((prevB) => {
-            //   const newBugs = prevB.filter((b) => b.id !== bugToDeleteId);
-            //   return newBugs;
-            // })
             (resultData.items = resultData.items.filter(
               (b) => b.id !== bugToDeleteId,
             ))
@@ -137,120 +123,156 @@ const BugResultTable = ({ resultData }) => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {resultData && resultData.pageInfo.totalElementCount == 0 ? (
-            <tr>
-              <td colSpan={7}>
-                {navigation.state == "loading" ? (
-                  <FontAwesomeIcon icon="spinner" spinPulse />
-                ) : (
-                  "No Results."
-                )}
-              </td>
-            </tr>
-          ) : (
-            resultData?.items &&
-            resultData.items.map((b) => {
-              return (
-                <tr
-                  key={b.id}
-                  className={classes["item-row"]}
-                  onDoubleClick={() => navigate(`bugs/${b.id}`)}
-                >
-                  <td>{b.id}</td>
-                  <td>
-                    <span
-                      className={classes.badge}
-                      style={{
-                        backgroundColor:
-                          PRIORITY_COLORS[PRIORITY_MAPPING[b.priority]],
-                      }}
-                    >
-                      {PRIORITY_MAPPING[b.priority]}
-                    </span>
-                  </td>
-                  <td>
-                    <span
-                      className={classes.badge}
-                      style={{
-                        backgroundColor:
-                          STATUS_COLORS[STATUS_MAPPING[b.status]],
-                      }}
-                    >
-                      {STATUS_MAPPING[b.status]}
-                    </span>
-                  </td>
-                  <td>{b.title}</td>
-                  <td>{b.createdBy.name}</td>
-                  <td>{b.assignedTo?.name}</td>
-                  <td className={classes["actions-container"]}>
-                    <Link to={"bugs/" + b.id}>
-                      <FontAwesomeIcon icon="magnifying-glass" />
-                    </Link>
-                    <Link
-                      to={"bugs/" + b.id + "/edit"}
-                      className={classes["edit-btn"]}
-                    >
-                      <FontAwesomeIcon icon="pen" />
-                    </Link>
-                    {canDelete ? (
-                      <button
-                        className={classes["delete-btn"]}
-                        onClick={() => setBugToDeleteId(b.id)}
-                      >
-                        <FontAwesomeIcon icon="trash" />
-                      </button>
-                    ) : undefined}
-                  </td>
-                </tr>
-              );
-            })
-          )}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={7}>
-              <div className={classes["footer-content"]}>
-                <span>
-                  {startingItemCount + " - " + itemsOnPage} /{" "}
-                  {resultData.pageInfo.totalElementCount}
-                </span>
-                <span>
-                  Per page:{" "}
-                  <PageSizeInput
-                    selectedValue={resultData.pageInfo.elementsPerPage}
-                    onChange={updatePageSizeOnChange}
+        <Suspense
+          fallback={
+            <tbody>
+              <tr>
+                <td colSpan={7} style={{ padding: "1em" }}>
+                  <FontAwesomeIcon
+                    icon="spinner"
+                    spinPulse
+                    size="3x"
+                    color="lightblue"
                   />
-                </span>
-                <span>
-                  {resultData?.pageInfo?.hasPrevious ? (
-                    <span
-                      className={classes["page-control"]}
-                      onClick={() =>
-                        changePageOnClick(resultData.pageInfo.currentPage - 1)
-                      }
-                    >
-                      <FontAwesomeIcon icon="chevron-left" size="sm" />
-                    </span>
-                  ) : undefined}
-                  <span>{resultData.pageInfo.currentPage}</span>
-                  {" / "}
-                  <span>{resultData.pageInfo.pageCount}</span>
-                  {resultData?.pageInfo?.hasNext ? (
-                    <span
-                      className={classes["page-control"]}
-                      onClick={() =>
-                        changePageOnClick(resultData.pageInfo.currentPage + 1)
-                      }
-                    >
-                      <FontAwesomeIcon icon="chevron-right" size="sm" />
-                    </span>
-                  ) : undefined}
-                </span>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
+                </td>
+              </tr>
+            </tbody>
+          }
+        >
+          <Await resolve={resultData}>
+            {(resolvedData) => {
+              return resolvedData &&
+                resolvedData.pageInfo.totalElementCount == 0 ? (
+                <tbody>
+                  <tr>
+                    <td colSpan={7}>"No Results." </td>
+                  </tr>
+                </tbody>
+              ) : (
+                <>
+                  <tbody>
+                    {resolvedData?.items &&
+                      resolvedData.items.map((b) => {
+                        return (
+                          <tr
+                            key={b.id}
+                            className={classes["item-row"]}
+                            onDoubleClick={() => navigate(`bugs/${b.id}`)}
+                          >
+                            <td>{b.id}</td>
+                            <td>
+                              <span
+                                className={classes.badge}
+                                style={{
+                                  backgroundColor:
+                                    PRIORITY_COLORS[
+                                      PRIORITY_MAPPING[b.priority]
+                                    ],
+                                }}
+                              >
+                                {PRIORITY_MAPPING[b.priority]}
+                              </span>
+                            </td>
+                            <td>
+                              <span
+                                className={classes.badge}
+                                style={{
+                                  backgroundColor:
+                                    STATUS_COLORS[STATUS_MAPPING[b.status]],
+                                }}
+                              >
+                                {STATUS_MAPPING[b.status]}
+                              </span>
+                            </td>
+                            <td>{b.title}</td>
+                            <td>{b.createdBy.name}</td>
+                            <td>{b.assignedTo?.name}</td>
+                            <td className={classes["actions-container"]}>
+                              <Link to={"bugs/" + b.id}>
+                                <FontAwesomeIcon icon="magnifying-glass" />
+                              </Link>
+                              <Link
+                                to={"bugs/" + b.id + "/edit"}
+                                className={classes["edit-btn"]}
+                              >
+                                <FontAwesomeIcon icon="pen" />
+                              </Link>
+                              {canDelete ? (
+                                <button
+                                  className={classes["delete-btn"]}
+                                  onClick={() => setBugToDeleteId(b.id)}
+                                >
+                                  <FontAwesomeIcon icon="trash" />
+                                </button>
+                              ) : undefined}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan={7}>
+                        <div className={classes["footer-content"]}>
+                          <span>
+                            {getStartingItemCount(resolvedData.pageInfo) +
+                              " - " +
+                              getItemsOnPageCount(resolvedData.pageInfo)}{" "}
+                            / {resolvedData.pageInfo.totalElementCount}
+                          </span>
+                          <span>
+                            Per page:{" "}
+                            <PageSizeInput
+                              selectedValue={
+                                resolvedData.pageInfo.elementsPerPage
+                              }
+                              onChange={updatePageSizeOnChange}
+                            />
+                          </span>
+                          <span>
+                            {resolvedData?.pageInfo?.hasPrevious ? (
+                              <span
+                                className={classes["page-control"]}
+                                onClick={() =>
+                                  changePageOnClick(
+                                    resultData.pageInfo.currentPage - 1,
+                                  )
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  icon="chevron-left"
+                                  size="sm"
+                                />
+                              </span>
+                            ) : undefined}
+                            <span>{resolvedData.pageInfo.currentPage}</span>
+                            {" / "}
+                            <span>{resolvedData.pageInfo.pageCount}</span>
+                            {resolvedData?.pageInfo?.hasNext ? (
+                              <span
+                                className={classes["page-control"]}
+                                onClick={() =>
+                                  changePageOnClick(
+                                    resolvedData.pageInfo.currentPage + 1,
+                                  )
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  icon="chevron-right"
+                                  size="sm"
+                                />
+                              </span>
+                            ) : undefined}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </>
+              );
+            }}
+          </Await>
+        </Suspense>
       </table>
     </>
   );

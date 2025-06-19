@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import { Await, useSearchParams } from "react-router";
 import classes from "./SavedSearch.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SavedSearchContext } from "./stores/SavedSearchContext";
 
-export default function SavedSearch({ searchPromise }) {
+export default function SavedSearch({ searches }) {
   const [_, setSearchParams] = useSearchParams();
 
   function enableSearch(search) {
@@ -18,8 +20,12 @@ export default function SavedSearch({ searchPromise }) {
   return (
     <div className={classes["searches-container"]}>
       <h3>Saved searches</h3>
-      <Suspense fallback={<div>Loading saved searches...</div>}>
-        <Await resolve={searchPromise}>
+      <Suspense
+        fallback={
+          <FontAwesomeIcon icon="spinner" spinPulse size="3x" color="black" />
+        }
+      >
+        <Await resolve={searches}>
           {(searches) => {
             return searches && searches.length > 0 ? (
               <ul className={classes["search-list"]}>
@@ -32,11 +38,14 @@ export default function SavedSearch({ searchPromise }) {
                 ))}
               </ul>
             ) : (
-              <div> No Results. </div>
+              <div> No Saved Searches. </div>
             );
           }}
         </Await>
       </Suspense>
+      <button type="button" className={classes["save-btn"]}>
+        Save current search
+      </button>
     </div>
   );
 }

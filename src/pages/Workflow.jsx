@@ -1,13 +1,14 @@
 import BugSearchForm from "../components/forms/BugSearchForm.jsx";
-import { Link, redirect, useLoaderData } from "react-router";
+import { Suspense } from "react";
+import { Await, Link, redirect, useLoaderData } from "react-router";
 import BugResultTable from "../components/tables/BugResultTable.jsx";
 import { getBugs } from "../utils/bugAPI.js";
 import { getUsers } from "../utils/userAPI.js";
 import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
-
 import "../components/buttons/button.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SavedSearch from "../components/SavedSearch.jsx";
+import SavedSearchContextProvider from "../components/stores/SavedSearchContext.jsx";
 import { getSearches } from "../utils/savedSearchAPI.js";
 
 const WorkflowPage = () => {
@@ -16,11 +17,23 @@ const WorkflowPage = () => {
     <div className="work-container">
       <div className="search-container">
         <h1>Search bugs</h1>
-        <BugSearchForm
-          users={loaderData.users}
-          filters={loaderData.bugs.filters}
-        />
-        <SavedSearch searchPromise={loaderData.search} />
+        <Suspense
+          fallback={
+            <FontAwesomeIcon icon="spinner" spinPulse size="3x" color="black" />
+          }
+        >
+          <Await resolve={loaderData.bugs}>
+            {(resolved) => {
+              return (
+                <BugSearchForm
+                  users={loaderData.users}
+                  filters={resolved.filters}
+                />
+              );
+            }}
+          </Await>
+        </Suspense>
+        <SavedSearch searches={loaderData.searches} />
       </div>
       <div>
         <Link to="bugs/new" className="create-bug submit-btn">
@@ -60,13 +73,13 @@ export const loader = async ({ request }) => {
     queryString += `&pageSizeInput=${pageSizeInput}`;
   }
 
-  const bugs = await getBugs(queryString);
+  const bugs = getBugs(queryString);
   const users = await getUsers();
 
   return {
     bugs,
     users,
-    search: getSearches(),
+    searches: getSearches(),
   };
 };
 

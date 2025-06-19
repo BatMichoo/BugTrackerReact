@@ -13,15 +13,15 @@ import { useEffect, useState } from "react";
 
 const BugSearchForm = ({ filters, users }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [id, setId] = useState(filters.id ?? "");
-  const [priority, setPriority] = useState(filters.priority ?? "");
-  const [status, setStatus] = useState(filters.status ?? "");
-  const [assignedTo, setAssignedTo] = useState(filters.assignedTo ?? "");
-  const [createdBy, setCreatedBy] = useState(filters.createdBy ?? "");
-  const [title, setTitle] = useState(filters.title ?? "");
+  const [id, setId] = useState(filters?.id ?? "");
+  const [priority, setPriority] = useState(filters?.priority ?? "");
+  const [status, setStatus] = useState(filters?.status ?? "");
+  const [assignedTo, setAssignedTo] = useState(filters?.assignedTo ?? "");
+  const [createdBy, setCreatedBy] = useState(filters?.createdBy ?? "");
+  const [title, setTitle] = useState(filters?.title ?? "");
 
   const [createdOn, setCreatedOn] = useState(() => {
-    const dateParts = filters.createdOn?.split("_") ?? [];
+    const dateParts = filters?.createdOn?.split("_") ?? [];
     return {
       date: dateParts[0] ?? "",
       opts: dateParts[1] ?? "",
@@ -29,15 +29,15 @@ const BugSearchForm = ({ filters, users }) => {
   });
 
   useEffect(() => {
-    setId(() => filters.id ?? "");
-    setPriority(filters.priority ?? "");
-    setStatus(filters.status);
-    setAssignedTo(() => filters.assignedTo);
-    setCreatedBy(filters.createdBy);
-    setTitle(filters.title);
+    setId(() => filters?.id ?? "");
+    setPriority(filters?.priority ?? "");
+    setStatus(filters?.status ?? "");
+    setAssignedTo(() => filters?.assignedTo ?? "");
+    setCreatedBy(filters?.createdBy ?? "");
+    setTitle(filters?.title ?? "");
 
-    if (filters.createdOn) {
-      const dateParts = filters.createdOn?.split("_") ?? [];
+    if (filters?.createdOn) {
+      const dateParts = filters?.createdOn?.split("_") ?? [];
       setCreatedOn({
         date: dateParts[0] ?? "",
         opts: dateParts[1] ?? "",
@@ -62,29 +62,29 @@ const BugSearchForm = ({ filters, users }) => {
     <Form method="POST">
       <div className={classes["search-input-container"]}>
         <SearchBugIdInput
-          selectedValue={id ?? ""}
+          selectedValue={id}
           onChange={(e) => setId(e.target.value)}
         />
         <PrioritySeachInput
-          selectedValue={priority ?? ""}
+          selectedValue={priority}
           onChange={(e) => setPriority(e.target.value)}
         />
         <StatusInput
-          selectedValue={status ?? ""}
+          selectedValue={status}
           onChange={(e) => setStatus(e.target.value)}
         />
         <AssignedToInput
           availableValues={users}
-          selectedValue={assignedTo ?? ""}
+          selectedValue={assignedTo}
           onChange={(e) => setAssignedTo(e.target.value)}
         />
         <CreatedByInput
           availableValues={users}
-          selectedValue={createdBy ?? ""}
+          selectedValue={createdBy}
           onChange={(e) => setCreatedBy(e.target.value)}
         />
         <TitleInput
-          selectedValue={title ?? ""}
+          selectedValue={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <CreatedOnInput
@@ -105,11 +105,10 @@ const BugSearchForm = ({ filters, users }) => {
         />
       </div>
       <div className="btn-container">
-        <button className="submit-btn">Search</button>
-        <button type="button" className="submit-btn" onClick={handleReset}>
+        <button className={classes["submit-btn"]}>Search</button>
+        <button type="button" onClick={handleReset}>
           <FontAwesomeIcon icon="arrow-right-rotate" />
         </button>
-        <button type="button">Save current search</button>
       </div>
     </Form>
   );
