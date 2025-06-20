@@ -2,6 +2,7 @@ import { Form } from "react-router";
 import PrioritySeachInput from "../inputs/PriorityInput";
 import AssignedToInput from "../inputs/AssignedToInput";
 import TitleInput from "../inputs/TitleInput";
+import { useState } from "react";
 
 const PRESELETED_VALUES = {
   priority: "Normal",
@@ -9,16 +10,34 @@ const PRESELETED_VALUES = {
 };
 
 const CreateBugForm = ({ availableUsers }) => {
+  const [title, setTitle] = useState("");
+  const [priority, setPriority] = useState(null);
+  const [assignedTo, setAssignedTo] = useState(null);
+  const [description, setDescription] = useState("");
+
   return (
     <Form method="POST">
       <div>
-        <TitleInput />
-        <PrioritySeachInput selectedValue={PRESELETED_VALUES.priority} />
+        <TitleInput
+          selectedValue={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <PrioritySeachInput
+          selectedValue={priority ? priority : PRESELETED_VALUES.priority}
+          onChange={(e) => setPriority(e.target.value)}
+        />
         <AssignedToInput
           availableValues={availableUsers}
-          selectedValue={PRESELETED_VALUES.assignedTo}
+          selectedValue={assignedTo ? assignedTo : PRESELETED_VALUES.assignedTo}
+          onChange={(e) => setAssignedTo(e.target.value)}
         />
-        <textarea name="Description" rows={10} cols={50} />
+        <textarea
+          name="Description"
+          rows={10}
+          cols={50}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </div>
       <button type="submit">Create</button>
     </Form>

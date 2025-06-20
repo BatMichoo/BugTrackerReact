@@ -43,7 +43,7 @@ export default function SavedSearch({ searches }) {
           }}
         </Await>
       </Suspense>
-      <button type="button" className={classes["save-btn"]}>
+      <button disabled type="button" className={classes["save-btn"]}>
         Save current search
       </button>
     </div>
