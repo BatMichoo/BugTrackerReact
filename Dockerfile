@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 ARG HTTP_SERVER_PORT
+ARG DOMAIN_URL
 ENV VITE_HttpServerPort=$HTTP_SERVER_PORT
 ENV VITE_BackendDomain=$DOMAIN_URL
 COPY . .
