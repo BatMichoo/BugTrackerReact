@@ -46,10 +46,11 @@ export const getBugs = async (queryString) => {
   return bugs;
 };
 
-export const getBug = async (bugId) => {
+export const getBug = async (bugId, isFullyIncluded) => {
   const authToken = getToken();
+  const inclString = isFullyIncluded ? "?isFullyIncluded=true" : "";
 
-  const response = await fetch(bugsEndpoint + `/${bugId}`, {
+  const response = await fetch(bugsEndpoint + `/${bugId}` + inclString, {
     headers: {
       Authorization: "Bearer " + authToken,
     },

@@ -1,4 +1,4 @@
-import { useLoaderData, useLocation, useNavigate } from "react-router";
+import { useLoaderData } from "react-router";
 import { getBug } from "../utils/bugAPI";
 import classes from "../components/bugs/Bug.module.css";
 import BugDetails from "../components/bugs/BugDetails";
@@ -19,9 +19,10 @@ export default BugDetailsPage;
 
 export const loader = async ({ params }) => {
   const bugId = params.bugId;
+  const isFullyIncluded = true;
 
   if (bugId) {
-    const bug = await getBug(bugId);
+    const bug = await getBug(bugId, isFullyIncluded);
 
     return bug;
   }

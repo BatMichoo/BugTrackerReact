@@ -20,6 +20,16 @@ export const getPermissions = () => {
   return permissions;
 };
 
+export function getRoles() {
+  const decodedToken = jwtDecode(getToken());
+
+  const roles =
+    decodedToken[
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    ].split(", ");
+
+  return roles;
+}
 export const getToken = () => {
   const token = sessionStorage.getItem(TOKEN_NAME);
 

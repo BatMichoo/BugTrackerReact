@@ -3,16 +3,13 @@ import PrioritySeachInput from "../inputs/PriorityInput";
 import AssignedToInput from "../inputs/AssignedToInput";
 import TitleInput from "../inputs/TitleInput";
 import { useState } from "react";
-
-const PRESELETED_VALUES = {
-  priority: "Normal",
-  assignedTo: "",
-};
+import { getUserId } from "../../utils/auth";
 
 const CreateBugForm = ({ availableUsers }) => {
+  const userId = getUserId();
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState(null);
-  const [assignedTo, setAssignedTo] = useState(null);
+  const [priority, setPriority] = useState("1"); // Normal
+  const [assignedTo, setAssignedTo] = useState(userId);
   const [description, setDescription] = useState("");
 
   return (
@@ -23,12 +20,12 @@ const CreateBugForm = ({ availableUsers }) => {
           onChange={(e) => setTitle(e.target.value)}
         />
         <PrioritySeachInput
-          selectedValue={priority ? priority : PRESELETED_VALUES.priority}
+          selectedValue={priority}
           onChange={(e) => setPriority(e.target.value)}
         />
         <AssignedToInput
           availableValues={availableUsers}
-          selectedValue={assignedTo ? assignedTo : PRESELETED_VALUES.assignedTo}
+          selectedValue={assignedTo}
           onChange={(e) => setAssignedTo(e.target.value)}
         />
         <textarea
@@ -37,6 +34,8 @@ const CreateBugForm = ({ availableUsers }) => {
           cols={50}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          placeholder="Please provide a comprehensive description."
+          style={{ padding: "0.5em", fontSize: "1.06125em", margin: "1em" }}
         />
       </div>
       <button type="submit">Create</button>

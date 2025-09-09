@@ -40,6 +40,7 @@ import {
   faMagnifyingGlass,
   faInfo,
   faSpinner,
+  faReply,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faBell);
@@ -58,6 +59,7 @@ library.add(faThumbsUp);
 library.add(faThumbsDown);
 library.add(faArrowRightRotate);
 library.add(faSpinner);
+library.add(faReply);
 
 const router = createBrowserRouter([
   {

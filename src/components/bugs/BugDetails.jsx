@@ -10,7 +10,7 @@ import NewComment from "./NewComment";
 import { createComment, deleteComment } from "../../utils/commentAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal, { RESULT_DURATION } from "../modals/Modal";
-import { getPermissions } from "../../utils/auth";
+import { getPermissions, getUserId } from "../../utils/auth";
 
 const TEXT_AREA_GRID_SIZE = {
   rows: 12,
@@ -62,19 +62,13 @@ const BugDetails = ({ bug }) => {
   const modalRef = useRef();
   const navigate = useNavigate();
 
-  const canDelete = getPermissions().filter((p) => p == "Delete");
+  const userId = getUserId();
+  const canDelete =
+    getPermissions().filter((p) => p == "Delete") || bug.createdBy == userId;
 
   const handleOnEdit = () => {
     navigate("edit");
   };
-
-  // const handleOnDelete = async (bugId) => {
-  //   const response = await deleteBug(bugId);
-  //
-  //   if (response) {
-  //     navigate("../..");
-  //   }
-  // };
 
   useEffect(() => {
     if (commentToDeleteId !== null || isDeleting) {
@@ -194,6 +188,7 @@ const BugDetails = ({ bug }) => {
           isEditing={false}
           onEditClick={handleOnEdit}
           onDeleteClick={() => setIsDeleting(true)}
+          canDelete={canDelete}
         />
         <div className={classes["comments-container"]}>
           <h2>Comments</h2>

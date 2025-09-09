@@ -7,9 +7,8 @@ import { getUsers } from "../utils/userAPI.js";
 import { createFilters, FILTER_SEPARATORS } from "../utils/bugFilterFactory.js";
 import "../components/buttons/button.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SavedSearch from "../components/SavedSearch.jsx";
-import SavedSearchContextProvider from "../components/stores/SavedSearchContext.jsx";
 import { getSearches } from "../utils/savedSearchAPI.js";
+import SavedSearch from "../components/searches/SavedSearch.jsx";
 
 const WorkflowPage = () => {
   const loaderData = useLoaderData();
@@ -33,7 +32,7 @@ const WorkflowPage = () => {
             }}
           </Await>
         </Suspense>
-        <SavedSearch searches={loaderData.searches} />
+        <SavedSearch searchesPromise={loaderData.searches} />
       </div>
       <div>
         <Link to="bugs/new" className="create-bug submit-btn">

@@ -27,19 +27,25 @@ export const getUsers = async () => {
 export async function changePassword(passwords) {
   const authToken = getToken();
 
-  const response = await fetch(changePasswordEndpoint, {
-    headers: {
-      Authorization: "Bearer " + authToken,
-    },
-    body: JSON.stringify(passwords),
-  });
+  try {
+    const response = await fetch(changePasswordEndpoint, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + authToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(passwords),
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      return { error: await response.json() };
+    }
+    return { ok: true };
+  } catch (error) {
+    console.log(error);
     return new Response(
       { message: "Could not change password." },
-      { status: response.status },
+      { status: 400 },
     );
   }
-
-  return true;
 }

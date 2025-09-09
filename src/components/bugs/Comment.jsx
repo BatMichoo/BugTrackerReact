@@ -3,16 +3,19 @@ import classes from "./Bug.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { updateComment, updateLikes } from "../../utils/commentAPI";
 import { getProfileName } from "../../utils/auth";
+import { createReply, deleteReply } from "../../utils/replyAPI";
 
 const Comment = ({ comment, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
   const [savedComment, setSavedComment] = useState(comment);
   const userName = getProfileName();
 
-  const ref = useRef();
+  const newCommentRef = useRef();
+  const newReplyRef = useRef();
 
   async function saveComment() {
-    const newContent = ref.current.value;
+    const newContent = newCommentRef.current.value;
 
     let newComment = { ...comment };
     newComment.content = newContent;
@@ -46,11 +49,43 @@ const Comment = ({ comment, onDelete }) => {
     });
   }
 
+  async function addReply() {
+    const replyContent = newReplyRef.current.value;
+    const newReply = await createReply(replyContent, comment.bugId, comment.id);
+
+    setSavedComment((prev) => {
+      const newC = { ...prev };
+      const replies = [...newC.replies, newReply];
+      newC.replies = replies;
+
+      return newC;
+    });
+
+    setIsReplying(false);
+  }
+
+  async function removeReply(id) {
+    const success = await deleteReply(id, savedComment.bugId, savedComment.id);
+
+    if (success) {
+      setSavedComment((prev) => {
+        const newC = { ...prev };
+        newC.replies = newC.replies.filter((reply) => reply.id !== id);
+
+        return newC;
+      });
+    }
+  }
+
   return (
     <>
       <div className={classes.comment}>
         {isEditing ? (
-          <textarea rows={3} defaultValue={savedComment.content} ref={ref} />
+          <textarea
+            rows={3}
+            defaultValue={savedComment.content}
+            ref={newCommentRef}
+          />
         ) : (
           <div>{savedComment.content}</div>
         )}
@@ -59,6 +94,31 @@ const Comment = ({ comment, onDelete }) => {
             <span>{savedComment.postedOn}</span>
             <span>{savedComment.authorName}</span>
           </p>
+          <ul>
+            {savedComment.replies &&
+              savedComment.replies.map((r) => {
+                return (
+                  <li key={r.id} className={classes.reply}>
+                    <span>{r.content}</span>
+                    <span>
+                      <i>
+                        <br />
+                        {" - "}
+                        {r.authorName}
+                      </i>
+                    </span>
+                    {userName == savedComment.authorName ? (
+                      <button
+                        type="button"
+                        onClick={async () => await removeReply(r.id)}
+                      >
+                        Delete
+                      </button>
+                    ) : undefined}
+                  </li>
+                );
+              })}
+          </ul>
           <div className={classes["likes-container"]}>
             <span>{savedComment.likes}</span>
             <FontAwesomeIcon
@@ -85,7 +145,7 @@ const Comment = ({ comment, onDelete }) => {
             icon={isEditing ? "floppy-disk" : "pen"}
             size="lg"
             aria-hidden="true"
-            onClick={isEditing ? saveComment : () => setIsEditing(true)}
+            onClick={isEditing ? () => saveComment : () => setIsEditing(true)}
           />
         ) : null}
         {userName == savedComment.authorName ? (
@@ -97,7 +157,24 @@ const Comment = ({ comment, onDelete }) => {
             onClick={isEditing ? () => setIsEditing(false) : () => onDelete()}
           />
         ) : null}
+        <FontAwesomeIcon
+          icon="reply"
+          size="lg"
+          aria-hidden="true"
+          style={{ color: "lightcoral", cursor: "pointer" }}
+          onClick={
+            isReplying ? () => setIsReplying(false) : () => setIsReplying(true)
+          }
+        />
       </div>
+      {isReplying ? (
+        <div>
+          <input type="text" ref={newReplyRef} />
+          <button type="button" onClick={addReply}>
+            Reply
+          </button>
+        </div>
+      ) : undefined}
     </>
   );
 };

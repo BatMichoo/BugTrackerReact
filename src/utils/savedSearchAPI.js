@@ -67,7 +67,7 @@ export const getSearch = async (seachId) => {
   return search;
 };
 
-export const updateBug = async (updatedSearch) => {
+export const updateSearch = async (updatedSearch) => {
   const authToken = getToken();
 
   try {

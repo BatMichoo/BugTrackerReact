@@ -1,65 +1,81 @@
-import { useState } from "react";
-import { Form } from "react-router";
-import { changePassword } from "../utils/userAPI";
+import { useEffect, useRef, useState } from "react";
+import Dialog from "../components/modals/Dialog";
+import ChangePasswordForm from "../components/forms/ChangePasswordForm";
+import EditSearchesForm from "../components/forms/EditSearchesForm";
+import { getRoles } from "../utils/auth";
 
 function AccountPage() {
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [requiredAction, setRequiredAction] = useState(undefined);
+  const dialogRef = useRef();
 
-  function handleOnClick() {
-    setIsChangingPassword((state) => !state);
+  const hasElevatedAccess =
+    getRoles().filter((r) => r == "Manager" || r == "Admin").length > 0;
+
+  let dialogContent;
+
+  switch (requiredAction) {
+    case "password":
+      dialogContent = (
+        <ChangePasswordForm onCleanUp={() => setRequiredAction(undefined)} />
+      );
+      break;
+    case "searches":
+      dialogContent = (
+        <EditSearchesForm onCleanUp={() => setRequiredAction(undefined)} />
+      );
+      break;
+    default:
+      dialogContent = undefined;
+      break;
   }
+
+  useEffect(() => {
+    if (requiredAction) {
+      dialogRef.current.showModal();
+    } else {
+      console.log("Closed MODAL!");
+      dialogRef.current.close();
+    }
+  }, [requiredAction]);
 
   return (
     <div>
+      <Dialog ref={dialogRef}>{dialogContent}</Dialog>
       <h1>Account</h1>
-      {isChangingPassword ? (
-        <Form method="post">
-          <div>
-            <label htmlFor="oldPassword">Old Password</label>
-            <input name="oldPassword" type="password" />
-            <label htmlFor="newPassword">New Password</label>
-            <input name="newPassword" type="password" />
-            <label htmlFor="confirmNewPassword">Confirm New Password</label>
-            <input name="confirmNewPassword" type="password" />
-          </div>
-        </Form>
-      ) : undefined}
-      <button
-        onClick={handleOnClick}
-        type={isChangingPassword ? "submit" : "button"}
-      >
-        {isChangingPassword ? "Submit" : "Change Password"}
-      </button>
-      {isChangingPassword ? (
-        <button onClick={handleOnClick} type="button">
-          Cancel
+      {hasElevatedAccess ? <div>Admin panel</div> : undefined}
+      <div>
+        <button onClick={() => setRequiredAction("password")} type="button">
+          Change Password
         </button>
-      ) : undefined}
+        <button onClick={() => setRequiredAction("searches")} type="button">
+          Edit saved Searches
+        </button>
+      </div>
     </div>
   );
 }
 
 export default AccountPage;
 
-export async function action({ request }) {
-  const data = await request.formData();
-
-  const oldPassword = data.get("oldPassword");
-  const newPassword = data.get("newPassword");
-
-  const passwords = {
-    oldPassword,
-    newPassword,
-  };
-
-  try {
-    await changePassword(passwords);
-  } catch (error) {
-    throw new Response(
-      JSON.stringify({ message: "Could not change password." }),
-      {
-        status: 400,
-      },
-    );
-  }
-}
+// export async function action({ request }) {
+//   const data = await request.formData();
+//
+//   const oldPassword = data.get("oldPassword");
+//   const newPassword = data.get("newPassword");
+//
+//   const passwords = {
+//     oldPassword,
+//     newPassword,
+//   };
+//
+//   try {
+//     await changePassword(passwords);
+//   } catch (error) {
+//     throw new Response(
+//       JSON.stringify({ message: "Could not change password." }),
+//       {
+//         status: 400,
+//       },
+//     );
+//   }
+// }
