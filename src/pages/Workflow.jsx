@@ -32,7 +32,7 @@ const WorkflowPage = () => {
             }}
           </Await>
         </Suspense>
-        <SavedSearch searchesPromise={loaderData.searches} />
+        <SavedSearch searches={loaderData.searches} />
       </div>
       <div>
         <Link to="bugs/new" className="create-bug submit-btn">
@@ -74,11 +74,12 @@ export const loader = async ({ request }) => {
 
   const bugs = getBugs(queryString);
   const users = await getUsers();
+  const searches = await getSearches();
 
   return {
     bugs,
     users,
-    searches: getSearches(),
+    searches,
   };
 };
 

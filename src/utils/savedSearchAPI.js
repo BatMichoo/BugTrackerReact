@@ -106,7 +106,7 @@ export const deleteSearch = async (searchId) => {
   });
 
   if (!response.ok) {
-    return new Response(
+    throw new Response(
       { message: "Could not delete saved search." },
       { status: response.status },
     );

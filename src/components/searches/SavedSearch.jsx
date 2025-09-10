@@ -1,84 +1,87 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { Await, useSearchParams } from "react-router";
 import classes from "./SavedSearch.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Searches from "./Searches";
 import Dialog from "../modals/Dialog";
-import { createSearch } from "../../utils/savedSearchAPI";
+import { createSearch, deleteSearch } from "../../utils/savedSearchAPI";
 
-export default function SavedSearch({ searchesPromise }) {
+export default function SavedSearch({ searches }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isSaving, setIsSaving] = useState(null);
+  const [savedSearches, setSavedSearches] = useState(searches);
   const modalRef = useRef();
   const inputRef = useRef();
 
-  function enableSearch(search) {
+  function enableSearch(queryString) {
     setSearchParams(() => {
       const newParams = new URLSearchParams();
 
-      newParams.set("filter", search.queryString);
+      newParams.set("filter", queryString);
 
       return newParams;
     });
   }
 
   async function saveNewSearch(queryString, name) {
-    await createSearch({ name, queryString });
+    const search = await createSearch({ name, queryString });
+    setSavedSearches((prev) => [...prev, search]);
 
-    setIsSaving(false);
+    modalRef.current.close();
   }
 
-  useEffect(() => {
-    if (isSaving) {
-      modalRef.current.showModal();
-      // } else if (isSaving !== null) {
-      //   modalRef.current.close();
+  async function deleteSavedSearch(id) {
+    const result = await deleteSearch(id);
+
+    if (result) {
+      if (
+        searchParams.get("filter") ==
+        savedSearches.find((s) => s.id == id).queryString
+      ) {
+        setSearchParams(() => new URLSearchParams());
+      }
+      setSavedSearches((prev) => {
+        const searches = [...prev].filter((s) => s.id != id);
+
+        return searches;
+      });
     }
-  }, [isSaving]);
+  }
 
   return (
     <div className={classes["searches-container"]}>
       <h3>Saved searches</h3>
-      {isSaving ? (
-        <Dialog ref={modalRef}>
-          <h4>Save search</h4>
-          <input ref={inputRef} type="text" />
-          <button
-            type="button"
-            onClick={async () =>
-              await saveNewSearch(
-                searchParams.get("filter"),
-                inputRef.current.value,
-              )
-            }
-          >
-            Save
-          </button>
-          <button type="button" onClick={() => setIsSaving(false)}>
-            Cancel
-          </button>
-        </Dialog>
-      ) : undefined}
-      <Suspense
-        fallback={
-          <FontAwesomeIcon icon="spinner" spinPulse size="3x" color="black" />
-        }
-      >
-        <Await resolve={searchesPromise}>
-          {(searches) => {
-            return searches && searches.length > 0 ? (
-              <Searches enableSearch={enableSearch} searches={searches} />
-            ) : (
-              <div> No Saved Searches. </div>
-            );
-          }}
-        </Await>
-      </Suspense>
+      <Dialog ref={modalRef}>
+        <h4>Save search</h4>
+        <input ref={inputRef} type="text" />
+        <button
+          type="button"
+          onClick={async () =>
+            await saveNewSearch(
+              searchParams.get("filter"),
+              inputRef.current.value,
+            )
+          }
+        >
+          Save
+        </button>
+        <button type="button" onClick={() => modalRef.current.close()}>
+          Cancel
+        </button>
+      </Dialog>
+      {savedSearches && savedSearches.length > 0 ? (
+        <Searches
+          enableSearch={enableSearch}
+          searches={savedSearches}
+          onDelete={deleteSavedSearch}
+        />
+      ) : (
+        <div> No Saved Searches. </div>
+      )}
       <button
         disabled={!searchParams.get("filter")}
         type="button"
         className={classes["save-btn"]}
-        onClick={() => setIsSaving(true)}
+        onClick={() => modalRef.current.showModal()}
       >
         Save current search
       </button>

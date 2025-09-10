@@ -33,7 +33,6 @@ function AccountPage() {
     if (requiredAction) {
       dialogRef.current.showModal();
     } else {
-      console.log("Closed MODAL!");
       dialogRef.current.close();
     }
   }, [requiredAction]);
@@ -47,9 +46,9 @@ function AccountPage() {
         <button onClick={() => setRequiredAction("password")} type="button">
           Change Password
         </button>
-        <button onClick={() => setRequiredAction("searches")} type="button">
-          Edit saved Searches
-        </button>
+        {/* <button onClick={() => setRequiredAction("searches")} type="button"> */}
+        {/*   Edit saved Searches */}
+        {/* </button> */}
       </div>
     </div>
   );
