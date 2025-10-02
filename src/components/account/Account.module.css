@@ -1,0 +1,25 @@
+.acc-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+  padding: 1em;
+  min-width: 100%;
+}
+
+.acc-container :is(h1, h2, h3) {
+  color: black;
+}
+
+.settings-container {
+  display: flex;
+  gap: 5em;
+  justify-content: space-between;
+}
+
+.settings-container section {
+  padding: 2em;
+  border-radius: 0.5em;
+  box-shadow: 0em 0em 1.5em #615c572f;
+}

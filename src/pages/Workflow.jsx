@@ -48,6 +48,9 @@ const WorkflowPage = () => {
 
 export default WorkflowPage;
 
+let usersPromise = null;
+let searchesPromise = null;
+
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const filter = url.searchParams.get("filter");
@@ -72,9 +75,18 @@ export const loader = async ({ request }) => {
     queryString += `&pageSizeInput=${pageSizeInput}`;
   }
 
+  if (!usersPromise) {
+    usersPromise = getUsers();
+  }
+  const users = await usersPromise;
+
+  if (!searchesPromise) {
+    searchesPromise = getSearches();
+  }
+
+  const searches = await searchesPromise;
+
   const bugs = getBugs(queryString);
-  const users = await getUsers();
-  const searches = await getSearches();
 
   return {
     bugs,
