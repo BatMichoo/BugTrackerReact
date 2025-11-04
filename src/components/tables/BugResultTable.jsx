@@ -103,15 +103,15 @@ const BugResultTable = ({ resultData }) => {
           ref={modalRef}
           action={async () => await deleteBug(bugToDeleteId)}
           onSuccess={() =>
-            (resultData.items = resultData.items.filter(
-              (b) => b.id !== bugToDeleteId,
-            ))
+          (resultData.items = resultData.items.filter(
+            (b) => b.id !== bugToDeleteId,
+          ))
           }
           cleanUp={() => setBugToDeleteId(null)}
           displayContent={MODAL_CONTENT}
         />
       ) : null}
-      <table className={classes["item-table"]}>
+      <table className={classes["item-table"] + " section"}>
         <thead>
           <tr>
             <th>ID</th>
@@ -166,7 +166,7 @@ const BugResultTable = ({ resultData }) => {
                                 style={{
                                   backgroundColor:
                                     PRIORITY_COLORS[
-                                      PRIORITY_MAPPING[b.priority]
+                                    PRIORITY_MAPPING[b.priority]
                                     ],
                                 }}
                               >
@@ -188,18 +188,18 @@ const BugResultTable = ({ resultData }) => {
                             <td>{b.createdBy.name}</td>
                             <td>{b.assignedTo?.name}</td>
                             <td className={classes["actions-container"]}>
-                              <Link to={"bugs/" + b.id}>
+                              <Link to={"bugs/" + b.id} className="button">
                                 <FontAwesomeIcon icon="magnifying-glass" />
                               </Link>
                               <Link
                                 to={"bugs/" + b.id + "/edit"}
-                                className={classes["edit-btn"]}
+                                className={classes["edit-btn"] + " button"}
                               >
                                 <FontAwesomeIcon icon="pen" />
                               </Link>
                               {canDelete ? (
                                 <button
-                                  className={classes["delete-btn"]}
+                                  className={"button " + classes["delete-btn"]}
                                   onClick={() => setBugToDeleteId(b.id)}
                                 >
                                   <FontAwesomeIcon icon="trash" />

@@ -16,11 +16,7 @@ function BugNotificationsPanel() {
   const unreadNotifs = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <div
-      className={classes["nav-item"]}
-      style={{ position: "relative" }}
-      onClick={handleOnClick}
-    >
+    <div style={{ position: "relative" }} onClick={handleOnClick}>
       <FontAwesomeIcon icon="bell" aria-hidden="true" />
       {unreadNotifs > 0 && (
         <span className={classes["notification-badge"]}>{unreadNotifs}</span>

@@ -1,16 +1,53 @@
-.header {
-  min-width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.35em 1em;
-  background-color: #353434;
+header a {
+  padding: 0.25em 0.5em;
 }
 
-.logo {
-  padding: 0.1em;
+header svg,
+header img {
+  color: var(--text);
+  padding: 0.35em;
+}
+
+header svg:hover,
+header img:hover {
+  color: var(--primary);
+  cursor: pointer;
+  border: 0.1125em solid var(--text);
+  border-radius: 0.5em;
+}
+
+.logo a {
   will-change: filter;
   transition: filter 300ms;
+  background: transparent;
+  border: none;
+  padding: 0em;
+}
+
+.logo img {
+  height: auto;
+  width: 100%;
+  display: block;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em var(--bg));
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
 
 @keyframes logo-spin {
@@ -29,25 +66,16 @@
   }
 }
 
-.logo a {
-  min-height: 100%;
-}
-
-.logo img {
-  height: auto;
-  width: 100%;
-  display: block;
-}
-
-.title {
-  flex: 1;
-  text-align: center;
-  margin-left: 4.5em;
-}
-
 .title a {
   position: absolute;
   left: 50%;
-  top: 1%;
+  top: 0.25%;
   transform: translateX(-50%);
+  padding: 0.25em 0.5em;
+}
+
+.title a:hover {
+  background: transparent;
+  border-color: var(--highlight);
+  box-shadow: var(--shadow);
 }

@@ -6,10 +6,24 @@
 }
 
 .nav-item {
-  padding: 0.25em 0.5em 0.1em;
-  border: 0.05em solid grey;
-  border-radius: 0.5em;
-  color: lightblue;
+  padding: 0.25em 0.5em;
+  color: var(--text);
+}
+
+.nav-item a {
+  padding: 0.25em 0.5em;
+  background: transparent;
+}
+
+.nav-item:hover {
+  border-color: var(--highlight);
+  background-color: transparent;
+  color: var(--text-muted);
+}
+
+.nav-item a.active {
+  border-color: var(--border-muted);
+  box-shadow: var(--shadow);
 }
 
 button.nav-item {
@@ -23,11 +37,11 @@ button.nav-item {
 .nav-menu {
   position: absolute;
   top: 105%;
-  left: -20%;
-  background-color: #353434;
+  left: -27%;
+  background-color: var(--bg-light);
   border-bottom-left-radius: 0.55em;
   border-bottom-right-radius: 0.55em;
-  border: inherit;
+  border: 0.05em solid var(--border);
   z-index: 1;
 }
 
@@ -41,36 +55,39 @@ button.nav-item {
 
 .nav-menu ul li {
   text-align: center;
-  padding: 0.25em 0.5em 0.2em;
-  border: 0.05em solid grey;
+  border: 0.05em solid var(--border-muted);
+  padding: 0.25em 0.5em;
   border-radius: 0.5em;
-  color: lightblue;
 }
 
 .nav-item:hover,
 .nav-menu ul li:hover {
-  border-color: rgb(128, 204, 229);
-}
-
-a.active {
-  text-decoration: underline;
-  color: rgb(128, 204, 229);
+  border-color: var(--highlight);
 }
 
 .notification-badge {
   position: absolute;
-  top: -5px; /* Adjust as needed to position above the icon */
-  right: -5px; /* Adjust as needed to position to the right of the icon */
-  background-color: red;
-  color: white;
-  border-radius: 50%; /* Makes it a circle */
-  padding: 2px 6px; /* Adjust padding for desired size and number centering */
-  font-size: 0.6em; /* Smaller font size relative to the icon */
-  min-width: 0.8em; /* Ensures it's always a circle even for single digit */
+  top: -5px;
+  /* Adjust as needed to position above the icon */
+  right: -5px;
+  /* Adjust as needed to position to the right of the icon */
+  background-color: var(--warning);
+  color: var(--text-muted);
+  border-radius: 50%;
+  /* Makes it a circle */
+  padding: 2px 6px;
+  /* Adjust padding for desired size and number centering */
+  font-size: 0.6em;
+  /* Smaller font size relative to the icon */
+  min-width: 0.8em;
+  /* Ensures it's always a circle even for single digit */
   text-align: center;
-  line-height: 1; /* Helps vertically center the number */
-  box-shadow: 0 0 0 1px white; /* Optional: a white border for contrast */
-  z-index: 1; /* Ensure it appears above the icon if there are overlapping elements */
+  line-height: 1;
+  /* Helps vertically center the number */
+  box-shadow: 0 0 0 1px white;
+  /* Optional: a white border for contrast */
+  z-index: 1;
+  /* Ensure it appears above the icon if there are overlapping elements */
 }
 
 .ntf-menu {
@@ -93,6 +110,7 @@ a.active {
   margin: 0.125em 0;
   text-align: center;
   padding: 0.2em 0.15em 0.2em;
+  border: 0.05em solid grey;
   border-radius: 0.5em;
   color: lightblue;
 }

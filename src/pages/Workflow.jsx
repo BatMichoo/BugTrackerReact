@@ -14,7 +14,7 @@ const WorkflowPage = () => {
   const loaderData = useLoaderData();
   return (
     <div className="work-container">
-      <div className="search-container">
+      <div className="search-container section">
         <h1>Search bugs</h1>
         <Suspense
           fallback={

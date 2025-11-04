@@ -7,7 +7,7 @@
 }
 
 .input {
-  color: black;
+  color: var(--text);
   margin: 0.2em;
   display: flex;
   flex-direction: column;
@@ -18,13 +18,15 @@
 .input label {
   text-align: start;
   margin-left: 0.5em;
-  color: #000000d0;
+  color: var(--text);
 }
 
 .input input,
 select {
   padding: 0.4em 0.25em;
-  background-color: rgba(97, 97, 97, 0.719);
+  color: var(--text);
+  /* background-color: rgba(97, 97, 97, 0.719); */
+  background-color: var(--bg-light);
   border: 0em solid;
   border-radius: 0.25em;
 }
@@ -35,9 +37,7 @@ select {
   justify-content: center;
 }
 
-.submit-btn {
-  color: lightblue;
-}
+.submit-btn {}
 
 .save-btn {
   color: greenyellow;

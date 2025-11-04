@@ -35,14 +35,27 @@ function AccountPage() {
     setRequiredAction(undefined);
   }
 
-  switch (requiredAction) {
+  let action = requiredAction && requiredAction.action;
+  let search = undefined;
+
+  switch (action) {
     case "password":
       dialogContent = <ChangePasswordForm onCleanUp={cleanUp} />;
       break;
     case "edit-search":
-      dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
+      search = searches.find((s) => s.id == requiredAction.id);
+      dialogContent = (
+        <EditSearchesForm
+          search={search}
+          onUpdate={setSearches}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     case "delete-search":
+      dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
+      break;
+    case "add-search":
       dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
       break;
     default:
@@ -65,21 +78,45 @@ function AccountPage() {
       <div className={classes["settings-container"]}>
         <section className={classes["acc-section"]}>
           <h3>Account Settings</h3>
-          <button onClick={() => setRequiredAction("password")} type="button">
+          <button
+            onClick={() => setRequiredAction({ action: "password" })}
+            type="button"
+          >
             Change Password
           </button>
         </section>
         <section className={classes["search-section"]}>
           <h3>Saved Search Settings</h3>
-          <select id="selected-search">
-            {searches.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-          <button>Edit</button>
-          <button>Delete</button>
+          <div>
+            <select id="selected-search">
+              {searches.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => {
+                const searchId =
+                  document.getElementById("selected-search").value;
+                setRequiredAction({ action: "edit-search", id: searchId });
+              }}
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => {
+                const searchId =
+                  document.getElementById("selected-search").value;
+                setRequiredAction({ action: "delete-search", id: searchId });
+              }}
+            >
+              Delete
+            </button>
+          </div>
+          <button onClick={() => setRequiredAction({ action: "add-search" })}>
+            New Saved Search
+          </button>
         </section>
       </div>
       {hasElevatedAccess ? (

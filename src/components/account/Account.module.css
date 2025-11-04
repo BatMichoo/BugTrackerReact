@@ -8,9 +8,9 @@
   min-width: 100%;
 }
 
-.acc-container :is(h1, h2, h3) {
-  color: black;
-}
+/* .acc-container :is(h1, h2, h3) { */
+/*   color: black; */
+/* } */
 
 .settings-container {
   display: flex;

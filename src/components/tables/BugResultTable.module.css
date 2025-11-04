@@ -1,31 +1,29 @@
 .item-table {
-  width: 90%;
-  background-color: #555555d8;
+  min-width: 90%;
+  background-color: var(--bg);
   border-radius: 1em;
   margin: 1em auto 2em auto;
-  padding: 0 1em;
-  /* border: 0.35em solid #615c57; */
-  border: 0.35em solid #f8f8f8;
-  box-shadow: 0em 0em 1.5em #615c572f;
-  border-spacing: 0.5em;
-  border-collapse: separate;
+  padding: 0.5em 1em;
+  border: 0.125em solid var(--border-card);
+  box-shadow: var(--shadow);
+  border-spacing: 0.25em;
 }
 
 .item-table th {
-  border-bottom: 0.05em solid white;
-  color: black;
+  border-bottom: 0.05em solid var(--highlight);
   font-size: 1.25rem;
   text-transform: uppercase;
 }
 
-.item-row td {
-  padding: 0.25em;
-}
-
 .item-row {
-  box-shadow: 0em 0em 1em #615c57;
+  box-shadow: var(--shadow);
   border-radius: 1em;
   cursor: pointer;
+  background-color: var(--bg-light);
+}
+
+.item-row td {
+  padding: 0.25em 0.5em;
 }
 
 .actions-container {
