@@ -37,7 +37,17 @@ select {
   justify-content: center;
 }
 
-.submit-btn {}
+.submit-btn:hover {
+  color: var(--highlight);
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.reset-btn:hover {
+  color: var(--highlight);
+  background: var(--secondary);
+  border-color: var(--secondary);
+}
 
 .save-btn {
   color: greenyellow;

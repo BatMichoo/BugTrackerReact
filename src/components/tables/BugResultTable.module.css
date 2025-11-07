@@ -10,6 +10,8 @@
 }
 
 .item-table th {
+  color: var(--text);
+  padding: 0.5em 1em;
   border-bottom: 0.05em solid var(--highlight);
   font-size: 1.25rem;
   text-transform: uppercase;
@@ -26,6 +28,14 @@
   padding: 0.25em 0.5em;
 }
 
+.item-row td:first-child {
+  border-radius: 1em 0em 0em 1em;
+}
+
+.item-row td:last-child {
+  border-radius: 0em 1em 1em 0em;
+}
+
 .actions-container {
   vertical-align: middle;
   display: flex;
@@ -36,28 +46,38 @@
 .badge {
   display: inline-block;
   border-radius: 1em;
-  padding: 0.05em 1.25em;
+  padding: 0.25em 1.25em;
   font-size: 0.8em;
   font-weight: bold;
   color: black;
 }
 
-.edit-btn {
-  color: lightblue;
+a.info-btn:hover,
+button.info-btn:hover {
+  color: var(--info);
+  border-color: var(--info);
 }
 
-.edit-btn:hover {
-  color: lightyellow;
-  border-color: lightyellow;
+.edit-btn {
+  /* color: lightblue; */
+}
+
+a.edit-btn:hover,
+button.edit-btn:hover {
+  color: var(--warning);
+  border-color: var(--warning);
 }
 
 .delete-btn {
-  color: rgba(255, 0, 0, 0.712);
+  /* color: rgba(255, 0, 0, 0.712); */
 }
 
-.delete-btn:hover {
-  color: rgb(255, 74, 74);
-  border-color: rgb(255, 74, 74);
+a.delete-btn:hover,
+button.delete-btn:hover {
+  /* color: rgb(255, 74, 74); */
+  /* border-color: rgb(255, 74, 74); */
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 .footer-content {

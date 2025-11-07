@@ -28,14 +28,13 @@
   left: 50%;
   transform: translate(-50%, 0%);
   z-index: 1000;
-  background-color: #e0d3c5;
-  color: black;
+  background-color: var(--bg-light);
+  color: var(--text);
   width: 25em;
   border: 0.125em solid;
   border-radius: 0.5em;
   padding-bottom: 0.6em;
-  box-shadow: 0em 0em 1.2em black;
-  /*#615c572f; */
+  box-shadow: var(--shadow);
 }
 
 .slide-in {
@@ -49,7 +48,7 @@
 
 .modal-progress {
   position: absolute;
-  top: 92%;
+  top: 92.5%;
   width: 100%;
   border: 0em solid;
   block-size: 0.5em;
@@ -57,76 +56,71 @@
 
 .modal-progress::-webkit-progress-bar {
   border-bottom: 0.125em solid;
-  background-color: #e0d3c5;
+  background-color: var(--bg-light);
   border-bottom-left-radius: 0.3em;
   border-bottom-right-radius: 0.3em;
 }
 
 .modal-progress::-webkit-progress-value {
-  background-color: lightskyblue;
-  border-bottom-left-radius: 0.3em;
-}
-
-.modal-progress::-webkit-progress-value {
-  background-color: lightskyblue;
+  background-color: var(--info);
   border-bottom-left-radius: 0.3em;
 }
 
 .modal-progress::-moz-progress-bar {
   border-bottom: 0.125em solid;
-  background-color: #e0d3c5;
+  background-color: var(--bg-light);
   border-bottom-left-radius: 0.3em;
   border-bottom-right-radius: 0.3em;
 }
 
 .info.modal-progress::-webkit-progress-bar {
-  border-color: lightskyblue;
+  border-color: var(--info);
 }
 
 .success.modal-progress::-webkit-progress-bar {
-  border-color: lightgreen;
+  border-color: var(--success);
   /* Specific border color for success state */
 }
 
 .error.modal-progress::-webkit-progress-bar {
-  border-color: lightcoral;
+  border-color: var(--danger);
   /* Specific border color for error state */
 }
 
 .info.modal-progress::-webkit-progress-value {
-  background-color: lightskyblue;
+  background-color: var(--info);
 }
 
 .info.modal-progress::-moz-progress-bar {
-  background-color: lightskyblue;
+  background-color: var(--info);
 }
 
 .success.modal-progress::-webkit-progress-value {
-  background-color: lightgreen;
+  background-color: var(--success);
 }
 
 .success.modal-progress::-moz-progress-bar {
-  background-color: lightgreen;
+  background-color: var(--success);
 }
 
 .error.modal-progress::-webkit-progress-value {
-  background-color: lightcoral;
+  background-color: var(--danger);
 }
 
 .error.modal-progress::-moz-progress-bar {
-  background-color: lightcoral;
+  background-color: var(--danger);
 }
 
 .info {
-  border-color: lightskyblue;
+  border-color: var(--info);
 }
 
 .success {
-  border-color: lightgreen;
+  border-color: var(--success);
 }
 
 .error {
-  border-color: lightcoral;
+  border-color: var(--danger);
 }
 
 .modal-content {

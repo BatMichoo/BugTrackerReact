@@ -1,6 +1,5 @@
 .edit-form h1 {
   margin: 1em;
-  color: black;
 }
 
 .edit-form {
@@ -19,9 +18,11 @@
 }
 
 .edit-form textarea {
+  color: var(--text);
   font-size: 18px;
   box-shadow: 0em 0em 1.5em #615c572f;
   padding: 1em;
+  margin-top: 1em;
   border-radius: 0.5em;
-  background-color: rgba(97, 97, 97, 0.719);
+  background-color: var(--bg);
 }

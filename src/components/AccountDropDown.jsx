@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRevalidator } from "react-router";
+import { NavLink, useNavigate, useRevalidator } from "react-router";
 import classes from "./NavBar.module.css";
 import { useRef, useState } from "react";
 import { logout } from "../utils/auth";
@@ -53,8 +53,8 @@ const AccountDropDown = () => {
       <Modal
         ref={modalRef}
         action={logout}
-        onSuccess={() => { }}
-        cleanUp={() => navigate("/").then(revalidator.revalidate)}
+        onSuccess={() => navigate("/").then(revalidator.revalidate)}
+        cleanUp={() => { }}
         displayContent={MODAL_CONTENT}
       />
       <div
@@ -62,21 +62,21 @@ const AccountDropDown = () => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <button className={classes["nav-item"]}>
+        <NavLink
+          to="/account"
+          className={({ isActive }) => (isActive ? classes.active : undefined)}
+        >
           Account
-          {isOpen && (
-            <div className={classes["nav-menu"]}>
-              <ul>
-                <li>
-                  <Link to="/account">Open</Link>
-                </li>
-                <li>
-                  <div onClick={() => startLogOut()}>Logout</div>
-                </li>
-              </ul>
-            </div>
-          )}
-        </button>
+        </NavLink>
+        {isOpen && (
+          <div className={classes["nav-menu"]}>
+            <ul>
+              <li>
+                <div onClick={() => startLogOut()}>Logout</div>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </>
   );

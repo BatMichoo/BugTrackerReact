@@ -139,10 +139,20 @@ const Comment = ({ comment, onDelete }) => {
         </div>
       </div>
       <div className={classes["comment-actions"]}>
+        <FontAwesomeIcon
+          icon="reply"
+          size="lg"
+          aria-hidden="true"
+          style={{ color: "var(--info)", cursor: "pointer" }}
+          onClick={
+            isReplying ? () => setIsReplying(false) : () => setIsReplying(true)
+          }
+        />
         {userName == savedComment.authorName ? (
           <FontAwesomeIcon
             className={classes["comment-edit"]}
             icon={isEditing ? "floppy-disk" : "pen"}
+            style={{ color: "var(--warning)", cursor: "pointer" }}
             size="lg"
             aria-hidden="true"
             onClick={isEditing ? () => saveComment : () => setIsEditing(true)}
@@ -153,19 +163,10 @@ const Comment = ({ comment, onDelete }) => {
             icon="times"
             size="2x"
             aria-hidden="true"
-            style={{ color: "lightcoral", cursor: "pointer" }}
+            style={{ color: "var(--danger)", cursor: "pointer" }}
             onClick={isEditing ? () => setIsEditing(false) : () => onDelete()}
           />
         ) : null}
-        <FontAwesomeIcon
-          icon="reply"
-          size="lg"
-          aria-hidden="true"
-          style={{ color: "lightcoral", cursor: "pointer" }}
-          onClick={
-            isReplying ? () => setIsReplying(false) : () => setIsReplying(true)
-          }
-        />
       </div>
       {isReplying ? (
         <div>

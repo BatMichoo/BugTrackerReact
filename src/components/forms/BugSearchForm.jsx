@@ -106,7 +106,11 @@ const BugSearchForm = ({ filters, users }) => {
       </div>
       <div className="btn-container">
         <button className={classes["submit-btn"]}>Search</button>
-        <button type="button" onClick={handleReset}>
+        <button
+          className={classes["reset-btn"]}
+          type="button"
+          onClick={handleReset}
+        >
           <FontAwesomeIcon icon="arrow-right-rotate" />
         </button>
       </div>

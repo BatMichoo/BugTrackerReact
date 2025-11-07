@@ -8,8 +8,62 @@
 }
 
 :root {
-  --hue: 264;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --hue: 255;
   --hue-secondary: calc(var(--hue) + 180);
+  --chroma: 0.15;
+  --chroma-bg: calc(var(--chroma) * 0.5);
+  --chroma-text: min(var(--chroma), 0.1);
+  --chroma-action: max(var(--chroma), 0.1);
+  --chroma-alert: max(var(--chroma), 0.05);
+  /* bg */
+  --bg-dark: oklch(0.92 var(--chroma-bg) var(--hue));
+  --bg: oklch(0.96 var(--chroma-bg) var(--hue));
+  --bg-light: oklch(1 var(--chroma-bg) var(--hue));
+  --gradient: linear-gradient(0deg, var(--bg) 97%, var(--bg-light));
+  --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+  /* text */
+  --text: oklch(0.15 var(--chroma) var(--hue));
+  --text-muted: oklch(0.4 var(--chroma) var(--hue));
+  /* border */
+  --highlight: oklch(1 var(--chroma) var(--hue));
+  --border: oklch(0.6 var(--chroma) var(--hue));
+  --border-muted: oklch(0.7 var(--chroma) var(--hue));
+  --border-card: solid 1px var(--bg);
+  /* action */
+  --primary: oklch(0.4 var(--chroma-action) var(--hue));
+  --secondary: oklch(0.4 var(--chroma-action) var(--hue-secondary));
+  /* alert */
+  --danger: oklch(0.5 var(--chroma-alert) 30);
+  --warning: oklch(0.5 var(--chroma-alert) 100);
+  --success: oklch(0.5 var(--chroma-alert) 160);
+  --info: oklch(0.5 var(--chroma-alert) 260);
+  /* shadows */
+  --shadow: 0px 2px 2px oklch(0 0 0 / 0.2), 0px 4px 4px oklch(0 0 0 / 0.1);
+  /* type */
+  --ff: "Roboto", Helvetica, Arial, sans-serif;
+  /* --h1: 700 1.5rem/1.2em var(--ff); */
+  /* --h2: 700 1.25rem/1.2em var(--ff); */
+  /* --h3: 700 1.125rem/1.4em var(--ff); */
+  /* --h4: 700 1rem/1.6em var(--ff); */
+  /* --p: 1rem/1.6em var(--ff); */
+  /* --small: 400 0.75rem/1.8em var(--ff); */
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  max-width: 100vw;
+  background: var(--bg-dark);
+  color: var(--text-muted);
+  font: 16px/1.5 var(--ff);
+}
+
+body.dark {
   --chroma: 0.05;
   --chroma-bg: calc(var(--chroma) * 0.5);
   --chroma-text: min(var(--chroma), 0.1);
@@ -37,49 +91,6 @@
   --warning: oklch(0.7 var(--chroma-alert) 100);
   --success: oklch(0.7 var(--chroma-alert) 160);
   --info: oklch(0.7 var(--chroma-alert) 260);
-  /* shadows */
-  --shadow: 0px 2px 2px oklch(0 0 0 / 0.2), 0px 4px 4px oklch(0 0 0 / 0.1);
-  /* type */
-  --ff: "Manrope", sans-serif;
-  --h1: 700 1.5rem/1.2em var(--ff);
-  --h2: 700 1.25rem/1.2em var(--ff);
-  --h3: 700 1.125rem/1.4em var(--ff);
-  --h4: 700 1rem/1.6em var(--ff);
-  --p: 400 1rem/1.6em var(--ff);
-  --small: 400 0.75rem/1.8em var(--ff);
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  max-width: 100vw;
-  background: var(--bg-dark);
-  color: var(--text-muted);
-}
-
-body.light {
-  /* bg */
-  --bg-dark: oklch(0.92 var(--chroma-bg) var(--hue));
-  --bg: oklch(0.96 var(--chroma-bg) var(--hue));
-  --bg-light: oklch(1 var(--chroma-bg) var(--hue));
-  --gradient: linear-gradient(0deg, var(--bg) 97%, var(--bg-light));
-  --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
-  /* text */
-  --text: oklch(0.15 var(--chroma) var(--hue));
-  --text-muted: oklch(0.4 var(--chroma) var(--hue));
-  /* border */
-  --highlight: oklch(1 var(--chroma) var(--hue));
-  --border: oklch(0.6 var(--chroma) var(--hue));
-  --border-muted: oklch(0.7 var(--chroma) var(--hue));
-  --border-card: solid 1px var(--bg);
-  /* action */
-  --primary: oklch(0.4 var(--chroma-action) var(--hue));
-  --secondary: oklch(0.4 var(--chroma-action) var(--hue-secondary));
-  /* alert */
-  --danger: oklch(0.5 var(--chroma-alert) 30);
-  --warning: oklch(0.5 var(--chroma-alert) 100);
-  --success: oklch(0.5 var(--chroma-alert) 160);
-  --info: oklch(0.5 var(--chroma-alert) 260);
 }
 
 header {
@@ -94,12 +105,12 @@ header {
 }
 
 header a {
-  color: var(--text);
+  /* color: var(--text-muted); */
   background: transparent;
 }
 
 header h3 {
-  color: var(--text-muted);
+  /* color: var(--text-muted); */
 }
 
 footer {
@@ -110,17 +121,17 @@ footer {
 
 .button,
 button {
+  font: 16px/1.5 var(--ff);
   background: var(--bg-light);
   color: var(--text-muted);
-  font: var(--p);
+  /* font: var(--p); */
   cursor: pointer;
   box-shadow: var(--shadow);
   border: var(--border-card);
   border-top: solid 0.1125em var(--highlight);
-  cursor: pointer;
   border-radius: 0.5em;
   padding: 0.6em 1.2em;
-  font-family: inherit;
+  /* font-family: inherit; */
   letter-spacing: 1px;
   transition: border-color 0.25s;
 }
@@ -148,7 +159,6 @@ a:hover {
 
 h1 {
   font-size: 3.2em;
-  line-height: 1.1;
 }
 
 #content-root {

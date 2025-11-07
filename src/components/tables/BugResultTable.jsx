@@ -187,24 +187,33 @@ const BugResultTable = ({ resultData }) => {
                             <td>{b.title}</td>
                             <td>{b.createdBy.name}</td>
                             <td>{b.assignedTo?.name}</td>
-                            <td className={classes["actions-container"]}>
-                              <Link to={"bugs/" + b.id} className="button">
-                                <FontAwesomeIcon icon="magnifying-glass" />
-                              </Link>
-                              <Link
-                                to={"bugs/" + b.id + "/edit"}
-                                className={classes["edit-btn"] + " button"}
-                              >
-                                <FontAwesomeIcon icon="pen" />
-                              </Link>
-                              {canDelete ? (
-                                <button
-                                  className={"button " + classes["delete-btn"]}
-                                  onClick={() => setBugToDeleteId(b.id)}
+                            <td>
+                              <div className={classes["actions-container"]}>
+                                <Link
+                                  to={"bugs/" + b.id}
+                                  className={classes["info-btn"] + " button"}
                                 >
-                                  <FontAwesomeIcon icon="trash" />
-                                </button>
-                              ) : undefined}
+                                  <FontAwesomeIcon icon="magnifying-glass" />
+                                </Link>
+
+                                <Link
+                                  to={"bugs/" + b.id + "/edit"}
+                                  className={classes["edit-btn"] + " button"}
+                                >
+                                  <FontAwesomeIcon icon="pen" />
+                                </Link>
+
+                                {canDelete ? (
+                                  <button
+                                    className={
+                                      "button " + classes["delete-btn"]
+                                    }
+                                    onClick={() => setBugToDeleteId(b.id)}
+                                  >
+                                    <FontAwesomeIcon icon="trash" />
+                                  </button>
+                                ) : undefined}
+                              </div>
                             </td>
                           </tr>
                         );

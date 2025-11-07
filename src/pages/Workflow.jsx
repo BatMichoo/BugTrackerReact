@@ -35,7 +35,7 @@ const WorkflowPage = () => {
         <SavedSearch searches={loaderData.searches} />
       </div>
       <div>
-        <Link to="bugs/new" className="create-bug submit-btn">
+        <Link to="bugs/new" className="button create-bug">
           <FontAwesomeIcon icon="plus" /> New
         </Link>
       </div>

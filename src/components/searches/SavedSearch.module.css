@@ -17,10 +17,6 @@
   margin: 1em;
 }
 
-.search-list button {
-  color: lightblue;
-}
-
 .search {
   display: flex;
   gap: 1em;

@@ -124,60 +124,63 @@ const BugDetails = ({ bug }) => {
           cleanUp={
             isDeleting
               ? () => {
-                  setIsDeleting(false);
-                }
+                setIsDeleting(false);
+              }
               : () => setCommentToDeleteId(null)
           }
           displayContent={isDeleting ? BUG_MODAL_CONTENT : COMM_MODAL_CONTENT}
         />
       ) : null}
       <h1>{bug.title}</h1>
-      <div className={classes["bug-details"]}>
-        <BugProperty
-          className={classes.property}
-          labelText="ID"
-          content={bug.id}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Priority"
-          content={PRIORITY_MAPPING[bug.priority]}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Status"
-          content={STATUS_MAPPING[bug.status]}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Created By"
-          content={bug.createdBy.name}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Created On"
-          content={bug.createdOn}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Assigned To"
-          content={bug.assignedTo?.name ? bug.assignedTo?.name : "N/A"}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Last Updated By"
-          content={bug.lastUpdatedBy.name}
-        />
-        <BugProperty
-          className={classes.property}
-          labelText="Last Updated On"
-          content={bug.lastUpdatedOn}
-        />
+      <div className="section">
+        <div className={classes["bug-details"]}>
+          <BugProperty
+            className={classes.property}
+            labelText="ID"
+            content={bug.id}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Priority"
+            content={PRIORITY_MAPPING[bug.priority]}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Status"
+            content={STATUS_MAPPING[bug.status]}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Created By"
+            content={bug.createdBy.name}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Created On"
+            content={bug.createdOn}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Assigned To"
+            content={bug.assignedTo?.name ? bug.assignedTo?.name : "N/A"}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Last Updated By"
+            content={bug.lastUpdatedBy.name}
+          />
+          <BugProperty
+            className={classes.property}
+            labelText="Last Updated On"
+            content={bug.lastUpdatedOn}
+          />
+        </div>
       </div>
       <div className={classes["content-container"]}>
         <div className={classes.description}>
-          <span>Description</span>
+          <h2>Description</h2>
           <textarea
+            className="section"
             disabled
             rows={TEXT_AREA_GRID_SIZE.rows}
             cols={TEXT_AREA_GRID_SIZE.cols}
@@ -195,7 +198,7 @@ const BugDetails = ({ bug }) => {
           {comments.length > 0 ? (
             <ul className={classes["comments-list"]}>
               {comments.map((c) => (
-                <li key={c.id}>
+                <li key={c.id} className="section">
                   <Comment
                     comment={c}
                     onDelete={() => setCommentToDeleteId(c.id)}

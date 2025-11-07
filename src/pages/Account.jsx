@@ -76,8 +76,8 @@ function AccountPage() {
       <Dialog ref={dialogRef}>{dialogContent}</Dialog>
       <h1>Account</h1>
       <div className={classes["settings-container"]}>
-        <section className={classes["acc-section"]}>
-          <h3>Account Settings</h3>
+        <section className={classes["acc-settings"] + " section"}>
+          <h2>Account Settings</h2>
           <button
             onClick={() => setRequiredAction({ action: "password" })}
             type="button"
@@ -85,9 +85,14 @@ function AccountPage() {
             Change Password
           </button>
         </section>
-        <section className={classes["search-section"]}>
-          <h3>Saved Search Settings</h3>
-          <div>
+        <section className={"section " + classes["search-settings"]}>
+          <div className={classes["search-settings-header"]}>
+            <h2>Saved Search Settings</h2>
+            <button onClick={() => setRequiredAction({ action: "add-search" })}>
+              New Saved Search
+            </button>
+          </div>
+          <div className={classes["selected-search-container"]}>
             <select id="selected-search">
               {searches.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -96,6 +101,7 @@ function AccountPage() {
               ))}
             </select>
             <button
+              className="warning"
               onClick={() => {
                 const searchId =
                   document.getElementById("selected-search").value;
@@ -105,6 +111,7 @@ function AccountPage() {
               Edit
             </button>
             <button
+              className="danger"
               onClick={() => {
                 const searchId =
                   document.getElementById("selected-search").value;
@@ -114,28 +121,75 @@ function AccountPage() {
               Delete
             </button>
           </div>
-          <button onClick={() => setRequiredAction({ action: "add-search" })}>
-            New Saved Search
-          </button>
         </section>
       </div>
       {hasElevatedAccess ? (
-        <div>
-          <h3>Admin Panel</h3>
-          <Suspense
-            fallback={
-              <FontAwesomeIcon
-                icon="spinner"
-                spinPulse
-                size="3x"
-                color="black"
-              />
-            }
-          >
-            <Await resolve={usersPromise}>
-              {(resolved) => resolved.map((u) => <p key={u.id}>{u.name}</p>)}
-            </Await>
-          </Suspense>
+        <div className={classes["admin-panel-container"]}>
+          <h1>Admin Panel</h1>
+          <div className={classes["admin-panel"]}>
+            <section className="section">
+              <h3>User Management</h3>
+              <ul>
+                <Suspense
+                  fallback={
+                    <FontAwesomeIcon
+                      icon="spinner"
+                      spinPulse
+                      size="3x"
+                      color="var(--text)"
+                    />
+                  }
+                >
+                  <Await resolve={usersPromise}>
+                    {(resolved) =>
+                      resolved.map((u) => (
+                        <li key={u.id}>
+                          <div>{u.name}</div>
+                          <div>
+                            <button>Add Role</button>
+                            <button>Remove Role</button>
+                            <button>Edit username</button>
+                            <button>Edit email</button>
+                            <button>DELETE</button>
+                          </div>
+                        </li>
+                      ))
+                    }
+                  </Await>
+                </Suspense>
+              </ul>
+            </section>
+            <section className="section">
+              <h3>Role Management</h3>
+              <ul>
+                <Suspense
+                  fallback={
+                    <FontAwesomeIcon
+                      icon="spinner"
+                      spinPulse
+                      size="3x"
+                      color="var(--text)"
+                    />
+                  }
+                >
+                  <Await resolve={usersPromise}>
+                    <button>Create</button>
+                    {(resolved) =>
+                      resolved.map((u) => (
+                        <li key={u.id}>
+                          <div>{u.name}</div>
+                          <div>
+                            <button>Edit</button>
+                            <button>DELETE</button>
+                          </div>
+                        </li>
+                      ))
+                    }
+                  </Await>
+                </Suspense>
+              </ul>
+            </section>
+          </div>
         </div>
       ) : undefined}
     </div>

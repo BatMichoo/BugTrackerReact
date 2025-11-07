@@ -7,37 +7,46 @@
 
 .nav-item {
   padding: 0.25em 0.5em;
-  color: var(--text);
+}
+
+.nav-item div {
+  /* padding: 0.25em 1em; */
 }
 
 .nav-item a {
-  padding: 0.25em 0.5em;
-  background: transparent;
-}
-
-.nav-item:hover {
-  border-color: var(--highlight);
-  background-color: transparent;
+  font: var(--p);
+  display: block;
+  padding: 0em 1em;
   color: var(--text-muted);
 }
 
-.nav-item a.active {
-  border-color: var(--border-muted);
+.nav-item .active {
+  color: var(--text);
+  border: var(--border-card);
+  border-radius: 0.25em;
+  border-color: var(--highlight);
   box-shadow: var(--shadow);
 }
 
-button.nav-item {
-  margin: 0;
-  padding: 0;
+.nav-item button {
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
   border: unset;
   background-color: unset;
   letter-spacing: unset;
+  box-shadow: unset;
+}
+
+.nav-item button:hover {
+  color: var(--primary);
+  border-color: unset;
+  background: unset;
 }
 
 .nav-menu {
   position: absolute;
   top: 105%;
-  left: -27%;
+  left: 4%;
   background-color: var(--bg-light);
   border-bottom-left-radius: 0.55em;
   border-bottom-right-radius: 0.55em;
@@ -84,7 +93,7 @@ button.nav-item {
   text-align: center;
   line-height: 1;
   /* Helps vertically center the number */
-  box-shadow: 0 0 0 1px white;
+  box-shadow: var(--shadow);
   /* Optional: a white border for contrast */
   z-index: 1;
   /* Ensure it appears above the icon if there are overlapping elements */
@@ -94,9 +103,11 @@ button.nav-item {
   position: absolute;
   top: 128%;
   left: -465%;
-  background-color: #353434;
+  background-color: var(--bg-light);
   border-bottom-left-radius: 0.55em;
   border-bottom-right-radius: 0.55em;
+  border: 0.05em solid var(--border);
+  /* border-radius: 0.5em; */
   z-index: 1;
 }
 

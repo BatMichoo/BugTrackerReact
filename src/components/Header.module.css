@@ -4,7 +4,7 @@ header a {
 
 header svg,
 header img {
-  color: var(--text);
+  color: var(--text-muted);
   padding: 0.35em;
 }
 
@@ -12,8 +12,8 @@ header svg:hover,
 header img:hover {
   color: var(--primary);
   cursor: pointer;
-  border: 0.1125em solid var(--text);
-  border-radius: 0.5em;
+  /* border: 0.1125em solid var(--text); */
+  /* border-radius: 0.5em; */
 }
 
 .logo a {
@@ -69,13 +69,10 @@ header img:hover {
 .title a {
   position: absolute;
   left: 50%;
-  top: 0.25%;
+  top: 1.25%;
   transform: translateX(-50%);
+  color: var(--text-muted);
   padding: 0.25em 0.5em;
 }
 
-.title a:hover {
-  background: transparent;
-  border-color: var(--highlight);
-  box-shadow: var(--shadow);
-}
+.title a:hover {}
