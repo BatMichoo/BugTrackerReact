@@ -5,6 +5,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: all 0.2s;
 }
 
 :root {
@@ -15,7 +16,7 @@
 
   --hue: 255;
   --hue-secondary: calc(var(--hue) + 180);
-  --chroma: 0.15;
+  --chroma: 0.015;
   --chroma-bg: calc(var(--chroma) * 0.5);
   --chroma-text: min(var(--chroma), 0.1);
   --chroma-action: max(var(--chroma), 0.1);
@@ -46,12 +47,6 @@
   --shadow: 0px 2px 2px oklch(0 0 0 / 0.2), 0px 4px 4px oklch(0 0 0 / 0.1);
   /* type */
   --ff: "Roboto", Helvetica, Arial, sans-serif;
-  /* --h1: 700 1.5rem/1.2em var(--ff); */
-  /* --h2: 700 1.25rem/1.2em var(--ff); */
-  /* --h3: 700 1.125rem/1.4em var(--ff); */
-  /* --h4: 700 1rem/1.6em var(--ff); */
-  /* --p: 1rem/1.6em var(--ff); */
-  /* --small: 400 0.75rem/1.8em var(--ff); */
 }
 
 body {
@@ -70,7 +65,7 @@ body.dark {
   --chroma-action: max(var(--chroma), 0.1);
   --chroma-alert: max(var(--chroma), 0.05);
   /* bg */
-  --bg-dark: oklch(0.1 var(--chroma-bg) var(--hue));
+  --bg-dark: oklch(0.12 var(--chroma-bg) var(--hue));
   --bg: oklch(0.15 var(--chroma-bg) var(--hue));
   --bg-light: oklch(0.2 var(--chroma-bg) var(--hue));
   --gradient: linear-gradient(0deg, var(--bg) 97%, var(--bg-light));
@@ -124,16 +119,14 @@ button {
   font: 16px/1.5 var(--ff);
   background: var(--bg-light);
   color: var(--text-muted);
-  /* font: var(--p); */
   cursor: pointer;
   box-shadow: var(--shadow);
   border: var(--border-card);
   border-top: solid 0.1125em var(--highlight);
   border-radius: 0.5em;
   padding: 0.6em 1.2em;
-  /* font-family: inherit; */
   letter-spacing: 1px;
-  transition: border-color 0.25s;
+  /* transition: border-color 0.25s; */
 }
 
 .button:focus,

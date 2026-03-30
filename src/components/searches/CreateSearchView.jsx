@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { parseFilter } from "../../utils/searchParamsService";
 import classes from "./SavedSearch.module.css";
-import { createSearch, updateSearch } from "../../utils/savedSearchAPI";
+import { createSearch } from "../../utils/savedSearchAPI";
 
-export default function SavedSearchView({
+export default function CreateSearchView({
   search,
   onUpdate,
   onCleanUp,
@@ -12,8 +12,6 @@ export default function SavedSearchView({
   const [isEditing, setIsEditing] = useState(isInEditing);
   const kvp = parseFilter(search?.queryString ?? "");
   const savedSearch = { ...search };
-
-  console.log(savedSearch);
 
   function handleChange(event) {
     const { name, value } = event.target;

@@ -21,11 +21,19 @@
   align-items: center;
 }
 
+.acc-settings > * {
+  width: 100%;
+}
+
 .search-settings {
   display: flex;
   gap: 1em;
   align-items: center;
   flex-direction: column;
+}
+
+.search-settings > * {
+  width: 100%;
 }
 
 .search-settings div {
@@ -44,6 +52,11 @@
   gap: 1em;
 }
 
+.selected-search-container select {
+  text-align: center;
+  width: 40%;
+}
+
 .admin-panel-container {
   display: flex;
   flex-direction: column;
@@ -53,15 +66,72 @@
 
 .admin-panel {
   display: flex;
+  flex-direction: column;
   gap: 1em;
 }
 
 .admin-panel section ul {
+  margin: 0.5em;
   list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-list {
+  flex-direction: column;
 }
 
 .user {
   display: flex;
+  flex-direction: column;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em;
+}
+
+.admin-panel section h3 {
+  margin: 0.25em;
+  margin-bottom: 1em;
+}
+
+.admin-panel section li {
+  padding: 0.25em;
+  border-radius: 1em;
+  background-color: var(--bg-light);
+  box-shadow: var(--shadow);
+}
+
+.admin-panel section ul div {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.5em;
+}
+
+.role-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.role-section > button {
+  width: 15%;
+}
+
+.role-sub-section {
+  display: flex;
   gap: 1em;
   justify-content: center;
 }
+
+/* .user div { */
+/*   display: flex; */
+/*   justify-content: center; */
+/*   gap: 1em; */
+/*   padding: 0.5em; */
+/* } */

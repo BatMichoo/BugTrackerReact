@@ -155,7 +155,7 @@ const Comment = ({ comment, onDelete }) => {
             style={{ color: "var(--warning)", cursor: "pointer" }}
             size="lg"
             aria-hidden="true"
-            onClick={isEditing ? () => saveComment : () => setIsEditing(true)}
+            onClick={isEditing ? () => saveComment() : () => setIsEditing(true)}
           />
         ) : null}
         {userName == savedComment.authorName ? (

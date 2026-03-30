@@ -1,11 +1,11 @@
 import classes from "./CreateSearchesForm.module.css";
-import EditSearchView from "../searches/EditSearchView";
+import CreateSearchView from "../searches/CreateSearchView";
 
-export default function EditSearchesForm({ search, onUpdate, onCleanUp }) {
+export default function CreateSearchesForm({ search, onUpdate, onCleanUp }) {
   return (
     <>
       <form className={classes["edit-form"]}>
-        <EditSearchView
+        <CreateSearchView
           search={search}
           isInEditing={true}
           onCleanUp={onCleanUp}

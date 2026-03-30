@@ -52,6 +52,7 @@
   border-bottom-right-radius: 0.55em;
   border: 0.05em solid var(--border);
   z-index: 1;
+  padding: 0.5em;
 }
 
 .nav-menu ul {
@@ -62,6 +63,18 @@
   padding: 0.5em;
 }
 
+.nav-menu div {
+  text-align: center;
+  border: 0.05em solid var(--border-muted);
+  padding: 0.25em 0.5em;
+  border-radius: 0.5em;
+}
+
+.nav-menu div:hover {
+  color: var(--text);
+  cursor: pointer;
+}
+
 .nav-menu ul li {
   text-align: center;
   border: 0.05em solid var(--border-muted);
@@ -70,7 +83,7 @@
 }
 
 .nav-item:hover,
-.nav-menu ul li:hover {
+.nav-menu div:hover {
   border-color: var(--highlight);
 }
 

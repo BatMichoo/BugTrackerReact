@@ -70,11 +70,12 @@ const AccountDropDown = () => {
         </NavLink>
         {isOpen && (
           <div className={classes["nav-menu"]}>
-            <ul>
-              <li>
-                <div onClick={() => startLogOut()}>Logout</div>
-              </li>
-            </ul>
+            <div onClick={() => startLogOut()}>Logout</div>
+            {/* <ul> */}
+            {/*   <li> */}
+            {/*     <div onClick={() => startLogOut()}>Logout</div> */}
+            {/*   </li> */}
+            {/* </ul> */}
           </div>
         )}
       </div>

@@ -1,15 +1,16 @@
 import classes from "../components/account/Account.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Suspense, useEffect, useRef, useState } from "react";
+import { Await } from "react-router";
 import Dialog from "../components/modals/Dialog";
 import ChangePasswordForm from "../components/forms/ChangePasswordForm";
+import CreateSearchesForm from "../components/forms/CreateSearchesForm";
 import EditSearchesForm from "../components/forms/EditSearchesForm";
-import { getRoles } from "../utils/auth";
-import { getSearches } from "../utils/savedSearchAPI";
-import { Await } from "react-router";
-import { getUsers } from "../utils/userAPI";
-
-const usersPromise = getUsers();
+import { getSearches, deleteSearch } from "../utils/savedSearchAPI";
+import CreateRoleForm from "../components/forms/CreateRole";
+import DeleteSearchForm from "../components/forms/DeleteSearchForm";
+import AddRoleToUserForm from "../components/account/AddRoleToUserForm";
+import RemoveRoleFromUserForm from "../components/account/RemoveRoleFromUserForm";
 
 function AccountPage() {
   const [requiredAction, setRequiredAction] = useState(undefined);
@@ -25,9 +26,6 @@ function AccountPage() {
   useEffect(() => {
     fetchSearches();
   }, []);
-
-  const hasElevatedAccess =
-    getRoles().filter((r) => r == "Manager" || r == "Admin").length > 0;
 
   let dialogContent;
 
@@ -53,10 +51,66 @@ function AccountPage() {
       );
       break;
     case "delete-search":
-      dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
+      search = searches.find((s) => s.id == requiredAction.id);
+      dialogContent = (
+        <DeleteSearchForm
+          searchId={requiredAction.id}
+          onSuccess={setSearches}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     case "add-search":
-      dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
+      dialogContent = <CreateSearchesForm onCleanUp={cleanUp} />;
+      break;
+    case "create-role":
+      dialogContent = <CreateRoleForm onCleanUp={cleanUp} />;
+      break;
+    case "delete-role":
+      dialogContent = <CreateRoleForm onCleanUp={cleanUp} />;
+      break;
+    case "admin-add-role":
+      // Placeholder: You'll need a form that takes a userId and lets you pick a role
+      dialogContent = (
+        <AddRoleToUserForm userId={requiredAction.userId} onCleanUp={cleanUp} />
+      );
+      break;
+    case "admin-remove-role":
+      dialogContent = (
+        <RemoveRoleFromUserForm
+          userId={requiredAction.userId}
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "admin-edit-username":
+      dialogContent = (
+        <AdminEditUserForm
+          userId={requiredAction.userId}
+          field="username"
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "admin-edit-email":
+      dialogContent = (
+        <AdminEditUserForm
+          userId={requiredAction.userId}
+          field="email"
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "admin-delete-user":
+      dialogContent = (
+        <DeleteUserForm
+          userId={requiredAction.userId}
+          onSuccess={() => {
+            /* logic to refresh user list */
+          }}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     default:
       dialogContent = undefined;
@@ -83,6 +137,18 @@ function AccountPage() {
             type="button"
           >
             Change Password
+          </button>
+          <button
+            onClick={() => setRequiredAction({ action: "username" })}
+            type="button"
+          >
+            Change Username
+          </button>
+          <button
+            onClick={() => setRequiredAction({ action: "email" })}
+            type="button"
+          >
+            Change Email
           </button>
         </section>
         <section className={"section " + classes["search-settings"]}>
@@ -123,75 +189,7 @@ function AccountPage() {
           </div>
         </section>
       </div>
-      {hasElevatedAccess ? (
-        <div className={classes["admin-panel-container"]}>
-          <h1>Admin Panel</h1>
-          <div className={classes["admin-panel"]}>
-            <section className="section">
-              <h3>User Management</h3>
-              <ul>
-                <Suspense
-                  fallback={
-                    <FontAwesomeIcon
-                      icon="spinner"
-                      spinPulse
-                      size="3x"
-                      color="var(--text)"
-                    />
-                  }
-                >
-                  <Await resolve={usersPromise}>
-                    {(resolved) =>
-                      resolved.map((u) => (
-                        <li key={u.id}>
-                          <div>{u.name}</div>
-                          <div>
-                            <button>Add Role</button>
-                            <button>Remove Role</button>
-                            <button>Edit username</button>
-                            <button>Edit email</button>
-                            <button>DELETE</button>
-                          </div>
-                        </li>
-                      ))
-                    }
-                  </Await>
-                </Suspense>
-              </ul>
-            </section>
-            <section className="section">
-              <h3>Role Management</h3>
-              <ul>
-                <Suspense
-                  fallback={
-                    <FontAwesomeIcon
-                      icon="spinner"
-                      spinPulse
-                      size="3x"
-                      color="var(--text)"
-                    />
-                  }
-                >
-                  <Await resolve={usersPromise}>
-                    <button>Create</button>
-                    {(resolved) =>
-                      resolved.map((u) => (
-                        <li key={u.id}>
-                          <div>{u.name}</div>
-                          <div>
-                            <button>Edit</button>
-                            <button>DELETE</button>
-                          </div>
-                        </li>
-                      ))
-                    }
-                  </Await>
-                </Suspense>
-              </ul>
-            </section>
-          </div>
-        </div>
-      ) : undefined}
+      <AdminPanel setRequiredAction={setRequiredAction} />
     </div>
   );
 }

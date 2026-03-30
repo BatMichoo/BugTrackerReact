@@ -1,8 +1,19 @@
 import { getToken } from "./auth";
 import { searchesEndpoint } from "./backendEndpoints";
 
+const serializeSearchString = (search) => {
+  const toBeCreated = {
+    name: search.name,
+    queryString: `${search.type}_${search.value}`,
+  };
+
+  return toBeCreated;
+};
+
 export const createSearch = async (newSearch) => {
   const authToken = getToken();
+
+  const payload = serializeSearchString(newSearch);
 
   const response = await fetch(searchesEndpoint, {
     method: "POST",
@@ -10,7 +21,7 @@ export const createSearch = async (newSearch) => {
       Authorization: "Bearer " + authToken,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(newSearch),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
