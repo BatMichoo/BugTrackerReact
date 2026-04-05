@@ -4,6 +4,10 @@ export function parseFilter(filter) {
   const parsedFilters = {};
 
   for (let filt of filters) {
+    if (!filt) {
+      continue;
+    }
+
     const pairs = filt.split("_");
 
     if (pairs.length > 2) {
@@ -17,4 +21,15 @@ export function parseFilter(filter) {
   }
 
   return parsedFilters;
+}
+
+export function buildQueryString(filters) {
+  if (!filters || typeof filters !== "object") return "";
+
+  return Object.entries(filters)
+    .filter(
+      ([, value]) => value !== undefined && value !== null && value !== "",
+    )
+    .map(([key, value]) => `${key}_${value}`)
+    .join(";");
 }

@@ -18,7 +18,12 @@ const WorkflowPage = () => {
         <h1>Search bugs</h1>
         <Suspense
           fallback={
-            <FontAwesomeIcon icon="spinner" spinPulse size="3x" color="black" />
+            <FontAwesomeIcon
+              icon="spinner"
+              spinPulse
+              size="3x"
+              color="var(--text)"
+            />
           }
         >
           <Await resolve={loaderData.bugs}>
@@ -104,7 +109,7 @@ export const action = async ({ request }) => {
     dateInput += FILTER_SEPARATORS.keyValue + formData.get("date-filters");
   }
 
-  const seachQuery = {
+  const searchQuery = {
     id: formData.get("Id"),
     priority: formData.get("Priority"),
     status: formData.get("Status"),
@@ -114,7 +119,7 @@ export const action = async ({ request }) => {
     createdOn: dateInput,
   };
 
-  const filters = createFilters(seachQuery);
+  const filters = createFilters(searchQuery);
 
   return redirect(filters != "" ? `?filter=${filters}` : "");
 };

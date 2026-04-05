@@ -114,8 +114,8 @@ footer {
   min-width: 100%;
 }
 
-.button,
-button {
+button,
+.button {
   font: 16px/1.5 var(--ff);
   background: var(--bg-light);
   color: var(--text-muted);
@@ -126,16 +126,21 @@ button {
   border-radius: 0.5em;
   padding: 0.6em 1.2em;
   letter-spacing: 1px;
-  /* transition: border-color 0.25s; */
 }
 
-.button:focus,
-button:focus {
+button:disabled,
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:focus,
+.button:focus {
   outline: none;
 }
 
-.button:hover,
-button:hover {
+button:is:not(:disabled):hover,
+.button:is:not(:disabled):hover {
   color: var(--text);
   background: var(--gradient-hover);
   border-color: var(--highlight);

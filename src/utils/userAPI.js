@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getToken } from "./auth";
 import { usersEndpoint, rolesEndpoint } from "./backendEndpoints";
 
@@ -8,12 +9,13 @@ export const getUsers = async () => {
 
   const response = await fetch(usersEndpoint, {
     headers: {
-      Authorization: "Bearer " + authToken,
+      Authorization: authToken ? "Bearer " + authToken : "",
     },
   });
 
   if (!response.ok) {
     return new Response(
+      // @ts-ignore
       { message: "Could not fetch users." },
       { status: response.status },
     );
@@ -106,10 +108,10 @@ export async function createRole(roleName) {
   return role;
 }
 
-export async function deleteRole(roleName) {
+export async function deleteRole(roleId) {
   const authToken = getToken();
 
-  const response = await fetch(rolesEndpoint + `?roleName=${roleName}`, {
+  const response = await fetch(rolesEndpoint + `?id=${roleId}`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + authToken,

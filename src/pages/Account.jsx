@@ -1,37 +1,45 @@
 import classes from "../components/account/Account.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Suspense, useEffect, useRef, useState } from "react";
-import { Await } from "react-router";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Await, useFetcher } from "react-router";
 import Dialog from "../components/modals/Dialog";
 import ChangePasswordForm from "../components/forms/ChangePasswordForm";
-import CreateSearchesForm from "../components/forms/CreateSearchesForm";
-import EditSearchesForm from "../components/forms/EditSearchesForm";
-import { getSearches, deleteSearch } from "../utils/savedSearchAPI";
-import CreateRoleForm from "../components/forms/CreateRole";
-import DeleteSearchForm from "../components/forms/DeleteSearchForm";
+import CreateRole from "../components/forms/CreateRole";
 import AddRoleToUserForm from "../components/account/AddRoleToUserForm";
 import RemoveRoleFromUserForm from "../components/account/RemoveRoleFromUserForm";
+import AdminPanel from "../components/account/AdminPanel";
+import DeleteUserForm from "../components/account/DeleteUserForm";
+import AdminEditUserForm from "../components/account/AdminEditUserForm";
+import AccountSavedSearches from "../components/account/AccountSavedSearches";
+import CreateSearchView from "../components/searches/CreateSearchView";
+import EditSearch from "../components/searches/EditSearchView";
+import DeleteSearch from "../components/forms/DeleteSearch";
+import { SEARCHES_INTERNAL_ENDPOINT } from "../utils/backendEndpoints";
+import { getProfileName } from "../utils/auth";
 
 function AccountPage() {
   const [requiredAction, setRequiredAction] = useState(undefined);
-  const [searches, setSearches] = useState([]);
-  const dialogRef = useRef();
-
-  async function fetchSearches() {
-    const searches = await getSearches();
-
-    setSearches(searches);
-  }
-
-  useEffect(() => {
-    fetchSearches();
-  }, []);
+  const fetcher = useFetcher();
+  const dialogRef = useRef(null);
 
   let dialogContent;
 
-  function cleanUp() {
+  const cleanUp = useCallback(() => {
     setRequiredAction(undefined);
-  }
+  }, []);
+
+  const handleRefreshSearches = useCallback(() => {
+    fetcher.load(SEARCHES_INTERNAL_ENDPOINT);
+  }, [fetcher]);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && !fetcher.data) {
+      fetcher.load(SEARCHES_INTERNAL_ENDPOINT);
+    }
+  }, [fetcher]);
+
+  const searches = fetcher.data || [];
+  const isSearchesLoading = fetcher.state === "loading";
 
   let action = requiredAction && requiredAction.action;
   let search = undefined;
@@ -43,9 +51,9 @@ function AccountPage() {
     case "edit-search":
       search = searches.find((s) => s.id == requiredAction.id);
       dialogContent = (
-        <EditSearchesForm
+        <EditSearch
           search={search}
-          onUpdate={setSearches}
+          onRefresh={handleRefreshSearches}
           onCleanUp={cleanUp}
         />
       );
@@ -53,21 +61,29 @@ function AccountPage() {
     case "delete-search":
       search = searches.find((s) => s.id == requiredAction.id);
       dialogContent = (
-        <DeleteSearchForm
+        <DeleteSearch
           searchId={requiredAction.id}
-          onSuccess={setSearches}
+          onDelete={handleRefreshSearches}
           onCleanUp={cleanUp}
         />
       );
       break;
     case "add-search":
-      dialogContent = <CreateSearchesForm onCleanUp={cleanUp} />;
+      dialogContent = (
+        <CreateSearchView
+          onCreate={handleRefreshSearches}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     case "create-role":
-      dialogContent = <CreateRoleForm onCleanUp={cleanUp} />;
+      dialogContent = <CreateRole onCleanUp={cleanUp} />;
+      break;
+    case "edit-role":
+      dialogContent = <CreateRole onCleanUp={cleanUp} />;
       break;
     case "delete-role":
-      dialogContent = <CreateRoleForm onCleanUp={cleanUp} />;
+      dialogContent = <CreateRole onCleanUp={cleanUp} />;
       break;
     case "admin-add-role":
       // Placeholder: You'll need a form that takes a userId and lets you pick a role
@@ -125,10 +141,12 @@ function AccountPage() {
     }
   }, [requiredAction]);
 
+  const profile = getProfileName();
+
   return (
     <div className={classes["acc-container"]}>
       <Dialog ref={dialogRef}>{dialogContent}</Dialog>
-      <h1>Account</h1>
+      <h1>{profile}'s Account</h1>
       <div className={classes["settings-container"]}>
         <section className={classes["acc-settings"] + " section"}>
           <h2>Account Settings</h2>
@@ -151,43 +169,11 @@ function AccountPage() {
             Change Email
           </button>
         </section>
-        <section className={"section " + classes["search-settings"]}>
-          <div className={classes["search-settings-header"]}>
-            <h2>Saved Search Settings</h2>
-            <button onClick={() => setRequiredAction({ action: "add-search" })}>
-              New Saved Search
-            </button>
-          </div>
-          <div className={classes["selected-search-container"]}>
-            <select id="selected-search">
-              {searches.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            <button
-              className="warning"
-              onClick={() => {
-                const searchId =
-                  document.getElementById("selected-search").value;
-                setRequiredAction({ action: "edit-search", id: searchId });
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="danger"
-              onClick={() => {
-                const searchId =
-                  document.getElementById("selected-search").value;
-                setRequiredAction({ action: "delete-search", id: searchId });
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </section>
+        <AccountSavedSearches
+          setRequiredAction={setRequiredAction}
+          searches={searches}
+          isLoading={isSearchesLoading}
+        />
       </div>
       <AdminPanel setRequiredAction={setRequiredAction} />
     </div>
@@ -195,26 +181,3 @@ function AccountPage() {
 }
 
 export default AccountPage;
-
-// export async function action({ request }) {
-//   const data = await request.formData();
-//
-//   const oldPassword = data.get("oldPassword");
-//   const newPassword = data.get("newPassword");
-//
-//   const passwords = {
-//     oldPassword,
-//     newPassword,
-//   };
-//
-//   try {
-//     await changePassword(passwords);
-//   } catch (error) {
-//     throw new Response(
-//       JSON.stringify({ message: "Could not change password." }),
-//       {
-//         status: 400,
-//       },
-//     );
-//   }
-// }

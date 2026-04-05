@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteUser } from "../../utils/userAPI";
+// import { deleteUser } from "../../utils/userAPI";
 import classes from "./Account.module.css";
 
 function DeleteUserForm({ userId, onSuccess, onCleanUp }) {

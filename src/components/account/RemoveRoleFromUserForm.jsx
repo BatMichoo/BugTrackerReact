@@ -1,77 +1,50 @@
-import { useEffect, useState } from "react";
-import { getUser, removeRoleFromUser } from "../../utils/userAPI";
 import classes from "./Account.module.css";
+import { useRoles } from "../stores/useContexts";
+import { useCallback, useRef } from "react";
+import { removeRoleFromUser } from "../../utils/userAPI";
 
 function RemoveRoleFromUserForm({ userId, onCleanUp }) {
-  const [userRoles, setUserRoles] = useState([]);
-  const [selectedRoleName, setSelectedRoleName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { roles } = useRoles();
+  const roleRef = useRef(null);
 
-  useEffect(() => {
-    async function fetchUserRoles() {
-      try {
-        const user = await getUser(userId);
-        // Assuming user.roles is an array of strings like ["Admin", "Manager"]
-        // based on standard Identity UserViewModel mapping
-        const roles = user.roles || [];
-        setUserRoles(roles);
-        if (roles.length > 0) setSelectedRoleName(roles[0]);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchUserRoles();
+  const handleOnRemove = useCallback(async () => {
+    const roleName = roleRef.current.value;
+
+    await removeRoleFromUser(userId, roleName);
+    onCleanUp();
   }, [userId]);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    if (!selectedRoleName) return;
-
-    setIsLoading(true);
-    try {
-      await removeRoleFromUser(userId, selectedRoleName);
-      onCleanUp();
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
+    <div className={classes.form}>
       <h3>Remove Role from User</h3>
-      {userRoles.length === 0 ? (
+      {roles.length === 0 ? (
         <p>This user has no roles to remove.</p>
       ) : (
         <div className={classes.control}>
           <label htmlFor="role-remove">Select Role to Remove</label>
-          <select
-            id="role-remove"
-            value={selectedRoleName}
-            onChange={(e) => setSelectedRoleName(e.target.value)}
-          >
-            {userRoles.map((roleName) => (
-              <option key={roleName} value={roleName}>
-                {roleName}
+          <select id="role-remove" ref={roleRef}>
+            {roles.map((r) => (
+              <option key={r.id} value={r.name}>
+                {r.name}
               </option>
             ))}
           </select>
         </div>
       )}
       <div className={classes.actions}>
-        <button type="button" onClick={onCleanUp}>
-          Cancel
-        </button>
         <button
           type="submit"
-          disabled={isLoading || userRoles.length === 0}
+          disabled={roles.length === 0}
           className="danger"
+          onClick={handleOnRemove}
         >
           Remove
         </button>
+        <button type="button" onClick={onCleanUp}>
+          Cancel
+        </button>
       </div>
-    </form>
+    </div>
   );
 }
 

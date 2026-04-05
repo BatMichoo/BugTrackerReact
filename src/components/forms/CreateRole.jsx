@@ -1,6 +1,6 @@
 import { createRole } from "../../utils/userAPI";
 
-export default function CreateRoleForm({ onCleanUp }) {
+export default function CreateRole({ onCleanUp }) {
   async function onSubmit(e) {
     e.preventDefault();
     const form = e.currentTarget;

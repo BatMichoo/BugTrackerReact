@@ -1,19 +1,8 @@
 import { getToken } from "./auth";
 import { searchesEndpoint } from "./backendEndpoints";
 
-const serializeSearchString = (search) => {
-  const toBeCreated = {
-    name: search.name,
-    queryString: `${search.type}_${search.value}`,
-  };
-
-  return toBeCreated;
-};
-
 export const createSearch = async (newSearch) => {
   const authToken = getToken();
-
-  const payload = serializeSearchString(newSearch);
 
   const response = await fetch(searchesEndpoint, {
     method: "POST",
@@ -21,7 +10,7 @@ export const createSearch = async (newSearch) => {
       Authorization: "Bearer " + authToken,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(newSearch),
   });
 
   if (!response.ok) {
@@ -92,10 +81,7 @@ export const updateSearch = async (updatedSearch) => {
     });
 
     if (!response.ok) {
-      return new Response(
-        { message: "Could not update saved search." },
-        { status: response.status },
-      );
+      return new Error("Could not update saved search.");
     }
 
     const search = await response.json();

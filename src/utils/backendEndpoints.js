@@ -9,3 +9,5 @@ export const usersEndpoint = serverEndpoint + "/users";
 export const rolesEndpoint = usersEndpoint + "/roles";
 export const notifEndpoint = serverEndpoint + "/notifications";
 export const searchesEndpoint = usersEndpoint + "/searches";
+
+export const SEARCHES_INTERNAL_ENDPOINT = "/api/searches";
