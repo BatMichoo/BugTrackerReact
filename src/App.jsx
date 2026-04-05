@@ -42,6 +42,7 @@ import {
   faSpinner,
   faReply,
 } from "@fortawesome/free-solid-svg-icons";
+import { getSearches } from "./utils/savedSearchAPI.js";
 
 library.add(faBell);
 library.add(faPenSquare);
@@ -120,6 +121,13 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "api/searches",
+    loader: async () => {
+      const data = await getSearches();
+      return data;
+    },
   },
 ]);
 

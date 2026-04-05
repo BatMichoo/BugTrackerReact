@@ -81,10 +81,7 @@ export const updateSearch = async (updatedSearch) => {
     });
 
     if (!response.ok) {
-      return new Response(
-        { message: "Could not update saved search." },
-        { status: response.status },
-      );
+      return new Error("Could not update saved search.");
     }
 
     const search = await response.json();

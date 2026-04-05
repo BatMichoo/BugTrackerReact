@@ -20,7 +20,7 @@ export const getPermissions = () => {
   return permissions;
 };
 
-export function getRoles() {
+export function getUserRoles() {
   const decodedToken = jwtDecode(getToken());
 
   const roles =

@@ -1,39 +1,45 @@
 import classes from "../components/account/Account.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Await, useFetcher } from "react-router";
 import Dialog from "../components/modals/Dialog";
 import ChangePasswordForm from "../components/forms/ChangePasswordForm";
-import EditSearchesForm from "../components/forms/EditSearchesForm";
-import { getRoles } from "../utils/auth";
-import { getSearches } from "../utils/savedSearchAPI";
-import { Await } from "react-router";
-import { getUsers } from "../utils/userAPI";
-
-const usersPromise = getUsers();
+import CreateRole from "../components/forms/CreateRole";
+import AddRoleToUserForm from "../components/account/AddRoleToUserForm";
+import RemoveRoleFromUserForm from "../components/account/RemoveRoleFromUserForm";
+import AdminPanel from "../components/account/AdminPanel";
+import DeleteUserForm from "../components/account/DeleteUserForm";
+import AdminEditUserForm from "../components/account/AdminEditUserForm";
+import AccountSavedSearches from "../components/account/AccountSavedSearches";
+import CreateSearchView from "../components/searches/CreateSearchView";
+import EditSearch from "../components/searches/EditSearchView";
+import DeleteSearch from "../components/forms/DeleteSearch";
+import { SEARCHES_INTERNAL_ENDPOINT } from "../utils/backendEndpoints";
+import { getProfileName } from "../utils/auth";
 
 function AccountPage() {
   const [requiredAction, setRequiredAction] = useState(undefined);
-  const [searches, setSearches] = useState([]);
-  const dialogRef = useRef();
-
-  async function fetchSearches() {
-    const searches = await getSearches();
-
-    setSearches(searches);
-  }
-
-  useEffect(() => {
-    fetchSearches();
-  }, []);
-
-  const hasElevatedAccess =
-    getRoles().filter((r) => r == "Manager" || r == "Admin").length > 0;
+  const fetcher = useFetcher();
+  const dialogRef = useRef(null);
 
   let dialogContent;
 
-  function cleanUp() {
+  const cleanUp = useCallback(() => {
     setRequiredAction(undefined);
-  }
+  }, []);
+
+  const handleRefreshSearches = useCallback(() => {
+    fetcher.load(SEARCHES_INTERNAL_ENDPOINT);
+  }, [fetcher]);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && !fetcher.data) {
+      fetcher.load(SEARCHES_INTERNAL_ENDPOINT);
+    }
+  }, [fetcher]);
+
+  const searches = fetcher.data || [];
+  const isSearchesLoading = fetcher.state === "loading";
 
   let action = requiredAction && requiredAction.action;
   let search = undefined;
@@ -45,18 +51,82 @@ function AccountPage() {
     case "edit-search":
       search = searches.find((s) => s.id == requiredAction.id);
       dialogContent = (
-        <EditSearchesForm
+        <EditSearch
           search={search}
-          onUpdate={setSearches}
+          onRefresh={handleRefreshSearches}
           onCleanUp={cleanUp}
         />
       );
       break;
     case "delete-search":
-      dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
+      search = searches.find((s) => s.id == requiredAction.id);
+      dialogContent = (
+        <DeleteSearch
+          searchId={requiredAction.id}
+          onDelete={handleRefreshSearches}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     case "add-search":
-      dialogContent = <EditSearchesForm onCleanUp={cleanUp} />;
+      dialogContent = (
+        <CreateSearchView
+          onCreate={handleRefreshSearches}
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "create-role":
+      dialogContent = <CreateRole onCleanUp={cleanUp} />;
+      break;
+    case "edit-role":
+      dialogContent = <CreateRole onCleanUp={cleanUp} />;
+      break;
+    case "delete-role":
+      dialogContent = <CreateRole onCleanUp={cleanUp} />;
+      break;
+    case "admin-add-role":
+      // Placeholder: You'll need a form that takes a userId and lets you pick a role
+      dialogContent = (
+        <AddRoleToUserForm userId={requiredAction.userId} onCleanUp={cleanUp} />
+      );
+      break;
+    case "admin-remove-role":
+      dialogContent = (
+        <RemoveRoleFromUserForm
+          userId={requiredAction.userId}
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "admin-edit-username":
+      dialogContent = (
+        <AdminEditUserForm
+          userId={requiredAction.userId}
+          field="username"
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "admin-edit-email":
+      dialogContent = (
+        <AdminEditUserForm
+          userId={requiredAction.userId}
+          field="email"
+          onCleanUp={cleanUp}
+        />
+      );
+      break;
+    case "admin-delete-user":
+      dialogContent = (
+        <DeleteUserForm
+          userId={requiredAction.userId}
+          onSuccess={() => {
+            /* logic to refresh user list */
+          }}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     default:
       dialogContent = undefined;
@@ -71,10 +141,12 @@ function AccountPage() {
     }
   }, [requiredAction]);
 
+  const profile = getProfileName();
+
   return (
     <div className={classes["acc-container"]}>
       <Dialog ref={dialogRef}>{dialogContent}</Dialog>
-      <h1>Account</h1>
+      <h1>{profile}'s Account</h1>
       <div className={classes["settings-container"]}>
         <section className={classes["acc-settings"] + " section"}>
           <h2>Account Settings</h2>
@@ -84,139 +156,28 @@ function AccountPage() {
           >
             Change Password
           </button>
+          <button
+            onClick={() => setRequiredAction({ action: "username" })}
+            type="button"
+          >
+            Change Username
+          </button>
+          <button
+            onClick={() => setRequiredAction({ action: "email" })}
+            type="button"
+          >
+            Change Email
+          </button>
         </section>
-        <section className={"section " + classes["search-settings"]}>
-          <div className={classes["search-settings-header"]}>
-            <h2>Saved Search Settings</h2>
-            <button onClick={() => setRequiredAction({ action: "add-search" })}>
-              New Saved Search
-            </button>
-          </div>
-          <div className={classes["selected-search-container"]}>
-            <select id="selected-search">
-              {searches.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            <button
-              className="warning"
-              onClick={() => {
-                const searchId =
-                  document.getElementById("selected-search").value;
-                setRequiredAction({ action: "edit-search", id: searchId });
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="danger"
-              onClick={() => {
-                const searchId =
-                  document.getElementById("selected-search").value;
-                setRequiredAction({ action: "delete-search", id: searchId });
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </section>
+        <AccountSavedSearches
+          setRequiredAction={setRequiredAction}
+          searches={searches}
+          isLoading={isSearchesLoading}
+        />
       </div>
-      {hasElevatedAccess ? (
-        <div className={classes["admin-panel-container"]}>
-          <h1>Admin Panel</h1>
-          <div className={classes["admin-panel"]}>
-            <section className="section">
-              <h3>User Management</h3>
-              <ul>
-                <Suspense
-                  fallback={
-                    <FontAwesomeIcon
-                      icon="spinner"
-                      spinPulse
-                      size="3x"
-                      color="var(--text)"
-                    />
-                  }
-                >
-                  <Await resolve={usersPromise}>
-                    {(resolved) =>
-                      resolved.map((u) => (
-                        <li key={u.id}>
-                          <div>{u.name}</div>
-                          <div>
-                            <button>Add Role</button>
-                            <button>Remove Role</button>
-                            <button>Edit username</button>
-                            <button>Edit email</button>
-                            <button>DELETE</button>
-                          </div>
-                        </li>
-                      ))
-                    }
-                  </Await>
-                </Suspense>
-              </ul>
-            </section>
-            <section className="section">
-              <h3>Role Management</h3>
-              <ul>
-                <Suspense
-                  fallback={
-                    <FontAwesomeIcon
-                      icon="spinner"
-                      spinPulse
-                      size="3x"
-                      color="var(--text)"
-                    />
-                  }
-                >
-                  <Await resolve={usersPromise}>
-                    <button>Create</button>
-                    {(resolved) =>
-                      resolved.map((u) => (
-                        <li key={u.id}>
-                          <div>{u.name}</div>
-                          <div>
-                            <button>Edit</button>
-                            <button>DELETE</button>
-                          </div>
-                        </li>
-                      ))
-                    }
-                  </Await>
-                </Suspense>
-              </ul>
-            </section>
-          </div>
-        </div>
-      ) : undefined}
+      <AdminPanel setRequiredAction={setRequiredAction} />
     </div>
   );
 }
 
 export default AccountPage;
-
-// export async function action({ request }) {
-//   const data = await request.formData();
-//
-//   const oldPassword = data.get("oldPassword");
-//   const newPassword = data.get("newPassword");
-//
-//   const passwords = {
-//     oldPassword,
-//     newPassword,
-//   };
-//
-//   try {
-//     await changePassword(passwords);
-//   } catch (error) {
-//     throw new Response(
-//       JSON.stringify({ message: "Could not change password." }),
-//       {
-//         status: 400,
-//       },
-//     );
-//   }
-// }

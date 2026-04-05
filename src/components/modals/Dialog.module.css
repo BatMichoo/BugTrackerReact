@@ -2,7 +2,19 @@
   margin: auto;
   padding: 1em;
   border-radius: 1em;
-  border: 0.125em solid white;
+  border: 0.125em solid var(--border);
+  background-color: var(--bg);
+}
+
+.dialog label {
+  color: var(--text-muted);
+}
+
+.dialog input {
+  background-color: var(--bg-light);
+  color: var(--text);
+  border-radius: 0.25em;
+  border-color: var(--border);
 }
 
 .dialog::backdrop {

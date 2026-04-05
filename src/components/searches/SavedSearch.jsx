@@ -9,8 +9,10 @@ import { createSearch, deleteSearch } from "../../utils/savedSearchAPI";
 export default function SavedSearch({ searches }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [savedSearches, setSavedSearches] = useState(searches);
-  const modalRef = useRef();
-  const inputRef = useRef();
+  const modalRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const queryString = searchParams.get("filter");
 
   function enableSearch(queryString) {
     setSearchParams(() => {
@@ -22,7 +24,7 @@ export default function SavedSearch({ searches }) {
     });
   }
 
-  async function saveNewSearch(queryString, name) {
+  async function saveNewSearch(name) {
     const search = await createSearch({ name, queryString });
     setSavedSearches((prev) => [...prev, search]);
 
@@ -33,10 +35,7 @@ export default function SavedSearch({ searches }) {
     const result = await deleteSearch(id);
 
     if (result) {
-      if (
-        searchParams.get("filter") ==
-        savedSearches.find((s) => s.id == id).queryString
-      ) {
+      if (queryString === savedSearches.find((s) => s.id == id).queryString) {
         setSearchParams(() => new URLSearchParams());
       }
       setSavedSearches((prev) => {
@@ -47,6 +46,9 @@ export default function SavedSearch({ searches }) {
     }
   }
 
+  const isNewSearch =
+    queryString && !savedSearches.some((s) => s.queryString === queryString);
+
   return (
     <div className={classes["searches-container"]}>
       <h3>Saved searches</h3>
@@ -55,12 +57,7 @@ export default function SavedSearch({ searches }) {
         <input ref={inputRef} type="text" />
         <button
           type="button"
-          onClick={async () =>
-            await saveNewSearch(
-              searchParams.get("filter"),
-              inputRef.current.value,
-            )
-          }
+          onClick={async () => await saveNewSearch(inputRef.current.value)}
         >
           Save
         </button>
@@ -78,7 +75,7 @@ export default function SavedSearch({ searches }) {
         <div> No Saved Searches. </div>
       )}
       <button
-        disabled={!searchParams.get("filter")}
+        disabled={!isNewSearch}
         type="button"
         className={classes["save-btn"]}
         onClick={() => modalRef.current.showModal()}

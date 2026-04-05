@@ -2,13 +2,19 @@ import { Outlet } from "react-router";
 import Footer from "./Footer";
 import Header from "./Header";
 import { getProfileName } from "../utils/auth";
+import { UsersProvider } from "./stores/UsersContext";
+import { RolessProvider } from "./stores/RolesContext";
 
 const RootLayout = () => {
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <UsersProvider>
+        <RolessProvider>
+          <Header />
+          <Outlet />
+          <Footer />
+        </RolessProvider>
+      </UsersProvider>
     </>
   );
 };

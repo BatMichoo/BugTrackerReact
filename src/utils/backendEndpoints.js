@@ -6,5 +6,8 @@ export const bugsEndpoint = serverEndpoint + "/bugs";
 export const commentsEndpoint = bugsEndpoint + "/{bugId}/comments";
 export const repliesEndpoint = commentsEndpoint + "/{commentId}/replies";
 export const usersEndpoint = serverEndpoint + "/users";
+export const rolesEndpoint = usersEndpoint + "/roles";
 export const notifEndpoint = serverEndpoint + "/notifications";
 export const searchesEndpoint = usersEndpoint + "/searches";
+
+export const SEARCHES_INTERNAL_ENDPOINT = "/api/searches";

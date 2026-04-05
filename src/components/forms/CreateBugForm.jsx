@@ -13,33 +13,42 @@ const CreateBugForm = ({ availableUsers }) => {
   const [description, setDescription] = useState("");
 
   return (
-    <Form method="POST">
-      <div>
-        <TitleInput
-          selectedValue={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <PrioritySeachInput
-          selectedValue={priority}
-          onChange={(e) => setPriority(e.target.value)}
-        />
-        <AssignedToInput
-          availableValues={availableUsers}
-          selectedValue={assignedTo}
-          onChange={(e) => setAssignedTo(e.target.value)}
-        />
-        <textarea
-          name="Description"
-          rows={10}
-          cols={50}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Please provide a comprehensive description."
-          style={{ padding: "0.5em", fontSize: "1.06125em", margin: "1em" }}
-        />
-      </div>
-      <button type="submit">Create</button>
-    </Form>
+    <>
+      <h1>Creating New Bug</h1>
+      <Form method="POST" className="section">
+        <div>
+          <TitleInput
+            selectedValue={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <PrioritySeachInput
+            selectedValue={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          />
+          <AssignedToInput
+            availableValues={availableUsers}
+            selectedValue={assignedTo}
+            onChange={(e) => setAssignedTo(e.target.value)}
+          />
+          <textarea
+            name="Description"
+            rows={10}
+            cols={50}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Please provide a comprehensive description."
+            style={{
+              padding: "0.5em",
+              fontSize: "1.06125em",
+              margin: "1em",
+              borderRadius: "0.5em",
+              background: "var(--bg-light)",
+            }}
+          />
+        </div>
+        <button type="submit">Create</button>
+      </Form>
+    </>
   );
 };
 
