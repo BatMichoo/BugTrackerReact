@@ -7,10 +7,21 @@ const RoleManagement = ({ setRequiredAction }) => {
   const { roles, isLoading: isLoadingRoles } = useRoles();
   const roleRef = useRef(null);
 
-  const handleRoleEdit = useCallback(() => {
-    const selectedRoleId = roleRef.current.value;
-    setRequiredAction({ action: "edit-role", id: selectedRoleId });
-  }, [setRequiredAction]);
+  const handleOnClick = useCallback(
+    (action) => {
+      const selectedRoleId = roleRef.current.value;
+      const selectedRole = roles.find((r) => r.id === selectedRoleId);
+
+      if (selectedRole) {
+        setRequiredAction({
+          action: action,
+          id: selectedRole.id,
+          name: selectedRole.name,
+        });
+      }
+    },
+    [roles, setRequiredAction],
+  );
 
   return (
     <section className="section">
@@ -26,13 +37,14 @@ const RoleManagement = ({ setRequiredAction }) => {
             <select id="selected-role" ref={roleRef}>
               {roles &&
                 roles.map((r) => (
-                  <option key={r.name} value={r.id}>
+                  <option key={r.id} value={r.id}>
                     {r.name}
                   </option>
                 ))}
             </select>
           )}
-          <button onClick={handleRoleEdit}>Edit</button>
+          <button onClick={() => handleOnClick("edit-role")}>Edit</button>
+          <button onClick={() => handleOnClick("delete-role")}>Delete</button>
         </div>
       </div>
     </section>

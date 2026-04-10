@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getUserRoles } from "../../utils/auth";
+import { getLoggedInUserRoles } from "../../utils/auth";
 import classes from "./Account.module.css";
 import RoleManagement from "./RoleManagement";
 import UserManagement from "./UserManagement";
 
 const AdminPanel = ({ setRequiredAction }) => {
   const hasElevatedAccess =
-    getUserRoles().filter((r) => r == "Manager" || r == "Admin").length > 0;
+    getLoggedInUserRoles().filter((r) => r == "Manager" || r == "Admin")
+      .length > 0;
 
   return (
     hasElevatedAccess && (

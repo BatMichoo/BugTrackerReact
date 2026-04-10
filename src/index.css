@@ -20,7 +20,7 @@
   --chroma-bg: calc(var(--chroma) * 0.5);
   --chroma-text: min(var(--chroma), 0.1);
   --chroma-action: max(var(--chroma), 0.1);
-  --chroma-alert: max(var(--chroma), 0.05);
+  --chroma-alert: max(var(--chroma), 0.25);
   /* bg */
   --bg-dark: oklch(0.92 var(--chroma-bg) var(--hue));
   --bg: oklch(0.96 var(--chroma-bg) var(--hue));
@@ -40,7 +40,7 @@
   --secondary: oklch(0.4 var(--chroma-action) var(--hue-secondary));
   /* alert */
   --danger: oklch(0.5 var(--chroma-alert) 30);
-  --warning: oklch(0.5 var(--chroma-alert) 100);
+  --warning: oklch(0.7 var(--chroma-alert) 100);
   --success: oklch(0.5 var(--chroma-alert) 160);
   --info: oklch(0.5 var(--chroma-alert) 260);
   /* shadows */
@@ -63,7 +63,7 @@ body.dark {
   --chroma-bg: calc(var(--chroma) * 0.5);
   --chroma-text: min(var(--chroma), 0.1);
   --chroma-action: max(var(--chroma), 0.1);
-  --chroma-alert: max(var(--chroma), 0.05);
+  --chroma-alert: max(var(--chroma), 0.35);
   /* bg */
   --bg-dark: oklch(0.12 var(--chroma-bg) var(--hue));
   --bg: oklch(0.15 var(--chroma-bg) var(--hue));
@@ -100,18 +100,23 @@ header {
 }
 
 header a {
-  /* color: var(--text-muted); */
   background: transparent;
-}
-
-header h3 {
-  /* color: var(--text-muted); */
 }
 
 footer {
   background: var(--gradient);
   border-top: solid 0.1125em var(--highlight);
   min-width: 100%;
+}
+
+input,
+select {
+  padding: 0.4em 0.25em;
+  color: var(--text);
+  background-color: var(--bg-light);
+  border: 0em solid;
+  border-radius: 0.25em;
+  box-shadow: var(--shadow);
 }
 
 button,
@@ -164,6 +169,7 @@ h1 {
 }
 
 .section {
+  color: var(--text-muted);
   background: var(--gradient);
   padding: 1em 2em;
   border: var(--border-card);

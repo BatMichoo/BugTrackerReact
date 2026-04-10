@@ -25,7 +25,6 @@
 select {
   padding: 0.4em 0.25em;
   color: var(--text);
-  /* background-color: rgba(97, 97, 97, 0.719); */
   background-color: var(--bg-light);
   border: 0em solid;
   border-radius: 0.25em;

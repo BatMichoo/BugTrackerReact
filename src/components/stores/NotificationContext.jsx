@@ -1,30 +1,28 @@
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { markRead as utilsMarkRead } from "../../utils/notif";
 import { useSignalR } from "../stores/SignalRContext.jsx";
-
-export const NotificationContext = createContext({
-  notifications: [],
-  markRead: async (id) => {},
-});
+import { NotificationContext } from "./useContexts.js";
 
 export function NotificationContextProvider({ children }) {
   const { on, off } = useSignalR();
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
-    const handleBugAssignment = (notification) => {
-      setNotifications((prevNotifications) => [
-        notification,
-        ...prevNotifications,
-      ]);
-    };
+  const handleNewNotification = useCallback((notification) => {
+    setNotifications((prevNotifications) => [
+      notification,
+      ...prevNotifications,
+    ]);
+  }, []);
 
-    on("new-assigned-bug", handleBugAssignment);
+  useEffect(() => {
+    on("new-assigned-bug", handleNewNotification);
+    on("new-assigned-role", handleNewNotification);
 
     return () => {
-      off("new-assigned-bug", handleBugAssignment);
+      off("new-assigned-bug", handleNewNotification);
+      off("new-assigned-role", handleNewNotification);
     };
-  }, [on, off]);
+  }, [on, off, handleNewNotification]);
 
   async function markRead(id) {
     await utilsMarkRead(id);

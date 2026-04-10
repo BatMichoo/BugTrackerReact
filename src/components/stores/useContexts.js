@@ -19,3 +19,8 @@ export function useRoles() {
   }
   return context;
 }
+
+export const NotificationContext = createContext({
+  notifications: [],
+  markRead: async (id) => {},
+});

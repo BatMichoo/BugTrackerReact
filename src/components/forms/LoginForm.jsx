@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Form, useActionData } from "react-router";
 import classes from "./LoginForm.module.css";
 import EmailLoginInput from "../inputs/EmailLoginInput.jsx";
@@ -33,21 +33,34 @@ const LoginForm = ({ buttonText }) => {
 
   const actionData = useActionData();
 
-  function emailHandleOnChange(event) {
-    const error = validateEmail(event.target.value);
+  const emailTimerRef = useRef(null);
+  const passwordTimerRef = useRef(null);
 
-    setValidationErrors((prevState) => {
-      return { ...prevState, email: error };
-    });
-  }
+  const emailHandleOnChange = useCallback((event) => {
+    const value = event.target.value;
 
-  function passwordHandleOnChange(event) {
-    const error = validatePassword(event.target.value);
+    if (emailTimerRef.current) {
+      clearTimeout(emailTimerRef.current);
+    }
 
-    setValidationErrors((prevState) => {
-      return { ...prevState, password: error };
-    });
-  }
+    emailTimerRef.current = setTimeout(() => {
+      const error = validateEmail(value);
+      setValidationErrors((prevState) => ({ ...prevState, email: error }));
+    }, 300);
+  }, []);
+
+  const passwordHandleOnChange = useCallback((event) => {
+    const value = event.target.value;
+
+    if (passwordTimerRef.current) {
+      clearTimeout(passwordTimerRef.current);
+    }
+
+    passwordTimerRef.current = setTimeout(() => {
+      const error = validatePassword(value);
+      setValidationErrors((prevState) => ({ ...prevState, password: error }));
+    }, 300);
+  }, []);
 
   return (
     <Form method="POST" className={classes["login-form"]}>
@@ -62,7 +75,9 @@ const LoginForm = ({ buttonText }) => {
       {actionData?.error && (
         <div className={classes.error}>{actionData.error}</div>
       )}
-      <button disabled={validationErrors.email || validationErrors.password}>
+      <button
+        disabled={!!validationErrors.email || !!validationErrors.password}
+      >
         {buttonText}
       </button>
     </Form>

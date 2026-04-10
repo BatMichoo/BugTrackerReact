@@ -3,7 +3,7 @@ import { addRoleToUser } from "../../utils/userAPI";
 import classes from "./Account.module.css";
 import { useRoles } from "../stores/useContexts";
 
-const AddRoleToUserForm = ({ userId, onCleanUp }) => {
+const AddRoleToUser = ({ userId, onCleanUp }) => {
   const { roles } = useRoles();
   const roleRef = useRef(null);
 
@@ -41,4 +41,4 @@ const AddRoleToUserForm = ({ userId, onCleanUp }) => {
   );
 };
 
-export default AddRoleToUserForm;
+export default AddRoleToUser;

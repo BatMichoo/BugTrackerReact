@@ -3,17 +3,17 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { getProfileName } from "../utils/auth";
 import { UsersProvider } from "./stores/UsersContext";
-import { RolessProvider } from "./stores/RolesContext";
+import { RolesProvider } from "./stores/RolesContext";
 
 const RootLayout = () => {
   return (
     <>
       <UsersProvider>
-        <RolessProvider>
+        <RolesProvider>
           <Header />
           <Outlet />
           <Footer />
-        </RolessProvider>
+        </RolesProvider>
       </UsersProvider>
     </>
   );

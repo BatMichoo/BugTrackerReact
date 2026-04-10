@@ -1,8 +1,8 @@
 import { useState, use } from "react";
 import { Link } from "react-router";
 import classes from "../NavBar.module.css";
-import { NotificationContext } from "../stores/NotificationContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NotificationContext } from "../stores/useContexts";
 
 function BugNotificationsPanel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,12 +32,16 @@ function BugNotificationsPanel() {
                 }
                 return (
                   <li key={n.id} className={className}>
-                    <Link
-                      to={`workflow/bugs/${n.bugId}`}
-                      onClick={async () => await context.markRead(n.id)}
-                    >
-                      You've been assigned a new Bug
-                    </Link>
+                    {!!n.bugId ? (
+                      <Link
+                        to={`workflow/bugs/${n.bugId}`}
+                        onClick={async () => await context.markRead(n.id)}
+                      >
+                        You've been assigned a new Bug
+                      </Link>
+                    ) : (
+                      <span>You've been assigned a new role!</span>
+                    )}
                   </li>
                 );
               })

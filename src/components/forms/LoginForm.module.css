@@ -1,13 +1,13 @@
 .login-form {
   padding: 1em 1.5em;
   border-radius: 1em;
-  background-color: rgba(240, 240, 240, 0.363);
+  background-color: var(--bg);
   display: flex;
   flex-direction: column;
   gap: 1em;
   align-items: center;
   min-width: 18vw;
-  box-shadow: 0em 0em 1em #615c572f;
+  box-shadow: var(--shadow);
 }
 
 .login-form button {
@@ -22,7 +22,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: black;
 }
 
 .login-input input {

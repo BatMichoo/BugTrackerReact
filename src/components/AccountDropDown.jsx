@@ -38,9 +38,7 @@ const AccountDropDown = () => {
     setIsOpen(false);
   };
 
-  const modalRef = useRef();
-  const navigate = useNavigate();
-  const revalidator = useRevalidator();
+  const modalRef = useRef(null);
 
   function startLogOut() {
     if (modalRef.current) {
@@ -53,8 +51,9 @@ const AccountDropDown = () => {
       <Modal
         ref={modalRef}
         action={logout}
-        onSuccess={() => navigate("/").then(revalidator.revalidate)}
-        cleanUp={() => { }}
+        // @ts-ignore
+        onSuccess={() => (window.location.href = "/")}
+        cleanUp={() => {}}
         displayContent={MODAL_CONTENT}
       />
       <div

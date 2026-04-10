@@ -1,29 +1,44 @@
 import classes from "./Account.module.css";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getUserRoles, removeRoleFromUser } from "../../utils/userAPI";
 import { useRoles } from "../stores/useContexts";
-import { useCallback, useRef } from "react";
-import { removeRoleFromUser } from "../../utils/userAPI";
 
-function RemoveRoleFromUserForm({ userId, onCleanUp }) {
-  const { roles } = useRoles();
+function RemoveRoleFromUser({ userId, onCleanUp }) {
+  const { roles, refresh } = useRoles();
+  const [userRoles, setUserRoles] = useState([]);
   const roleRef = useRef(null);
 
+  useEffect(() => {
+    const fetchUserRoles = async () => {
+      const fetchedRoles = await getUserRoles(userId);
+
+      setUserRoles(fetchedRoles);
+    };
+
+    fetchUserRoles();
+  }, [setUserRoles, userId]);
   const handleOnRemove = useCallback(async () => {
     const roleName = roleRef.current.value;
 
     await removeRoleFromUser(userId, roleName);
+    refresh();
     onCleanUp();
-  }, [userId]);
+  }, [onCleanUp, refresh, userId]);
+
+  const rolesWithNames = roles.filter((r) =>
+    userRoles.some((ur) => ur.id === r.id),
+  );
 
   return (
     <div className={classes.form}>
       <h3>Remove Role from User</h3>
-      {roles.length === 0 ? (
+      {userRoles.length === 0 ? (
         <p>This user has no roles to remove.</p>
       ) : (
         <div className={classes.control}>
           <label htmlFor="role-remove">Select Role to Remove</label>
           <select id="role-remove" ref={roleRef}>
-            {roles.map((r) => (
+            {rolesWithNames.map((r) => (
               <option key={r.id} value={r.name}>
                 {r.name}
               </option>
@@ -34,7 +49,7 @@ function RemoveRoleFromUserForm({ userId, onCleanUp }) {
       <div className={classes.actions}>
         <button
           type="submit"
-          disabled={roles.length === 0}
+          disabled={userRoles.length === 0}
           className="danger"
           onClick={handleOnRemove}
         >
@@ -48,4 +63,4 @@ function RemoveRoleFromUserForm({ userId, onCleanUp }) {
   );
 }
 
-export default RemoveRoleFromUserForm;
+export default RemoveRoleFromUser;

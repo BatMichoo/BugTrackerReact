@@ -13,15 +13,27 @@ const ENDPOINTS = {
 };
 
 export const getPermissions = () => {
-  const decodedToken = jwtDecode(getToken());
+  const token = getToken();
+
+  if (!token) {
+    return [];
+  }
+
+  const decodedToken = jwtDecode(token);
 
   const permissions = decodedToken["Permissions"].split(", ");
 
   return permissions;
 };
 
-export function getUserRoles() {
-  const decodedToken = jwtDecode(getToken());
+export function getLoggedInUserRoles() {
+  const token = getToken();
+
+  if (!token) {
+    return [];
+  }
+
+  const decodedToken = jwtDecode(token);
 
   const roles =
     decodedToken[
@@ -92,6 +104,10 @@ const clearProfileName = () => {
 
 export function getUserId() {
   const token = getToken();
+
+  if (!token) {
+    return "";
+  }
 
   const userId = jwtDecode(token).sub;
 

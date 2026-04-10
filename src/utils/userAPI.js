@@ -39,6 +39,40 @@ export async function getUser(userId) {
   return await response.json();
 }
 
+export async function updateUser(userId, userData) {
+  const authToken = getToken();
+  const response = await fetch(`${usersEndpoint}/${userId}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer " + authToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.errorMessage || "Could not update user.");
+  }
+
+  return await response.json();
+}
+
+export async function deleteUser(userId) {
+  const authToken = getToken();
+  const response = await fetch(`${usersEndpoint}/${userId}`, {
+    method: "DELETE",
+    headers: { Authorization: "Bearer " + authToken },
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.errorMessage || "Could not delete user.");
+  }
+
+  return true;
+}
+
 export async function changePassword(passwords) {
   const authToken = getToken();
 
@@ -86,6 +120,27 @@ export async function getRoles() {
   return roles;
 }
 
+export async function getUserRoles(userId) {
+  const authToken = getToken();
+
+  const response = await fetch(rolesEndpoint + `/${userId}`, {
+    headers: {
+      Authorization: "Bearer " + authToken,
+    },
+  });
+
+  if (!response.ok) {
+    return new Response(
+      { message: "Could not fetch roles." },
+      { status: response.status },
+    );
+  }
+
+  const roles = await response.json();
+
+  return roles;
+}
+
 export async function createRole(roleName) {
   const authToken = getToken();
 
@@ -108,10 +163,35 @@ export async function createRole(roleName) {
   return role;
 }
 
-export async function deleteRole(roleId) {
+export async function updateRole(role) {
   const authToken = getToken();
 
-  const response = await fetch(rolesEndpoint + `?id=${roleId}`, {
+  const response = await fetch(
+    rolesEndpoint + `?oldName=${role.oldName}&roleName=${role.newName}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + authToken,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    return new Response(
+      { message: "Could not update role." },
+      { status: response.status },
+    );
+  }
+
+  const updatedRole = await response.json();
+
+  return updatedRole;
+}
+
+export async function deleteRole(roleName) {
+  const authToken = getToken();
+
+  const response = await fetch(rolesEndpoint + `?roleName=${roleName}`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + authToken,
@@ -125,9 +205,7 @@ export async function deleteRole(roleId) {
     );
   }
 
-  const role = await response.json();
-
-  return role;
+  return true;
 }
 
 export async function addRoleToUser(userId, roleName) {

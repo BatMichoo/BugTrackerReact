@@ -1,5 +1,4 @@
 import { login } from "../utils/auth";
-import { redirect } from "react-router";
 import LoginForm from "../components/forms/LoginForm";
 
 const BUTTON_TEXT = "Login";
@@ -22,7 +21,8 @@ export const action = async ({ request }) => {
     const success = await login(loginInfo);
 
     if (success) {
-      return redirect("/");
+      window.location.href = "/";
+      return null;
     }
 
     return { error: "Invalid credentials." };

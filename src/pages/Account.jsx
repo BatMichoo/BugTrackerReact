@@ -5,10 +5,7 @@ import { Await, useFetcher } from "react-router";
 import Dialog from "../components/modals/Dialog";
 import ChangePasswordForm from "../components/forms/ChangePasswordForm";
 import CreateRole from "../components/forms/CreateRole";
-import AddRoleToUserForm from "../components/account/AddRoleToUserForm";
-import RemoveRoleFromUserForm from "../components/account/RemoveRoleFromUserForm";
 import AdminPanel from "../components/account/AdminPanel";
-import DeleteUserForm from "../components/account/DeleteUserForm";
 import AdminEditUserForm from "../components/account/AdminEditUserForm";
 import AccountSavedSearches from "../components/account/AccountSavedSearches";
 import CreateSearchView from "../components/searches/CreateSearchView";
@@ -16,6 +13,11 @@ import EditSearch from "../components/searches/EditSearchView";
 import DeleteSearch from "../components/forms/DeleteSearch";
 import { SEARCHES_INTERNAL_ENDPOINT } from "../utils/backendEndpoints";
 import { getProfileName } from "../utils/auth";
+import DeleteRole from "../components/account/DeleteRole";
+import EditRole from "../components/account/EditRole";
+import AddRoleToUser from "../components/account/AddRoleToUser";
+import DeleteUser from "../components/account/DeleteUser";
+import RemoveRoleFromUser from "../components/account/RemoveRoleFromUser";
 
 function AccountPage() {
   const [requiredAction, setRequiredAction] = useState(undefined);
@@ -80,20 +82,28 @@ function AccountPage() {
       dialogContent = <CreateRole onCleanUp={cleanUp} />;
       break;
     case "edit-role":
-      dialogContent = <CreateRole onCleanUp={cleanUp} />;
+      dialogContent = (
+        <EditRole
+          roleId={requiredAction.id}
+          roleName={requiredAction.name}
+          onCleanUp={cleanUp}
+        />
+      );
       break;
     case "delete-role":
-      dialogContent = <CreateRole onCleanUp={cleanUp} />;
+      dialogContent = (
+        <DeleteRole roleName={requiredAction.name} onCleanUp={cleanUp} />
+      );
       break;
     case "admin-add-role":
       // Placeholder: You'll need a form that takes a userId and lets you pick a role
       dialogContent = (
-        <AddRoleToUserForm userId={requiredAction.userId} onCleanUp={cleanUp} />
+        <AddRoleToUser userId={requiredAction.userId} onCleanUp={cleanUp} />
       );
       break;
     case "admin-remove-role":
       dialogContent = (
-        <RemoveRoleFromUserForm
+        <RemoveRoleFromUser
           userId={requiredAction.userId}
           onCleanUp={cleanUp}
         />
@@ -119,7 +129,7 @@ function AccountPage() {
       break;
     case "admin-delete-user":
       dialogContent = (
-        <DeleteUserForm
+        <DeleteUser
           userId={requiredAction.userId}
           onSuccess={() => {
             /* logic to refresh user list */
